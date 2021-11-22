@@ -1,0 +1,12 @@
+---
+# the nftables main configuration
+nftables_conf: "/etc/nftables.conf"
+# the nftables main configuration template
+nftables_conf_template: "main.conf.j2"
+# the nftables configuration drop-in directory
+nftables_confd: "/etc/nftables.d"
+# the nftables ruleset
+nftables_ruleset: []
+# - src: string
+#   dest: string
+#   state: string

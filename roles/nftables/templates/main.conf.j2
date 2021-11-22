@@ -1,0 +1,7 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+#!/usr/sbin/nft -f
+{{ ansible_managed | comment }}
+
+flush ruleset
+
+include "{{ nftables_confd }}/*.conf"

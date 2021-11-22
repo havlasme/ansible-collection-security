@@ -1,0 +1,19 @@
+namespace: havlasme
+name: security
+version: 0.1.0
+readme: README.md
+authors:
+- Tomáš Havlas <tomas@havlas.me>
+description: linux security management
+license:
+- Apache-2.0
+repository: https://gitlab.com/havlas.me/ansible-collection-security
+documentation: https://gitlab.com/havlas.me/ansible-collection-security
+homepage: https://gitlab.com/havlas.me/ansible-collection-security
+issues: https://gitlab.com/havlas.me/ansible-collection-security/-/issues
+build_ignore:
+- .idea
+- .gitignore
+- .gitlab-ci
+- .yamllint
+- Makefile

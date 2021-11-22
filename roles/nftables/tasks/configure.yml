@@ -1,0 +1,30 @@
+---
+- name: "(security.nftables) manage nftables main configuration"
+  ansible.builtin.template:
+    src: "{{ nftables_conf_template }}"
+    dest: "{{ nftables_conf }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    force: "yes"
+  notify: "(security.nftables) reload service"
+
+- name: "(security.nftables) manage nftables configuration"
+  ansible.builtin.file:
+    name: "{{ nftables_confd }}/{{ item.dest | mandatory }}"
+    state: "{{ item.state | mandatory }}"
+  loop: "{{ nftables_ruleset }}"
+  when: "item.state is defined and item.state == 'absent'"
+  notify: "(security.nftables) reload service"
+
+- name: "(security.nftables) manage nftables configuration"
+  ansible.builtin.template:
+    src: "{{ item.src | default('ruleset.conf.j2') }}"
+    dest: "{{ nftables_confd }}/{{ item.dest | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    force: "yes"
+  loop: "{{ nftables_ruleset }}"
+  when: "item.state is not defined or item.state == 'present'"
+  notify: "(security.nftables) reload service"

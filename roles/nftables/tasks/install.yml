@@ -1,0 +1,13 @@
+---
+- name: "(nftables.security) install required package"
+  ansible.builtin.package:
+    name: "{{ nftables_package }}"
+    state: "latest"
+
+- name: "(nftables.security) create directory structure"
+  ansible.builtin.file:
+    name: "{{ nftables_confd }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    state: "directory"
