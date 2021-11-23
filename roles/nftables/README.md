@@ -3,7 +3,7 @@ havlasme.security.nftables
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role manage nftables.
+An [Ansible](https://www.ansible.com/) role to manage nftables.
 
 Requirements
 ------------
