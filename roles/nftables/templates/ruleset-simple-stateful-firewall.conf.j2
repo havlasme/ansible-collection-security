@@ -1,6 +1,6 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 #!/usr/sbin/nft -f
-{{ ansible_managed | comment }}
+{{ (ansible_managed ~ ": " ~ template_run_date) | comment }}
 
 add table inet filter
 add chain inet filter INPUT { type filter hook input priority 0; policy drop; }
