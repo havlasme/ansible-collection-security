@@ -3,3 +3,5 @@
 borgmatic_state: "present"
 # the borgmatic configuration directory
 borgmatic_confdir: "/etc/borgmatic.d"
+# the borgmatic job default template
+borgmatic_job_template: "generic.yaml.j2"

@@ -7,3 +7,4 @@
     hour: "2"
     minute: "30"
     cron_file: "ansible-borgmatic"
+    state: "{{ borgmatic_state | replace('latest', 'present') }}"

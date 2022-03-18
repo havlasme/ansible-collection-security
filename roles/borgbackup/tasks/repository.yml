@@ -4,15 +4,14 @@
     name: "havlasme.linux.user"
   vars:
     linux_user:
-    - name: "{{ repository.name | mandatory }}"
-      comment: "{{ repository.comment | default('borgbackup-' + (repository.name | mandatory)) }}"
-      home: "{{ repository.storage | default(borgbackup_datadir + (repository.name | mandatory)) }}"
-      shell: "/bin/bash"
-      state: "{{ repository.state | default('present') }}"
+    - name: "{{ __borgbackup_repository.name | mandatory }}"
+      comment: "{{ __borgbackup_repository.comment | default('borgbackup-' + (__borgbackup_repository.name | mandatory)) }}"
+      home: "{{ __borgbackup_repository.storage | default(borgbackup_datadir + '/' + (__borgbackup_repository.name | mandatory)) }}"
+      state: "{{ __borgbackup_repository.state | default('present') }}"
       authorized_key:
-      - key: "{{ repository.key | default(lookup('file', (repository.name | mandatory) + '/id_ssh.pub')) }}"
-        key_options: 'restrict,command="borg serve --restrict-to-path={{ repository.storage | default(borgbackup_datadir + (repository.name | mandatory)) }}"'
-        comment: "{{ repository.comment | default(repository.name | mandatory) }}"
+      - key: "{{ __borgbackup_repository.key | default(lookup('file', (__borgbackup_repository.name | mandatory) + '/id_ssh.pub')) }}"
+        key_options: 'restrict,command="borg serve --restrict-to-path={{ __borgbackup_repository.storage | default(borgbackup_datadir + "/" + (__borgbackup_repository.name | mandatory)) }}"'
+        comment: "{{ __borgbackup_repository.comment | default('borgbackup-' + __borgbackup_repository.name | mandatory) }}"
   loop: "{{ borgbackup_repository }}"
   loop_control:
-    loop_var: "repository"
+    loop_var: "__borgbackup_repository"

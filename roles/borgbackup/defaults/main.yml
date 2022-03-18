@@ -2,7 +2,7 @@
 # the borgbackup state ('present', 'absent', 'latest')
 borgbackup_state: "present"
 # the borgbackup data directory
-borgbackup_datadir: "/storage/"
+borgbackup_datadir: "/var/lib/borgbackup"
 # the borgbackup repository list
 borgbackup_repository: []
 # - name: string

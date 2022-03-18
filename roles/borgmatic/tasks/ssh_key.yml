@@ -6,6 +6,7 @@
     group: "root"
     mode: "0700"
     state: "directory"
+  when: "borgmatic_state != 'absent'"
 
 - name: "(security.borgmatic) deploy ssh key"
   ansible.builtin.copy:
@@ -14,3 +15,4 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  when: "borgmatic_state != 'absent'"
