@@ -1,0 +1,11 @@
+---
+- import_tasks: "ssh_key.yml"
+  tags: ["borgmatic", "ssh-key"]
+- import_tasks: "install.yml"
+  tags: ["borgmatic", "install"]
+- import_tasks: "configure.yml"
+  tags: ["borgmatic", "configure"]
+- import_tasks: "configure-cron.yml"
+  tags: ["borgmatic", "configure", "cron"]
+- import_tasks: "repository.yml"
+  tags: ["borgmatic", "repository"]

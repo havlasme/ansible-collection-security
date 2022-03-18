@@ -1,0 +1,16 @@
+---
+- name: "(security.borgmatic) create directory structure"
+  ansible.builtin.file:
+    dest: "/root/.ssh"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    state: "directory"
+
+- name: "(security.borgmatic) deploy ssh key"
+  ansible.builtin.copy:
+    src: "{{ inventory_hostname }}/id_ssh"
+    dest: "/root/.ssh/id_borgbackup"
+    owner: "root"
+    group: "root"
+    mode: "0600"

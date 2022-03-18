@@ -1,0 +1,19 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+location:
+  {{ item.location | mandatory | to_nice_yaml(indent=2) | indent(2) }}
+{% if item.storage is defined %}
+storage:
+  {{ item.storage | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+retention:
+  {{ item.retention | mandatory | to_nice_yaml(indent=2) | indent(2) }}
+{% if item.consistency is defined %}
+consistency:
+  {{ item.consistency | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+{% if item.hook is defined %}
+hooks:
+  {{ item.hook | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}

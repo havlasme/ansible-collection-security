@@ -1,0 +1,12 @@
+---
+# the borgbackup state ('present', 'absent', 'latest')
+borgbackup_state: "present"
+# the borgbackup data directory
+borgbackup_datadir: "/storage/"
+# the borgbackup repository list
+borgbackup_repository: []
+# - name: string
+#   comment: string
+#   key: string
+#   storage: string
+#   state: string

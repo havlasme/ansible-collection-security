@@ -1,0 +1,3 @@
+---
+# the borgbackup package name
+borgbackup_package: "borgbackup"

@@ -1,0 +1,34 @@
+---
+- name: "(borgmatic) manage borgbackup repository host public key"
+  known_hosts:
+    name: "{{ item.repository.name }}"
+    key: "{{ item.repository.host_key }}"
+    hash_host: "no"
+  loop: "{{ borgmatic_job }}"
+
+- name: "(borgmatic) check remote borgbackup repository is initialization"
+  command: "borg list {{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
+  environment:
+  - BORG_PASSPHRASE: "{{ item.passphrase | mandatory }}"
+  - BORG_RSH: "ssh -i /root/.ssh/id_borgbackup"
+  register: "_borgmatic_repository_list"
+  changed_when: False
+  failed_when: False
+  check_mode: "no"
+  loop: "{{ borgmatic_job }}"
+
+- name: "(borgmatic) build remote borgbackup repository list"
+  set_fact:
+    borgmatic_repository_list: "{{ borgmatic_repository_list + [item.item.name]}}"
+  changed_when: False
+  failed_when: False
+  when: "item.rc == 0"
+  loop: "{{ _borgmatic_repository_list.results }}"
+
+- name: "(borgmatic) initialize remote borgbackup repository"
+  command: "borg init --encryption repokey {{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
+  environment:
+  - BORG_PASSPHRASE: "{{ item.passphrase | mandatory }}"
+  - BORG_RSH: "ssh -i /root/.ssh/id_borgbackup"
+  when: "item.name not in borgmatic_repository_list"
+  loop: "{{ borgmatic_job }}"

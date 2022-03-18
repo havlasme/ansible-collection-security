@@ -1,0 +1,5 @@
+---
+# the borgmatic state ('present', 'absent', 'latest')
+borgmatic_state: "present"
+# the borgmatic configuration directory
+borgmatic_confdir: "/etc/borgmatic.d"

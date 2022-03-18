@@ -1,0 +1,9 @@
+---
+- name: "(security.borgmatic) configure cron job"
+  ansible.builtin.cron:
+    name: "run borgmatic"
+    user: "root"
+    job: "/usr/local/bin/borgmatic"
+    hour: "2"
+    minute: "30"
+    cron_file: "ansible-borgmatic"

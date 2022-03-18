@@ -1,0 +1,5 @@
+---
+- import_tasks: "install.yml"
+  tags: ["borgbackup", "install"]
+- import_tasks: "repository.yml"
+  tags: ["borgbackup", "repository"]
