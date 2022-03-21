@@ -1,7 +1,9 @@
 ---
 - name: "(security.borgmatic) install dependency package"
   ansible.builtin.package:
-    name: "python3-pip"
+    name:
+    - "borgbackup"
+    - "python3-pip"
     state: "present"
   when: "borgmatic_state != 'absent'"
 
