@@ -1,7 +1,7 @@
 ---
 - name: "(security.borgmatic) configure borgmatic job"
   ansible.builtin.template:
-    dest: "{{ borgmatic_confdir }}/{{ item.name | mandatory }}.yaml"
+    dest: "{{ item.borgmatic_file | default(borgmatic_confdir + '/' + (item.name | mandatory) + '.yaml') }}"
     src: "{{ item.src | default(borgmatic_job_template) }}"
     owner: "root"
     group: "root"
