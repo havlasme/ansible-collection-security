@@ -1,0 +1,26 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+location:
+  source_directories:
+  {{ item.directory | mandatory | to_nice_yaml(indent=2) | indent(2) }}
+  repositories:
+  - "{{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
+  exclude_if_present: "{{ item.exclude_mark | default('.nobackup') }}"
+storage:
+  encryption_passphrase: "{{ item.passphrase | mandatory }}"
+  compression: "{{ item.compression | default('auto,zstd') }}"
+  ssh_command: "ssh -i /root/.ssh/id_borgbackup"
+  archive_name_format: "{{ item.name | mandatory }}-{now}"
+retention:
+  keep_daily: {{ item.retention_daily | default(7) }}
+  keep_weekly: {{ item.retention_weekly | default(4) }}
+  keep_monthly: {{ item.retention_monthly | default(6) }}
+  keep_yearly: {{ item.retention_yearly | default(1) }}
+  prefix: "{{ item.name | mandatory }}-"
+consistency:
+  checks:
+  - "repository"
+  - "archives"
+  check_last: 3
+  prefix: "{{ item.name | mandatory }}-"
