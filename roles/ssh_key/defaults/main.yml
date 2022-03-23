@@ -1,0 +1,6 @@
+---
+# the ssh key list
+ssh_key: []
+# - dest: string
+#   src: string
+#   state: string

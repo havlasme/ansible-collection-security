@@ -1,0 +1,17 @@
+---
+- name: "(security.ssh_key) deploy ssh key"
+  ansible.builtin.file:
+    dest: "{{ item.dest | mandatory }}"
+    state: "{{ item.state | mandatory }}"
+  loop: "{{ ssh_key }}"
+  when: "item.state | default('present') == 'absent'"
+
+- name: "(security.ssh_key) deploy ssh key"
+  ansible.builtin.copy:
+    dest: "{{ item.dest | mandatory }}"
+    src: "{{ item.src | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  loop: "{{ ssh_key }}"
+  when: "item.state | default('present') == 'present'"

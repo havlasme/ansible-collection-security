@@ -10,7 +10,7 @@ location:
 storage:
   encryption_passphrase: "{{ item.passphrase | mandatory }}"
   compression: "{{ item.compression | default('auto,zstd') }}"
-  ssh_command: "ssh -i /root/.ssh/id_borgbackup"
+  ssh_command: "ssh -i {{ item.key | mandatory }}"
   archive_name_format: "{{ item.name | mandatory }}-{now}"
 retention:
   keep_daily: {{ item.retention_daily | default(7) }}

@@ -10,7 +10,7 @@
   command: "borg list {{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
   environment:
   - BORG_PASSPHRASE: "{{ item.passphrase | mandatory }}"
-  - BORG_RSH: "ssh -i /root/.ssh/id_borgbackup"
+  - BORG_RSH: "ssh -i {{ item.key | mandatory }}"
   register: "_borgmatic_repository_list"
   changed_when: False
   failed_when: False
@@ -29,6 +29,6 @@
   command: "borg init --encryption repokey {{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
   environment:
   - BORG_PASSPHRASE: "{{ item.passphrase | mandatory }}"
-  - BORG_RSH: "ssh -i /root/.ssh/id_borgbackup"
+  - BORG_RSH: "ssh -i {{ item.key | mandatory }}"
   when: "item.name not in borgmatic_repository_list"
   loop: "{{ borgmatic_job }}"

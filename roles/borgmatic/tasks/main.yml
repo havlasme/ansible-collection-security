@@ -1,6 +1,4 @@
 ---
-- import_tasks: "ssh_key.yml"
-  tags: ["borgmatic", "ssh-key"]
 - import_tasks: "install.yml"
   tags: ["borgmatic", "install"]
 - import_tasks: "configure.yml"

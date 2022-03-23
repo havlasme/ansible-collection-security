@@ -1,0 +1,3 @@
+---
+- import_tasks: "deploy.yml"
+  tags: ["ssh_key", "deploy"]
