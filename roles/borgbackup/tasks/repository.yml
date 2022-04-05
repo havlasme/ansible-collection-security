@@ -4,14 +4,14 @@
     name: "havlasme.linux.user"
   vars:
     linux_user:
-    - name: "{{ __borgbackup_repository.name | mandatory }}"
-      comment: "{{ __borgbackup_repository.comment | default('borgbackup-' + (__borgbackup_repository.name | mandatory)) }}"
-      home: "{{ __borgbackup_repository.storage | default(borgbackup_datadir + '/' + (__borgbackup_repository.name | mandatory)) }}"
-      state: "{{ __borgbackup_repository.state | default('present') }}"
+    - name: "{{ _borgbackup_repository.name | mandatory }}"
+      comment: "{{ _borgbackup_repository.comment | default('borgbackup-' + (_borgbackup_repository.name | mandatory)) }}"
+      home: "{{ _borgbackup_repository.storage | default(borgbackup_datadir + '/' + (_borgbackup_repository.name | mandatory)) }}"
+      state: "{{ _borgbackup_repository.state | default('present') }}"
       authorized_key:
-      - key: "{{ __borgbackup_repository.key | default(lookup('file', (__borgbackup_repository.name | mandatory) + '/id_ssh.pub')) }}"
-        key_options: 'restrict,command="borg serve --restrict-to-path={{ __borgbackup_repository.storage | default(borgbackup_datadir + "/" + (__borgbackup_repository.name | mandatory)) }}"'
-        comment: "{{ __borgbackup_repository.comment | default('borgbackup-' + __borgbackup_repository.name | mandatory) }}"
+      - key: "{{ _borgbackup_repository.key | default(lookup('file', (_borgbackup_repository.name | mandatory) + '/id_ssh.pub')) }}"
+        key_options: 'restrict,command="borg serve --restrict-to-path={{ _borgbackup_repository.storage | default(borgbackup_datadir + "/" + (_borgbackup_repository.name | mandatory)) }}"'
+        comment: "{{ _borgbackup_repository.comment | default('borgbackup-' + _borgbackup_repository.name | mandatory) }}"
   loop: "{{ borgbackup_repository }}"
   loop_control:
-    loop_var: "__borgbackup_repository"
+    loop_var: "_borgbackup_repository"
