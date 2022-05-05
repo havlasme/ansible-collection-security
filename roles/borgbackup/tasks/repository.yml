@@ -9,7 +9,7 @@
       home: "{{ _borgbackup_repository.storage | default(borgbackup_datadir + '/' + (_borgbackup_repository.name | mandatory)) }}"
       state: "{{ _borgbackup_repository.state | default('present') }}"
       authorized_key:
-      - key: "{{ lookup('file', _borgbackup_repository.key | default(_borgbackup_repository.name | mandatory) + '/id_ssh.pub') }}"
+      - key: "{{ lookup('file', _borgbackup_repository.key | default((_borgbackup_repository.name | mandatory) + '/id_ssh.pub')) }}"
         key_options: 'restrict,command="borg serve --restrict-to-path={{ _borgbackup_repository.storage | default(borgbackup_datadir + "/" + (_borgbackup_repository.name | mandatory)) }}"'
         comment: "{{ _borgbackup_repository.comment | default('borgbackup-' + _borgbackup_repository.name | mandatory) }}"
   loop: "{{ borgbackup_repository }}"
