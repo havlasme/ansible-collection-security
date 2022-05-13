@@ -1,11 +1,22 @@
 ---
+# the nftables package state ('present', 'latest')
+nftables_state: "present"
+# start the nftables service at system boot
+nftables_service_enabled: "yes"
+# can ansible restart nftables service
+nftables_service_restart: "yes"
+
+# the nftables configuration directory
+nftables_confdir: "/etc/nftables.d"
+
 # the nftables main configuration
-nftables_conf: "/etc/nftables.conf"
+nftables_conf_main: "/etc/nftables.conf"
 # the nftables main configuration template
-nftables_conf_template: "main.conf.j2"
-# the nftables configuration drop-in directory
-nftables_confd: "/etc/nftables.d"
-# the nftables ruleset
+#nftables_conf_tmpl: "nftables.conf.j2"
+
+# the nftables ruleset default template
+nftables_ruleset_tmpl: "ruleset.conf.j2"
+# the nftables ruleset list
 nftables_ruleset: []
 # - src: string
 #   dest: string

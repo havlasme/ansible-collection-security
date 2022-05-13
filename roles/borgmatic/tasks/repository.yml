@@ -1,12 +1,12 @@
 ---
 - name: "(security.borgmatic) manage borgbackup repository host public key"
   known_hosts:
-    name: "{{ item.repository.name }}"
-    key: "{{ item.repository.host_key }}"
+    name: "{{ item.repository.name | mandatory }}"
+    key: "{{ item.repository.host_key | mandatory }}"
     hash_host: "no"
   loop: "{{ borgmatic_job }}"
 
-- name: "(security.borgmatic) check remote borgbackup repository is initialization"
+- name: "(security.borgmatic) check remote borgbackup repository is initialized"
   command: "borg list {{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
   environment:
   - BORG_PASSPHRASE: "{{ item.passphrase | mandatory }}"

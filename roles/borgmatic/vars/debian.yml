@@ -1,4 +1,6 @@
 ---
 # the borgmatic package name
-borgmatic_package: "borgmatic"
+borgmatic_package: ["borgbackup", "borgmatic"]
+# the borgmatic ansible support package name
+borgmatic_ansible_package: "python3-pip"
 borgmatic_repository_list: []

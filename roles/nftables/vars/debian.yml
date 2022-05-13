@@ -2,4 +2,4 @@
 # the nftables package name
 nftables_package: "nftables"
 # the nftables service name
-nftables_service: "nftables"
+nftables_service: "nftables.service"

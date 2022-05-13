@@ -9,3 +9,9 @@ borgmatic_confdir: "/etc/borgmatic.d"
 borgmatic_job_template: "generic.yaml.j2"
 # the borgmatic job list
 borgmatic_job: []
+# - name: string
+#   key: string
+#   passphrase: string
+#   repository:
+#     name: string
+#     host_key: string

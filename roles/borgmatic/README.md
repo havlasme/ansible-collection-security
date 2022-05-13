@@ -24,6 +24,12 @@ borgmatic_confdir: "/etc/borgmatic.d"
 borgmatic_job_template: "generic.yaml.j2"
 # the borgmatic job list
 borgmatic_job: []
+# - name: string
+#   key: string
+#   passphrase: string
+#   repository:
+#     name: string
+#     host_key: string
 ```
 
 Dependencies
@@ -39,6 +45,8 @@ Example Playbook
   tasks:
   - import_role:
       name: havlasme.security.borgmatic
+    vars:
+      borgmatic_job:
 # TODO
 ```
 
@@ -53,4 +61,5 @@ Author Information
 Created by [Tomáš Havlas](https://havlas.me/).
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
+
 [license-link]: ../../LICENSE

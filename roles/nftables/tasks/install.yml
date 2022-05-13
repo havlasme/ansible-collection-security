@@ -2,11 +2,12 @@
 - name: "(security.nftables) install nftables package"
   ansible.builtin.package:
     name: "{{ nftables_package }}"
-    state: "latest"
+    state: "{{ nftables_state }}"
+  notify: "(security.nftables) restart service"
 
 - name: "(security.nftables) create directory structure"
   ansible.builtin.file:
-    name: "{{ nftables_confd }}"
+    name: "{{ nftables_confdir }}"
     owner: "root"
     group: "root"
     mode: "0755"
