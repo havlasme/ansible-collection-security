@@ -1,5 +1,5 @@
 ---
-- name: "(security.nftables) install required package"
+- name: "(security.nftables) install nftables package"
   ansible.builtin.package:
     name: "{{ nftables_package }}"
     state: "latest"

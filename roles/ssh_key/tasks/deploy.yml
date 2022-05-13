@@ -1,12 +1,12 @@
 ---
-- name: "(security.ssh_key) deploy ssh key"
+- name: "(security.ssh_key) remove ssh key"
   ansible.builtin.file:
     dest: "{{ item.dest | mandatory }}"
-    state: "{{ item.state | mandatory }}"
+    state: "absent"
   loop: "{{ ssh_key }}"
-  when: "item.state | default('present') == 'absent'"
+  when: "item.state | d('present') == 'absent'"
 
-- name: "(security.ssh_key) deploy ssh key"
+- name: "(security.ssh_key) create, or update ssh key"
   ansible.builtin.copy:
     dest: "{{ item.dest | mandatory }}"
     src: "{{ item.src | mandatory }}"
@@ -14,4 +14,4 @@
     group: "root"
     mode: "0600"
   loop: "{{ ssh_key }}"
-  when: "item.state | default('present') == 'present'"
+  when: "item.state | d('present') == 'present'"

@@ -1,3 +1,3 @@
 ---
 - import_tasks: "deploy.yml"
-  tags: ["ssh_key", "deploy"]
+  tags: ["role::ssh_key", "task::deploy"]

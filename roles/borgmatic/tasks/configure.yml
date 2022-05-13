@@ -1,5 +1,12 @@
 ---
-- name: "(security.borgmatic) configure borgmatic job"
+- name: "(security.borgmatic) remove borgmatic job"
+  ansible.builtin.file:
+    name: "{{ item.borgmatic_file | default(borgmatic_confdir + '/' + (item.name | mandatory) + '.yaml') }}"
+    state: "absent"
+  loop: "{{ borgmatic_job }}"
+  when: "item.state | d('present') == 'absent'"
+
+- name: "(security.borgmatic) create, or update borgmatic job"
   ansible.builtin.template:
     dest: "{{ item.borgmatic_file | default(borgmatic_confdir + '/' + (item.name | mandatory) + '.yaml') }}"
     src: "{{ item.src | default(borgmatic_job_template) }}"
@@ -8,3 +15,4 @@
     mode: "0600"
     force: "yes"
   loop: "{{ borgmatic_job }}"
+  when: "item.state | d('present') == 'present'"

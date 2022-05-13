@@ -14,17 +14,19 @@ Role Variables
 --------------
 
 ```yaml
-# the borgbackup state ('present', 'absent', 'latest')
+# the borgbackup package state ('present', 'absent', 'latest')
 borgbackup_state: "present"
+
 # the borgbackup data directory
 borgbackup_datadir: "/var/lib/borgbackup"
+
 # the borgbackup repository list
 borgbackup_repository: []
 # - name: string
-#   comment: string
+#   comment: string | d('borgbackup_`item.name`')
 #   key: string
 #   storage: string
-#   state: string
+#   state: enum('present', 'absent') | d('present')
 ```
 
 Dependencies
@@ -35,7 +37,6 @@ Dependencies
 ```bash
 ansible-galaxy collection install havlasme.linux
 ```
-
 
 Example Playbook
 ----------------

@@ -1,9 +1,13 @@
 ---
+- name: "(security.borgmatic) include os specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: ["always"]
+
 - import_tasks: "install.yml"
-  tags: ["borgmatic", "install"]
+  tags: ["role::borgmatic", "task::install"]
 - import_tasks: "configure.yml"
-  tags: ["borgmatic", "configure"]
-- import_tasks: "configure-cron.yml"
-  tags: ["borgmatic", "configure", "cron"]
+  tags: ["role::borgmatic", "task::configure"]
+- import_tasks: "cronjob.yml"
+  tags: ["role::borgmatic", "task::configure", "task::cronjob"]
 - import_tasks: "repository.yml"
-  tags: ["borgmatic", "repository"]
+  tags: ["role::borgmatic", "task::repository"]

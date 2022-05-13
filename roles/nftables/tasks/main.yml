@@ -1,7 +1,11 @@
 ---
+- name: "(security.nftables) include os specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: ["always"]
+
 - import_tasks: "install.yml"
-  tags: ["nftables", "install"]
+  tags: ["role::nftables", "task::install"]
 - import_tasks: "configure.yml"
-  tags: ["nftables", "configure"]
+  tags: ["role::nftables", "task::configure"]
 - import_tasks: "service.yml"
-  tags: ["nftables", "service"]
+  tags: ["role::nftables", "task::service"]

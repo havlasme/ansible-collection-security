@@ -12,8 +12,11 @@ documentation: https://gitlab.com/havlas.me/ansible-collection-security
 homepage: https://gitlab.com/havlas.me/ansible-collection-security
 issues: https://gitlab.com/havlas.me/ansible-collection-security/-/issues
 build_ignore:
-- .idea
+- .ansible-lint
+- .cache
 - .gitignore
-- .gitlab-ci
+- .gitlab-ci.yml
+- .idea
 - .yamllint
+- dist
 - Makefile

@@ -1,7 +1,11 @@
 ---
-# the borgmatic state ('present', 'absent', 'latest')
+# the borgmatic package state ('present', 'absent', 'latest')
 borgmatic_state: "present"
+
 # the borgmatic configuration directory
 borgmatic_confdir: "/etc/borgmatic.d"
+
 # the borgmatic job default template
 borgmatic_job_template: "generic.yaml.j2"
+# the borgmatic job list
+borgmatic_job: []
