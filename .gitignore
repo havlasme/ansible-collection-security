@@ -1,4 +1,9 @@
-.cache
+# intellij idea
 .idea
 
-/production
+# ansible
+.cache
+__pycache__
+
+# distribution
+/dist
