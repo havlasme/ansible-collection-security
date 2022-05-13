@@ -9,7 +9,7 @@ nftables_service_restart: "yes"
 # the nftables configuration directory
 nftables_confdir: "/etc/nftables.d"
 
-# the nftables main configuration
+# the nftables main configuration file
 nftables_conf_main: "/etc/nftables.conf"
 # the nftables main configuration template
 #nftables_conf_tmpl: "nftables.conf.j2"
