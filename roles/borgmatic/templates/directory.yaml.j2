@@ -5,17 +5,17 @@
     @see https://torsion.org/borgmatic/docs/reference/configuration/
 
     # the borgmatic backup directory list
-    #item.directory: []
+    item.directory: string[]
     # the borgmatic backup compression
-    item.compression: "auto,zstd"
+    item.compression: string | d('auto,zstd')
     # the borgmatic backup directory exclusion mark (do not backup directory containing this file)
-    item.exclude_mark: ".nobackup"
+    item.exclude_mark: string | d('.nobackup')
     # the borgmatic backup retention policy
     item.retention:
-      daily: 7
-      weekly: 4
-      monthly: 6
-      yearly: 1
+      daily: int | d(7)
+      weekly: int | d(4)
+      monthly: int | d(6)
+      yearly: int | d(1)
 #}
 
 location:
