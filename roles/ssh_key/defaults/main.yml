@@ -3,4 +3,4 @@
 ssh_key: []
 # - dest: string
 #   src: string
-#   state: string
+#   state: string | d('present')
