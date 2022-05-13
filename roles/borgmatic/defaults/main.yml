@@ -5,8 +5,15 @@ borgmatic_state: "present"
 # the borgmatic configuration directory
 borgmatic_confdir: "/etc/borgmatic.d"
 
+# the borgmatic cronjob configuration
+borgmatic_cronjob:
+  hour: 2
+  minute: 30
+
 # the borgmatic job default template
-borgmatic_job_template: "generic.yaml.j2"
+# * minimal.yaml.j2  a minimalistic template
+# * directory.yaml.j2  an opinionated template to backup directory
+borgmatic_job_tmpl: "minimal.yaml.j2"
 # the borgmatic job list
 borgmatic_job: []
 # - name: string
@@ -15,3 +22,18 @@ borgmatic_job: []
 #   repository:
 #     name: string
 #     host_key: string
+# * minimal.yaml.j2
+#   location: yaml
+#   storage: yaml | d(omit)
+#   retention: yaml
+#   consistency: yaml | d(omit)
+#   hook: yaml | d(omit)
+# * directory.yaml.j2
+#   directory: string[]
+#   compression: string | d('auto,zstd')
+#   exclude_mark: string | d('.nobackup')
+#   retention: dict
+#     daily: int | d(7)
+#     weekly: int | d(4)
+#     monthly: int | d(6)
+#     yearly: int | d(1)

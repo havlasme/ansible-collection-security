@@ -24,18 +24,26 @@ nftables_service_restart: "yes"
 # the nftables configuration directory
 nftables_confdir: "/etc/nftables.d"
 
-# the nftables main configuration
+# the nftables main configuration file
 nftables_conf_main: "/etc/nftables.conf"
 # the nftables main configuration template
 #nftables_conf_tmpl: "nftables.conf.j2"
 
 # the nftables ruleset default template
-nftables_ruleset_tmpl: "ruleset.conf.j2"
+# * ruleset.d/minimal.conf.j2  minimalistic template
+# * ruleset.d/simple-stateful-firewall.conf.j2  an opinionated stateful firewall setup
+nftables_ruleset_tmpl: "ruleset.d/minimal.conf.j2"
 # the nftables ruleset list
 nftables_ruleset: []
-# - src: string
-#   dest: string
-#   state: string
+# - dest: string
+#   src: string
+#   state: enum('present', 'absent') | d('present')
+# * ruleset.d/minimal.conf.j2
+#   ruleset: string[]
+# * ruleset.d/simple-stateful-firewall.conf.j2
+#   accept_ping: boolean | d('yes')
+#   accept_multicast: boolean | d('no')
+#   ssh_port: int | d(22)
 ```
 
 Dependencies

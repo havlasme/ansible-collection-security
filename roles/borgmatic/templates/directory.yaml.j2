@@ -1,22 +1,39 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
+{#  an opinionated template to backup directory
+    @see https://torsion.org/borgmatic/docs/reference/configuration/
+
+    # the borgmatic backup directory list
+    #item.directory: []
+    # the borgmatic backup compression
+    item.compression: "auto,zstd"
+    # the borgmatic backup directory exclusion mark (do not backup directory containing this file)
+    item.exclude_mark: ".nobackup"
+    # the borgmatic backup retention policy
+    item.retention:
+      daily: 7
+      weekly: 4
+      monthly: 6
+      yearly: 1
+#}
+
 location:
   source_directories:
   {{ item.directory | mandatory | to_nice_yaml(indent=2) | indent(2) }}
   repositories:
   - "{{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
-  exclude_if_present: "{{ item.exclude_mark | default('.nobackup') }}"
+  exclude_if_present: "{{ item.exclude_mark | d('.nobackup') }}"
 storage:
   encryption_passphrase: "{{ item.passphrase | mandatory }}"
-  compression: "{{ item.compression | default('auto,zstd') }}"
+  compression: "{{ item.compression | d('auto,zstd') }}"
   ssh_command: "ssh -i {{ item.key | mandatory }}"
   archive_name_format: "{{ item.name | mandatory }}-{now}"
 retention:
-  keep_daily: {{ item.retention_daily | default(7) }}
-  keep_weekly: {{ item.retention_weekly | default(4) }}
-  keep_monthly: {{ item.retention_monthly | default(6) }}
-  keep_yearly: {{ item.retention_yearly | default(1) }}
+  keep_daily: {{ item.retention.daily | d(7) }}
+  keep_weekly: {{ item.retention.weekly | d(4) }}
+  keep_monthly: {{ item.retention.monthly | d(6) }}
+  keep_yearly: {{ item.retention.yearly | d(1) }}
   prefix: "{{ item.name | mandatory }}-"
 consistency:
   checks:

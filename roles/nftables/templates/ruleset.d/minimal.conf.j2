@@ -2,6 +2,12 @@
 #!/usr/sbin/nft -f
 {{ ansible_managed | comment }}
 
+{#  a minimalistic template
+
+    # the ruleset
+    #item.ruleset: []
+#}
+
 {% for rule in item.ruleset %}
 {{ rule }}
 {% endfor %}

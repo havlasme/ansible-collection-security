@@ -1,6 +1,21 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
+{#  a minimalistic template
+    @see https://torsion.org/borgmatic/docs/reference/configuration/
+
+    # the location configuration block
+    #item.location:
+    # the storage configuration block
+    #item.storage:
+    # the retention configuration block
+    #item.retention:
+    # the consistency configuration block
+    #item.consistency:
+    # the hook configuration block
+    #item.hook:
+#}
+
 location:
   {{ item.location | mandatory | to_nice_yaml(indent=2) | indent(2) }}
 {% if item.storage is defined %}
