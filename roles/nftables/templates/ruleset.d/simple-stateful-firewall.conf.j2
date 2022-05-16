@@ -10,7 +10,7 @@
     item.accept_multicast: boolean | d('no')
     # open ssh service port
     item.ssh_port: int | d(22)
-#}
+-#}
 
 add table inet filter
 add chain inet filter INPUT { type filter hook input priority 0; policy drop; }
