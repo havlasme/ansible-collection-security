@@ -6,7 +6,7 @@ build:
 
 .PHONY: clean
 clean:
-	rm -r ./dist
+	-rm --recursive ./dist
 
 .PHONY: test
 test:
