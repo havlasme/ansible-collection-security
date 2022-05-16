@@ -5,11 +5,11 @@
 {#  an opinionated stateful firewall setup
 
     # allow icmp ping traffic at the input chain
-    item.accept_ping: "yes"
+    item.accept_ping: boolean | d('yes')
     # allow multicast traffic at the input chain
-    item.accept_multicast: "no"
+    item.accept_multicast: boolean | d('no')
     # open ssh service port
-    item.ssh_port: 22
+    item.ssh_port: int | d(22)
 #}
 
 add table inet filter

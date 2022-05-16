@@ -5,9 +5,9 @@
 {#  a minimalistic template
 
     # the ruleset
-    #item.ruleset: []
+    item.ruleset: string[]
 #}
 
-{% for rule in item.ruleset %}
+{% for rule in item.ruleset | mandatory %}
 {{ rule }}
 {% endfor %}

@@ -5,15 +5,15 @@
     @see https://torsion.org/borgmatic/docs/reference/configuration/
 
     # the location configuration block
-    #item.location:
+    item.location: yaml
     # the storage configuration block
-    #item.storage:
+    item.storage: yaml | d(omit)
     # the retention configuration block
-    #item.retention:
+    item.retention: yaml
     # the consistency configuration block
-    #item.consistency:
+    item.consistency: yaml | d(omit)
     # the hook configuration block
-    #item.hook:
+    item.hook: yaml | d(omit)
 #}
 
 location:

@@ -11,7 +11,7 @@
     # the borgmatic backup directory exclusion mark (do not backup directory containing this file)
     item.exclude_mark: string | d('.nobackup')
     # the borgmatic backup retention policy
-    item.retention:
+    item.retention: dict
       daily: int | d(7)
       weekly: int | d(4)
       monthly: int | d(6)
