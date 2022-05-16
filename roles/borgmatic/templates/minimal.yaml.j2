@@ -14,7 +14,7 @@
     item.consistency: yaml | d(omit)
     # the hook configuration block
     item.hook: yaml | d(omit)
-#}
+-#}
 
 location:
   {{ item.location | mandatory | to_nice_yaml(indent=2) | indent(2) }}
