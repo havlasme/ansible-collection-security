@@ -14,7 +14,11 @@ clean:
 
 .PHONY: install
 install:
+ifeq (, $(shell which yq))
+	$(error "no yq. try doing pip3 install yq")
+else
 	$(GALAXY) collection install "$(DIST)/$(NAMESPACE)-$(ROLENAME)-$(ROLEVERSION).tar.gz"
+endif
 
 .PHONY: test
 test:
