@@ -1,9 +1,9 @@
-# intellij idea
-.idea
+# distribution
+/dist
 
 # ansible
 .cache
 __pycache__
 
-# distribution
-/dist
+# intellij idea
+.idea
