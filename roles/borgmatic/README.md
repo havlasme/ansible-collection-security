@@ -37,14 +37,14 @@ borgmatic_job: []
 #   repository:
 #     name: string
 #     host_key: string
-# * minimal.yaml.j2
+#  template: string | d(borgmatic_job_tmpl)
+# * template: minimal.yaml.j2
 #   location: yaml
 #   storage: yaml | d(omit)
 #   retention: yaml
 #   consistency: yaml | d(omit)
 #   hook: yaml | d(omit)
-# * directory.yaml.j2
-#   name: string
+# * template: directory.yaml.j2
 #   directory: string[]
 #   compression: string | d('auto,zstd')
 #   exclude_mark: string | d('.nobackup')
