@@ -1,0 +1,5 @@
+---
+# the ssh package
+ssh_package: "nginx"
+# the nginx service name
+ssh_service: "nginx"

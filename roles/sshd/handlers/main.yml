@@ -1,0 +1,11 @@
+---
+- name: "(security.ssh) reload service"
+  ansible.builtin.service:
+    name: "{{ ssh_service }}"
+    state: "reloaded"
+
+- name: "(security.ssh) restart service"
+  ansible.builtin.service:
+    name: "{{ ssh_service }}"
+    state: "restarted"
+  when: "ssh_service_restart | bool"

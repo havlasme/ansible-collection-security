@@ -1,0 +1,20 @@
+---
+# the sshd package state ('present', 'latest')
+sshd_state: "present"
+# should start the sshd service at boot
+sshd_service_enabled: "yes"
+# can ansible restart the sshd service
+nginx_service_restart: "yes"
+
+# the nginx configuration directory
+nginx_confdir: "/etc/nginx"
+# the nginx log directory
+nginx_logdir: "/var/log/nginx"
+
+# the nginx network port
+nginx_network_port: 80
+
+# the nginx main configuration file
+nginx_conf_main: "{{ nginx_confdir }}/nginx.conf"
+# the nginx main configuration template
+nginx_conf_tmpl: "nginx.conf.j2"

@@ -13,8 +13,25 @@ An [Ansible](https://www.ansible.com/) collection of security-related roles, plu
 Installation
 ------------
 
-```bash
+```shell
 ansible-galaxy collection install havlasme.security
+```
+
+```shell title="requirements.yml"
+---
+collections:
+- name: havlasme.security
+```
+
+Development
+-----------
+
+```shell
+make build
+```
+
+```shell title="molecule"
+make test
 ```
 
 License

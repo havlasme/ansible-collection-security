@@ -1,0 +1,64 @@
+---
+- name: "(webhost.nginx) deploy nginx repository key"
+  ansible.builtin.apt_key:
+    url: "{{ item }}"
+  loop: "{{ nginx_repo_key_url }}"
+
+- name: "(webhost.nginx) deploy nginx repository"
+  ansible.builtin.apt_repository:
+    repo: "{{ nginx_repo_url }}"
+    filename: "ansible-nginx"
+    mode: "0644"
+    update_cache: "yes"
+    validate_certs: "yes"
+
+- name: "(webhost.nginx) install nginx package"
+  ansible.builtin.package:
+    name: "{{ nginx_package }}"
+    state: "{{ nginx_state }}"
+  notify: "(webhost.nginx) restart service"
+
+- name: "(webhost.nginx) install htpasswd support package"
+  ansible.builtin.package:
+    name: "{{ nginx_htpasswd_package }}"
+    state: "present"
+  when: "nginx_htpasswd | length > 0"
+
+- name: "(webhost.nginx) cleanup default directory structure"
+  ansible.builtin.file:
+    dest: "{{ item | mandatory }}"
+    state: "absent"
+  loop:
+  - "{{ nginx_confdir }}/modules"
+  - "{{ nginx_confdir }}/modules-available"
+  - "{{ nginx_confdir }}/modules-enabled"
+  - "{{ nginx_confdir }}/sites-available"
+  - "{{ nginx_confdir }}/sites-enabled"
+  - "{{ nginx_confdir }}/snippets"
+  notify: "(webhost.nginx) reload service"
+
+- name: "(webhost.nginx) create directory structure"
+  ansible.builtin.file:
+    name: "{{ item.path | mandatory }}"
+    owner: "{{ item.user | d('root') }}"
+    group: "{{ item.group | d('root') }}"
+    mode: "{{ item.mode | d('0755') }}"
+    state: "directory"
+  loop:
+  - { path: "{{ nginx_confdir }}" }
+  - { path: "{{ nginx_confdir }}/conf.d" }
+  - { path: "{{ nginx_confdir }}/default.d" }
+  - { path: "{{ nginx_confdir }}/snippet.d" }
+  - { path: "{{ nginx_confdir }}/upstream.d" }
+  - { path: "{{ nginx_confdir }}/vhost.d" }
+  - { path: "/var/www", user: "{{ nginx_runas_user }}", group: "{{ nginx_runas_group }}", mode: "0750" }
+  notify: "(webhost.nginx) reload service"
+
+- name: "(webhost.nginx) setup nginx dhparam"
+  ansible.builtin.copy:
+    dest: "{{ nginx_confdir }}/dhparam.pem"
+    content: "{{ nginx_dhparam }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: "nginx_dhparam != 'no'"

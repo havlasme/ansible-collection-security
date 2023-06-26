@@ -1,0 +1,44 @@
+---
+- name: "(webhost.nginx) configure nginx"
+  ansible.builtin.template:
+    src: "{{ nginx_conf_tmpl }}"
+    dest: "{{ nginx_conf_main }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    force: "yes"
+  notify: "(webhost.nginx) reload service"
+
+- name: "(webhost.nginx) configure nginx snippet"
+  ansible.builtin.file:
+    dest: "{{ nginx_confdir }}/{{ item.dest | mandatory }}"
+    state: "absent"
+  loop: "{{ nginx_snippet }}"
+  when: "item.state | d('present') == 'absent'"
+  notify: "(webhost.nginx) reload service"
+
+- name: "(webhost.nginx) configure nginx snippet"
+  ansible.builtin.template:
+    dest: "{{ nginx_confdir }}/{{ item.dest | mandatory }}"
+    src: "{{ item.src | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    force: "yes"
+  loop: "{{ nginx_snippet }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "(webhost.nginx) reload service"
+
+- name: "(webhost.nginx) configure nginx htpasswd"
+  community.general.htpasswd:
+    dest: "{{ item.path | default(nginx_confdir ~ '/.htpasswd') }}"
+    name: "{{ item.name | mandatory }}"
+    password: "{{ item.password | mandatory }}"
+    owner: "root"
+    group: "{{ nginx_runas_group }}"
+    mode: "0640"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ nginx_htpasswd }}"
+  notify: "(webhost.nginx) reload service"
+
+- include_tasks: "service.yml"

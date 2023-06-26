@@ -1,0 +1,11 @@
+---
+- name: "(security.ssh) include os specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: ["always"]
+
+- import_tasks: "install.yml"
+  tags: ["role::ssh", "task::install"]
+- import_tasks: "configure.yml"
+  tags: ["role::ssh", "task::configure"]
+- import_tasks: "service.yml"
+  tags: ["role::ssh", "task::service"]
