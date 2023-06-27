@@ -11,8 +11,9 @@ nginx_confdir: "/etc/nginx"
 # the nginx log directory
 nginx_logdir: "/var/log/nginx"
 
-# the nginx network port
-nginx_network_port: 80
+# the sshd network port
+sshd_bind_ip: 22
+sshd_bind_port: 22
 
 # the nginx main configuration file
 nginx_conf_main: "{{ nginx_confdir }}/nginx.conf"
