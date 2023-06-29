@@ -1,0 +1,5 @@
+# log client's key fingerprint on login
+LogLevel VERBOSE
+
+# log sftp level file access (read/write/etc.)
+Subsystem   sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

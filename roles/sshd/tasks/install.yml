@@ -1,5 +1,5 @@
 ---
-- name: "security | sshd | install"
+- name: "security | sshd | install via apt"
   ansible.builtin.package:
     name: "{{ sshd__package_name }}"
     state: "{{ sshd__state }}"
@@ -7,12 +7,12 @@
 
 - name: "security | sshd | create directory structure"
   ansible.builtin.file:
-    name: "{{ item | mandatory }}"
+    dest: "{{ item.dest | mandatory }}"
     owner: "root"
     group: "root"
-    mode: "0755"
+    mode: "{{ item.mode | d('0755') }}"
     state: "directory"
   loop:
-  - "{{ sshd__confdir }}"
-  - "{{ sshd__conf_includedir }}"
+  - { dest: "{{ sshd__confdir }}" }
+  - { dest: "{{ sshd__conf_includedir }}", mode: "0700" }
   notify: "security | sshd | reload"

@@ -1,10 +1,10 @@
 ---
 - name: "security | sshd | configure"
   ansible.builtin.template:
-    src: "{{ sshd__conf_tmpl }}"
-    dest: "{{ sshd__conf_path }}"
+    dest: "{{ sshd__conf }}"
+    src: "{{ sshd__conf_template }}"
     owner: "root"
     group: "root"
     mode: "0644"
-    force: "yes"
+    validate: "sshd -t -f %s"
   notify: "security | sshd | reload"

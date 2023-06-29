@@ -8,4 +8,5 @@
   ansible.builtin.service:
     name: "{{ sshd__service_name }}"
     state: "restarted"
-  when: "sshd__can_restart | bool"
+  when:
+  - "sshd__can_restart | bool"
