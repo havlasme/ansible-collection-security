@@ -1,21 +1,27 @@
 ---
 # the sshd package state ('present', 'latest')
-sshd_state: "present"
+sshd__state: "present"
 # should start the sshd service at boot
-sshd_service_enabled: "yes"
+sshd__service_enabled: "yes"
 # can ansible restart the sshd service
-nginx_service_restart: "yes"
+sshd__can_restart: "yes"
 
-# the nginx configuration directory
-nginx_confdir: "/etc/nginx"
-# the nginx log directory
-nginx_logdir: "/var/log/nginx"
+# the sshd port
+sshd__port: "22"
+# the sshd listen
+#sshd__listen: "0.0.0.0"
 
-# the sshd network port
-sshd_bind_ip: 22
-sshd_bind_port: 22
+# the sshd conf file
+sshd__conf: "{{ sshd__confdir }}/sshd_config"
+# the sshd conf template
+sshd__conf_tmpl: "sshd_config.j2"
+# the sshd conf include directory
+sshd__conf_includedir: "{{ sshd__confdir }}/sshd_config.d"
 
-# the nginx main configuration file
-nginx_conf_main: "{{ nginx_confdir }}/nginx.conf"
-# the nginx main configuration template
-nginx_conf_tmpl: "nginx.conf.j2"
+# password authentication ('yes', 'no')
+sshd__password_authentication: "yes"
+# permit root login ('yes', 'no', 'prohibit-password')
+sshd__permit_root_login: "prohibit-password"
+
+# the sshd conf directory
+sshd__confdir: "/etc/ssh"

@@ -1,5 +1,5 @@
 ---
-# the ssh package
-ssh_package: "nginx"
-# the nginx service name
-ssh_service: "nginx"
+# the sshd package name
+sshd__package_name: "openssh-server"
+# the sshd service name
+sshd__service_name: "sshd"
