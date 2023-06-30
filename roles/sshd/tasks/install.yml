@@ -1,6 +1,6 @@
 ---
 - name: "security | sshd | install via apt"
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name: "{{ sshd__package_name }}"
     state: "{{ sshd__state }}"
   notify: "security | sshd | restart"
@@ -13,6 +13,6 @@
     mode: "{{ item.mode | d('0755') }}"
     state: "directory"
   loop:
-  - { dest: "{{ sshd__confdir }}" }
-  - { dest: "{{ sshd__conf_includedir }}", mode: "0700" }
+  - { dest: "{{ sshd_conf | dirname }}" }
+  - { dest: "{{ sshd__conf_d }}", mode: "0700" }
   notify: "security | sshd | reload"

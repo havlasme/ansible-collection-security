@@ -1,11 +1,22 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{% from 'sshd_directive.macro.j2' import sshd_directive %}
 {{ ansible_managed | comment }}
 
-Include {{ sshd__conf_includedir | mandatory }}/*.conf
+Include {{ sshd__conf_d | mandatory }}/*.conf
 
-Port {{ sshd__port | mandaroty }}
-{% if sshd__listen_address is defined %}
-ListenAddress {{ sshd__listen_address | mandatory }}
+{% for __port in sshd__port | mandatory %}
+Port {{ __port | mandaroty }}
+{% endfor %}
+{% if sshd__listen is defined %}
+{% for __listen in sshd__listen %}
+ListenAddress {{ __listen }}
+{% endfor %}
+{% endif %}
+
+{% if sshd__host_key_type is defined %}
+{% for __host_key_type in sshd__host_key_type %}
+HostKey {{ sshd_conf | dirname }}/ssh_host_{{ __host_key_type }}_key
+{% endfor %}
 {% endif %}
 
 Subsystem   sftp    /usr/lib/openssh/sftp-server

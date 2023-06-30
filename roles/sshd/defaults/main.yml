@@ -4,7 +4,7 @@ sshd__state: "present"
 # should start the sshd service at boot
 sshd__enabled: "yes"
 # can ansible restart the sshd service
-sshd__can_restart: "yes"
+sshd__ansible_restart: "yes"
 
 # the sshd port
 sshd__port: [ "22" ]
@@ -14,16 +14,8 @@ sshd__port: [ "22" ]
 #sshd__host_key_type: [ "rsa", "ecdsa", "ed25519" ]
 
 # the sshd conf file
-sshd__conf: "{{ sshd__confdir }}/sshd_config"
+sshd__conf: "/etc/ssh/sshd_config"
 # the sshd conf template
 sshd__conf_template: "sshd_config.j2"
-# the sshd conf include directory
-sshd__conf_dotd: "{{ sshd__confdir }}/sshd_config.d"
-
-# password authentication ('yes', 'no')
-sshd__password_authentication: "yes"
-# permit root login ('yes', 'no', 'prohibit-password')
-sshd__permit_root_login: "prohibit-password"
-
-# the sshd conf directory
-sshd__confdir: "/etc/ssh"
+# the sshd conf dot-d directory
+sshd__conf_d: "/etc/ssh/sshd_config.d"

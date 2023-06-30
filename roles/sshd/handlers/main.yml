@@ -9,4 +9,4 @@
     name: "{{ sshd__service_name }}"
     state: "restarted"
   when:
-  - "sshd__can_restart | bool"
+  - "sshd__ansible_restart | bool"

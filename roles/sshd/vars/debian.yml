@@ -3,3 +3,6 @@
 sshd__package_name: "openssh-server"
 # the sshd service name
 sshd__service_name: "sshd"
+
+# the sshd keygen command
+sshd__keygen: "/usr/bin/ssh-keygen"
