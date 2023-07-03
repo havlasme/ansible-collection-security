@@ -4,7 +4,7 @@
 Include {{ sshd__conf_d | mandatory }}/*.conf
 
 {% for __port in sshd__port | mandatory %}
-Port {{ __port | mandaroty }}
+Port {{ __port | mandatory }}
 {% endfor %}
 {% if sshd__listen is defined %}
 {% for __listen in sshd__listen %}
@@ -14,8 +14,9 @@ ListenAddress {{ __listen }}
 
 {% if sshd__host_key_type is defined %}
 {% for __host_key_type in sshd__host_key_type %}
-HostKey {{ sshd_conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
+HostKey {{ sshd__conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
 {% endfor %}
 {% endif %}
 
-Subsystem   sftp    /usr/lib/openssh/sftp-server
+# enable sftp subsystem. log sftp level file access.
+Subsystem   sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

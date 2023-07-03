@@ -12,7 +12,7 @@
 
 - name: "security | sshd | delete "
   ansible.builtin.file:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
     state: "absent"
   loop: "{{ sshd__conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
   notify: "security | sshd | reload"
@@ -25,7 +25,21 @@
     group: "root"
     mode: "0644"
     force: "yes"
-  loop: "{{ nginx_snippet }}"
+    validate: "sshd -t -f %s"
+  loop: "{{ sshd__conf_d_file | selectattr('src', 'defined') }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "security | sshd | reload"
+
+- name: "security | sshd | configure snippet"
+  ansible.builtin.copy:
+    dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
+    content: "{{ item.content | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    force: "yes"
+    validate: "sshd -t -f %s"
+  loop: "{{ sshd__conf_d_file | selectattr('content', 'defined') }}"
   when: "item.state | d('present') == 'present'"
   notify: "security | sshd | reload"
 

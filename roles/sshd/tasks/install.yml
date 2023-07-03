@@ -10,9 +10,9 @@
     dest: "{{ item.dest | mandatory }}"
     owner: "root"
     group: "root"
-    mode: "{{ item.mode | d('0755') }}"
+    mode: "0755"
     state: "directory"
   loop:
-  - { dest: "{{ sshd_conf_file | dirname }}" }
-  - { dest: "{{ sshd__conf_d }}", mode: "0700" }
+  - { dest: "{{ sshd__conf_file | dirname }}" }
+  - { dest: "{{ sshd__conf_d }}" }
   notify: "security | sshd | reload"

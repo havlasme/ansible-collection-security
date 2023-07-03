@@ -1,0 +1,10 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+PubkeyAuthentication {{ sshd__pubkey_authentication | d('yes') }}
+PasswordAuthentication {{ sshd__password_authentication | d('yes') }}
+KbdInteractiveAuthentication {{ sshd__kbd_interactive_authentication | d('no') }}
+UsePAM yes
+AuthenticationMethods {{ sshd__authentication_methods | d('any') }}
+
+PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}

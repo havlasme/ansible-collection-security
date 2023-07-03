@@ -1,0 +1,4 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+PrintLastLog {{ sshd__print_last_log | d('yes') }}
