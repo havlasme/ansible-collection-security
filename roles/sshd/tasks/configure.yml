@@ -1,7 +1,37 @@
 ---
+- name: "security | sshd | set the issue message"
+  ansible.builtin.template:
+    dest: "{{ sshd__issue_file }}"
+    src: "{{ sshd__issue_template }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "security | sshd | reload"
+  when:
+  - "sshd__issue_template is defined"
+
+- name: "security | sshd | delete "
+  ansible.builtin.file:
+    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    state: "absent"
+  loop: "{{ sshd__conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
+  notify: "security | sshd | reload"
+
+- name: "security | sshd | configure snippet"
+  ansible.builtin.template:
+    dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
+    src: "{{ item.src | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    force: "yes"
+  loop: "{{ nginx_snippet }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "security | sshd | reload"
+
 - name: "security | sshd | configure"
   ansible.builtin.template:
-    dest: "{{ sshd__conf }}"
+    dest: "{{ sshd__conf_file }}"
     src: "{{ sshd__conf_template }}"
     owner: "root"
     group: "root"

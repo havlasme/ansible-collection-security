@@ -1,0 +1,9 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# @see https://infosec.mozilla.org/guidelines/openssh.html
+{{ ansible_managed | comment }}
+
+# log client's key fingerprint on login
+LogLevel VERBOSE
+
+# log sftp level file access (read/write/etc.)
+Subsystem   sftp    /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO

@@ -5,4 +5,7 @@ sshd__package_name: "openssh-server"
 sshd__service_name: "sshd"
 
 # the sshd keygen command
-sshd__keygen: "/usr/bin/ssh-keygen"
+sshd__keygen:
+  ecdsa: "/usr/bin/ssh-keygen -q -N '' -t ecdsa -f {{ sshd__conf | dirname }}/ssh_host_ed25519_key"
+  ed25519: "/usr/bin/ssh-keygen -q -N '' -t ed25519 -f {{ sshd__conf | dirname }}/ssh_host_ed25519_key"
+  rsa: "/usr/bin/ssh-keygen -q -N '' -t rsa -b 4096 -f {{ sshd__conf | dirname }}/ssh_host_ed25519_key"

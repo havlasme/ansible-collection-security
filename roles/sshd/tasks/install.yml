@@ -13,6 +13,6 @@
     mode: "{{ item.mode | d('0755') }}"
     state: "directory"
   loop:
-  - { dest: "{{ sshd_conf | dirname }}" }
+  - { dest: "{{ sshd_conf_file | dirname }}" }
   - { dest: "{{ sshd__conf_d }}", mode: "0700" }
   notify: "security | sshd | reload"
