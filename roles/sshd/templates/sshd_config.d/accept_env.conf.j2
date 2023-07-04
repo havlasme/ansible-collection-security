@@ -2,4 +2,4 @@
 {{ ansible_managed | comment }}
 
 # allow client to set the environment variables
-AcceptEnv {{ sshd_accept_env | mandatory }}
+AcceptEnv {{ item.sshd_accept_env | d(sshd_accept_env) | mandatory }}

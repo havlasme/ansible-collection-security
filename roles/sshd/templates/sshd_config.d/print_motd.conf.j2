@@ -2,4 +2,4 @@
 {{ ansible_managed | comment }}
 
 # print `/etc/motd` on interactive login.
-PrintMotd {{ sshd_print_motd | d('no') }}
+PrintMotd {{ item.sshd_print_motd | d(sshd_print_motd) | d('no') }}

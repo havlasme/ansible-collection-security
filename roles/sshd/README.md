@@ -83,6 +83,12 @@ sshd_crypto_policy: "infosec.mozilla.org"
 sshd_log_level: 'VERBOSE'
 ```
 
+### `print_motd.yml`
+
+```yaml title="print_motd.yml"
+sshd_print_motd: "no"
+```
+
 Dependencies
 ------------
 
