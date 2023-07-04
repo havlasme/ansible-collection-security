@@ -2,4 +2,4 @@
 {{ ansible_managed | comment }}
 
 
-RevokedKeys {{ sshd__revoked_keys_file | mandatory }}
+RevokedKeys {{ sshd__key_revocation_list_file | mandatory }}

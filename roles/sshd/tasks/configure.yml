@@ -1,49 +1,73 @@
 ---
-- name: "security | sshd | set the issue message"
+- name: "security | sshd | create or update the issue.net file"
   ansible.builtin.template:
-    dest: "{{ sshd__issue_file }}"
-    src: "{{ sshd__issue_template }}"
+    dest: "{{ sshd__issue_net_file | d('/etc/issue.net') }}"
+    src: "{{ sshd__issue_net_template }}"
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: "security | sshd | reload"
   when:
-  - "sshd__issue_template is defined"
+  - "sshd__issue_net_template is defined"
+  notify: "security | sshd | reload service"
 
-- name: "security | sshd | delete "
+- name: "security | sshd | create or update the key revocation list"
+  ansible.builtin.template:
+    dest: "{{ sshd__key_revocation_list_file }}"
+    src: "{{ sshd__key_revocation_list_template }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when:
+  - "sshd__key_revocation_list_template is defined"
+  notify: "security | sshd | reload service"
+
+#- name: check if {{ sshd_moduli_file }} contains weak DH parameters
+#  shell: awk '$5 < {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }}
+#  register: sshd_register_moduli
+#  changed_when: false
+#  check_mode: false
+#  when: ssh_server_hardening | bool
+#
+#- name: remove all small primes
+#  shell: awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.ansible ;
+#    [ -r {{ sshd_moduli_file }}.ansible -a -s {{ sshd_moduli_file }}.ansible ] && mv {{ sshd_moduli_file }}.ansible {{ sshd_moduli_file }} || true
+#  notify: restart sshd
+#  when:
+#  - ssh_server_hardening | bool
+#  - sshd_register_moduli.stdout
+
+- name: "security | sshd | delete a dot-d configuration file"
   ansible.builtin.file:
     dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
     state: "absent"
   loop: "{{ sshd__conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
-  notify: "security | sshd | reload"
+  notify: "security | sshd | reload service"
 
-- name: "security | sshd | configure snippet"
+- name: "security | sshd | create or update a dot-d configuration file"
   ansible.builtin.template:
     dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
     src: "{{ item.src | mandatory }}"
     owner: "root"
     group: "root"
     mode: "0644"
-    force: "yes"
     validate: "sshd -t -f %s"
   loop: "{{ sshd__conf_d_file | selectattr('src', 'defined') }}"
   when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | reload"
+  notify: "security | sshd | reload service"
 
-- name: "security | sshd | configure snippet"
+- name: "security | sshd | create or update a dot-d configuration file"
   ansible.builtin.copy:
     dest: "{{ sshd__conf_d }}/{{ item.dest | mandatory }}"
     content: "{{ item.content | mandatory }}"
     owner: "root"
     group: "root"
     mode: "0644"
-    force: "yes"
     validate: "sshd -t -f %s"
   loop: "{{ sshd__conf_d_file | selectattr('content', 'defined') }}"
   when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | reload"
+  notify: "security | sshd | reload service"
 
-- name: "security | sshd | configure"
+- name: "security | sshd | create or update the configuration file"
   ansible.builtin.template:
     dest: "{{ sshd__conf_file }}"
     src: "{{ sshd__conf_template }}"
@@ -51,4 +75,4 @@
     group: "root"
     mode: "0644"
     validate: "sshd -t -f %s"
-  notify: "security | sshd | reload"
+  notify: "security | sshd | reload service"

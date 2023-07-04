@@ -1,5 +1,5 @@
 ---
-- name: "security | sshd | start and enable"
+- name: "security | sshd | start and enable the service"
   ansible.builtin.service:
     name: "{{ sshd__service_name }}"
     enabled: "{{ sshd__enabled }}"

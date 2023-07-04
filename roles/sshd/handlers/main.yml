@@ -1,10 +1,10 @@
 ---
-- name: "security | sshd | reload"
+- name: "security | sshd | reload service"
   ansible.builtin.service:
     name: "{{ sshd__service_name }}"
     state: "reloaded"
 
-- name: "security | sshd | restart"
+- name: "security | sshd | restart service"
   ansible.builtin.service:
     name: "{{ sshd__service_name }}"
     state: "restarted"

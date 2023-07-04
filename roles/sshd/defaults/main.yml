@@ -11,7 +11,7 @@ sshd__port: [ "22" ]
 # the sshd listen
 #sshd__listen: [ "0.0.0.0" ]
 # the ssh host key type
-#sshd__host_key_type: [ "rsa", "ecdsa", "ed25519" ]
+#sshd__host_key_type: [ "ed25519", "rsa", "ecdsa" ]
 
 # the sshd conf file
 sshd__conf_file: "/etc/ssh/sshd_config"
@@ -21,15 +21,12 @@ sshd__conf_template: "sshd_config.j2"
 sshd__conf_d: "/etc/ssh/sshd_config.d"
 # the sshd conf dot-d file list
 sshd__conf_d_file:
-- { dest: "20_authentication.conf", src: "sshd_config.d/authentication.conf.j2" }
-- { dest: "40_accept_env_locale_only.conf", src: "sshd_config.d/accept_env_locale_only.conf.j2" }
+- dest: "20_password_authentication.conf"
+  src: "sshd_config.d/authentication.conf.j2"
+- dest: "40_accept_env_locale_only.conf"
+  src: "sshd_config.d/accept_env_locale_only.conf.j2"
 
 # the sshd moduli file
 sshd__moduli_file: "/etc/ssh/moduli"
 # the sshd moduli minimal length
-sshd__moduli_min: 3071
-
-# the sshd issue file
-sshd__issue_file: "/etc/issue.net"
-# the sshd issue template
-#sshd__issue_template: "issue.net.j2"
+sshd__moduli_minimum: 3071
