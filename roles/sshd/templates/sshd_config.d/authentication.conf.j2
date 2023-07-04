@@ -6,5 +6,3 @@ PasswordAuthentication {{ sshd__password_authentication | d('yes') }}
 KbdInteractiveAuthentication {{ sshd__kbd_interactive_authentication | d('no') }}
 UsePAM yes
 AuthenticationMethods {{ sshd__authentication_methods | d('any') }}
-
-PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}

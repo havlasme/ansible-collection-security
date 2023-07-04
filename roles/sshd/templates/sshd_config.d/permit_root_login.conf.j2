@@ -1,5 +1,4 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-# allow client to set locale environment variables.
-AcceptEnv LANG LC_*
+PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}

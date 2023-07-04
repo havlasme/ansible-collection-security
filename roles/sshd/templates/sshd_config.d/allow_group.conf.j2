@@ -1,4 +1,4 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-AllowGroups {{ sshd__allow_groups | mandatory }}
+AllowGroups {{ sshd__allow_group | mandatory }}
