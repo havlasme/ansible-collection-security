@@ -1,4 +1,4 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}
+PermitRootLogin {{ sshd_permit_root_login | d('prohibit-password') }}

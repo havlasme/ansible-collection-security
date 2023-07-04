@@ -1,8 +1,8 @@
 ---
 - name: "security | sshd | install or update a package via apt"
   ansible.builtin.apt:
-    name: "{{ sshd__package_name }}"
-    state: "{{ sshd__state }}"
+    name: "{{ sshd_package_name }}"
+    state: "{{ sshd_state }}"
   notify: "security | sshd | restart service"
 
 - name: "security | sshd | create a directory structure"
@@ -13,18 +13,6 @@
     mode: "0755"
     state: "directory"
   loop:
-  - { dest: "{{ sshd__conf_file | dirname }}" }
-  - { dest: "{{ sshd__conf_d }}" }
-  notify: "security | sshd | reload service"
-
-- name: "security | sshd | create the key revocation list"
-  ansible.builtin.copy:
-    dest: "{{ sshd__key_revocation_list_file }}"
-    content: ""
-    owner: "root"
-    group: "root"
-    mode: "0600"
-    force: "no"
-  when:
-  - "sshd__key_revocation_list_file is defined"
+  - { dest: "{{ sshd_conf_file | dirname }}" }
+  - { dest: "{{ sshd_conf_d }}" }
   notify: "security | sshd | reload service"

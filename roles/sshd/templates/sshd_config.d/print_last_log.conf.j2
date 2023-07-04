@@ -2,4 +2,4 @@
 {{ ansible_managed | comment }}
 
 # print last_log on interactive login.
-PrintLastLog {{ sshd__print_last_log | d('yes') }}
+PrintLastLog {{ sshd_print_last_log | d('yes') }}

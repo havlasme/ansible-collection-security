@@ -1,0 +1,23 @@
+---
+- name: "security | sshd | create the key revocation list"
+  ansible.builtin.copy:
+    dest: "{{ sshd_key_revocation_list_file }}"
+    content: ""
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    force: "no"
+  when:
+  - "sshd_key_revocation_list_file is defined"
+  notify: "security | sshd | reload service"
+
+- name: "security | sshd | create or update the key revocation list"
+  ansible.builtin.template:
+    dest: "{{ sshd_key_revocation_list_file }}"
+    src: "{{ sshd_key_revocation_list_template }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when:
+  - "sshd_key_revocation_list_template is defined"
+  notify: "security | sshd | reload service"
