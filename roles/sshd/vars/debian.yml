@@ -6,6 +6,6 @@ sshd_service_name: "sshd"
 
 # the sshd keygen command
 sshd_keygen:
-  ecdsa: "/usr/bin/ssh-keygen -q -N '' -t ecdsa -f {{ sshd_conf | dirname }}/ssh_host_ed25519_key"
+  ecdsa: "/usr/bin/ssh-keygen -q -N '' -t ecdsa -f {{ sshd_conf | dirname }}/ssh_host_ecdsa_key"
   ed25519: "/usr/bin/ssh-keygen -q -N '' -t ed25519 -f {{ sshd_conf | dirname }}/ssh_host_ed25519_key"
-  rsa: "/usr/bin/ssh-keygen -q -N '' -t rsa -b 4096 -f {{ sshd_conf | dirname }}/ssh_host_ed25519_key"
+  rsa: "/usr/bin/ssh-keygen -q -N '' -t rsa -b 4096 -f {{ sshd_conf | dirname }}/ssh_host_rsa_key"

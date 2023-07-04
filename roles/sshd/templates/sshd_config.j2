@@ -1,15 +1,14 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{% from 'sshd_option.macro.j2' import sshd_option %}
 {{ ansible_managed | comment }}
 
 Include {{ sshd_conf_d | mandatory }}/*.conf
 
-{% for __port in sshd_port | mandatory %}
-Port {{ __port | mandatory }}
-{% endfor %}
+# the sshd port
+{{ sshd_option('Port', sshd_port | mandatory) }}
 {% if sshd_listen is defined %}
-{% for __listen in sshd_listen %}
-ListenAddress {{ __listen }}
-{% endfor %}
+# the sshd listen
+{{ sshd_option('ListenAddress', sshd_listen) }}
 {% endif %}
 
 {% if sshd_host_key_type is defined %}
@@ -18,5 +17,5 @@ HostKey {{ sshd_conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
 {% endfor %}
 {% endif %}
 
-# enable sftp subsystem. log sftp level file access.
+# enable sftp subsystem. log sftp level file access
 Subsystem   sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

@@ -17,11 +17,11 @@ sshd_port: [ "22" ]
 sshd_conf_file: "/etc/ssh/sshd_config"
 # the sshd conf template
 sshd_conf_template: "sshd_config.j2"
-# the sshd conf dot-d directory
+# the sshd conf-d directory
 sshd_conf_d: "/etc/ssh/sshd_config.d"
-# the sshd conf dot-d file list
+# the sshd conf-d file list
 sshd_conf_d_file:
-## basic password / publickey authentication
+## basic password / pubkey authentication
 - dest: "20_password_authentication.conf"
   src: "sshd_config.d/authentication.conf.j2"
 ## allow client to set the locale environment variables
@@ -32,4 +32,4 @@ sshd_conf_d_file:
 # the sshd moduli file
 sshd_moduli_file: "/etc/ssh/moduli"
 # the sshd moduli minimal length
-sshd_moduli_minimum: 3071
+#sshd_moduli_minimum: 3071

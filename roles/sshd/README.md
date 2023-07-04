@@ -32,17 +32,17 @@ sshd_port: [ "22" ]
 sshd_conf_file: "/etc/ssh/sshd_config"
 # the sshd conf template
 sshd_conf_template: "sshd_config.j2"
-# the sshd conf dot-d directory
+# the sshd conf-d directory
 sshd_conf_d: "/etc/ssh/sshd_config.d"
-# the sshd conf dot-d file list
+# the sshd conf-d file list
 sshd_conf_d_file:
-## basic password / publickey authentication
-- dest: "20_password_authentication.conf"
-  src: "sshd_config.d/authentication.conf.j2"
-## allow client to set the locale environment variables
-- dest: "60_accept_env_locale_only.conf"
-  src: "sshd_config.d/accept_env.conf.j2"
-  sshd_accept_key: "LANG LC_*"
+  ## basic password / pubkey authentication
+  - dest: "20_password_authentication.conf"
+    src: "sshd_config.d/authentication.conf.j2"
+  ## allow client to set the locale environment variables
+  - dest: "60_accept_env_locale_only.conf"
+    src: "sshd_config.d/accept_env.conf.j2"
+    sshd_accept_key: "LANG LC_*"
 
 # the sshd moduli file
 sshd_moduli_file: "/etc/ssh/moduli"
@@ -74,6 +74,13 @@ sshd_moduli_minimum: 3071
 ```yaml title="crypto_policy.yml"
 # the sshd cryptography policy ('ssh-audit.com', 'infosec.mozilla.org')
 sshd_crypto_policy: "infosec.mozilla.org"
+```
+
+### `log_level.yml`
+
+```yaml title="log_level.yml
+# log verbosity level
+sshd_log_level: 'VERBOSE'
 ```
 
 Dependencies

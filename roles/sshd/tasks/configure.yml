@@ -7,13 +7,16 @@
   register: sshd_register_moduli
   changed_when: "no"
   check_mode: "no"
+  when:
+  - "sshd_moduli_minimum is defined"
 
 - name: "security | sshd | delete "
   shell: awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.ansible ;
     [ -r {{ sshd_moduli_file }}.ansible -a -s {{ sshd_moduli_file }}.ansible ] && mv {{ sshd_moduli_file }}.ansible {{ sshd_moduli_file }} || true
-  notify: "security | sshd | restart service"
   when:
+  - "sshd_moduli_minimum is defined"
   - sshd_register_moduli.stdout
+  notify: "security | sshd | restart service"
 
 - name: "security | sshd | delete a dot-d configuration file"
   ansible.builtin.file:
