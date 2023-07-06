@@ -1,5 +1,5 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-# print `/etc/motd` on interactive login.
+# print `/etc/motd` on interactive login
 PrintMotd {{ item.sshd_print_motd | d(sshd_print_motd) | d('no') }}

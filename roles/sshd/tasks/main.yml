@@ -5,6 +5,8 @@
 
 - import_tasks: "install.yml"
   tags: ["role::sshd", "task::install"]
+- import_tasks: "configure_d/*.yml"
+  tags: [ "role::sshd", "task::configure" ]
 - import_tasks: "configure.yml"
   tags: ["role::sshd", "task::configure"]
 - import_tasks: "service.yml"

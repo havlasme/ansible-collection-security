@@ -1,5 +1,5 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-# allow client to set the environment variables
-AcceptEnv {{ item.sshd_accept_env | d(sshd_accept_env) | mandatory }}
+# accept env sent by the ssh client
+AcceptEnv {{ item.sshd_accept_env | d(sshd_accept_env) | d('no') }}

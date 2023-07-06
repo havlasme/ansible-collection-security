@@ -1,0 +1,5 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+# print `/etc/issue.net` on interactive login
+Banner {{ sshd_issue_file | d('/etc/issue.net') }}
