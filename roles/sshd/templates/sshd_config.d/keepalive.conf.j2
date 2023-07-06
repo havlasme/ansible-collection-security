@@ -1,0 +1,6 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+{{ ansible_managed | comment }}
+
+TCPKeepAlive {{ item.sshd_tcp_keep_alive | d(sshd_tcp_keep_alive) | d('yes') }}
+ClientAliveInterval {{ item.sshd_client_alive_interval | d(sshd_client_alive_interval) | d(0) }}
+ClientAliveCountMax {{ item.sshd_client_alive_count_max | d(sshd_client_alive_count_max) | d(3) }}

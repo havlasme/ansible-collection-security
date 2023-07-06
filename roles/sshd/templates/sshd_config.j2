@@ -2,6 +2,7 @@
 {% from 'sshd_option.macro.j2' import sshd_option %}
 {{ ansible_managed | comment }}
 
+# include configuration from `{{ sshd_conf_d }}`
 Include {{ sshd_conf_d | mandatory }}/*.conf
 
 # the sshd port
@@ -11,11 +12,12 @@ Include {{ sshd_conf_d | mandatory }}/*.conf
 {{ sshd_option('ListenAddress', sshd_listen) }}
 {% endif %}
 
+# the host key type
 {% if sshd_host_key_type is defined %}
 {% for __host_key_type in sshd_host_key_type %}
 HostKey {{ sshd_conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
 {% endfor %}
 {% endif %}
 
-# enable sftp subsystem. log sftp level file access
+# define sftp subsystem; log sftp level file access
 Subsystem   sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

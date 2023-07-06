@@ -1,8 +1,8 @@
 ---
 - name: "security | sshd | check sshd moduli size"
   shell: "awk '$5 < {{ sshd_moduli_minimum }}' '{{ sshd_moduli_file }}'"
-  changed_when: "no"
-  check_mode: "no"
+  changed_when: False
+  check_mode: False
   when:
   - "sshd_moduli_minimum is defined"
   register: "sshd_moduli_minimum_check"

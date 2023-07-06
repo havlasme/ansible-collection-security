@@ -83,7 +83,24 @@ sshd_conf_d_file:
 ### `authentication.yml`
 
 ```yaml title="authentication.yml"
+# enable public key authentication method?
+sshd_pubkey_authentication: "yes"
+# enable password authentication method?
+sshd_password_authentication: "yes"
+# enable keyboard-interactive authentication method?
+sshd_kbd_interactive_authentication: "no"
+# use pam?
+sshd_use_pam: "yes"
 
+# the sshd authentication method list
+sshd_authentication_method: ["any"]
+```
+
+```yaml
+sshd_conf_d_file:
+- dest: "20_pubkey_password_authentication.yml"
+  src: "sshd_config.d/authentication.yml.j2"
+  sshd_authentication_method: [ "publickey,password" ]
 ```
 
 ### `crypto_policy.yml`
@@ -98,6 +115,25 @@ sshd_conf_d_file:
 - dest: "40_crypto_policy_ssh_audit.yml"
   src: "sshd_config.d/crypto_policy.yml.j2"
   sshd_crypto_policy: "ssh-audit.com"
+```
+
+### `keepalive.yml`
+
+```yaml title="keepalive.yml"
+# send tcp keepalive message to the client
+sshd_tcp_keep_alive: "yes"
+# the client alive interval (in seconds)
+sshd_client_alive_interval: 300
+# the client alive message count (0 to disable)
+sshd_client_alive_count_max: 0
+```
+
+```yaml
+sshd_conf_d_file:
+- dest: "40_keepalive_300_3.yml"
+  src: "sshd_config.d/keepalive.yml.j2"
+  sshd_client_alive_interval: 300
+  sshd_client_alive_count_max: 3
 ```
 
 ### `key_revocation_list.yml`

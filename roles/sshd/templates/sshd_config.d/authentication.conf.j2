@@ -1,8 +1,9 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-PubkeyAuthentication {{ sshd_pubkey_authentication | d('yes') }}
-PasswordAuthentication {{ sshd_password_authentication | d('yes') }}
-KbdInteractiveAuthentication {{ sshd_kbd_interactive_authentication | d('no') }}
-UsePAM {{ sshd_use_pam | d('yes') }}
-AuthenticationMethods {{ sshd_authentication_methods | d('any') }}
+PubkeyAuthentication {{ item.sshd_pubkey_authentication | d(sshd_pubkey_authentication) | d('yes') }}
+PasswordAuthentication {{ item.sshd_password_authentication | d(sshd_password_authentication) | d('yes') }}
+KbdInteractiveAuthentication {{ item.sshd_kbd_interactive_authentication | d(sshd_kbd_interactive_authentication) | d('no') }}
+UsePAM {{ item.sshd_use_pam | d(sshd_use_pam) | d('yes') }}
+
+AuthenticationMethods {{ item.sshd_authentication_method | d(sshd_authentication_method) | d(['any']) | join(' ') }}
