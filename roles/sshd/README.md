@@ -139,8 +139,10 @@ sshd_conf_d_file:
 ### `key_revocation_list.yml`
 
 ```yaml title="sshd_key_revocation_list.yml"
-# the ssh key revocation list
+# the sshd key revocation list
 #sshd_key_revocation_list_file: "/etc/ssh/sshd_key_revocation_list"
+# the sshd key revocation list template
+#sshd_key_revocation_list_template: "key_revocation_list.j2"
 ```
 
 ```yaml
