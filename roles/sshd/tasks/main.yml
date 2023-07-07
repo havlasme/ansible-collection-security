@@ -5,10 +5,6 @@
 
 - import_tasks: "install.yml"
   tags: ["role::sshd", "task::install"]
-- import_tasks: "configure_d/key_revocation_list.yml"
-  tags: [ "role::sshd", "task::configure" ]
-- import_tasks: "configure_d/print_issue.yml"
-  tags: [ "role::sshd", "task::configure" ]
 - import_tasks: "configure.yml"
   tags: ["role::sshd", "task::configure"]
 - import_tasks: "service.yml"

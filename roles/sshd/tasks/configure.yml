@@ -9,42 +9,13 @@
 
 - name: "security | sshd | delete small sshd moduli"
   shell: awk '$5 >= {{ sshd_moduli_minimum }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
-    [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}'
+    [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
   when:
   - "sshd_moduli_minimum is defined"
   - "sshd_moduli_minimum_check.stdout"
   notify: "security | sshd | restart service"
 
-- name: "security | sshd | delete a conf-d configuration file"
-  ansible.builtin.file:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    state: "absent"
-  loop: "{{ sshd_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
-  notify: "security | sshd | reload service"
-
-- name: "security | sshd | create or update a conf-d configuration file"
-  ansible.builtin.template:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    src: "{{ item.src | mandatory }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    validate: "sshd -t -f %s"
-  loop: "{{ sshd_conf_d_file | selectattr('src', 'defined') }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | reload service"
-
-- name: "security | sshd | create or update a conf-d configuration file"
-  ansible.builtin.copy:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    content: "{{ item.content | mandatory }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    validate: "sshd -t -f %s"
-  loop: "{{ sshd_conf_d_file | selectattr('content', 'defined') }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | reload service"
+- import_tasks: "configure_d/main.yml"
 
 - name: "security | sshd | create or update the configuration file"
   ansible.builtin.template:

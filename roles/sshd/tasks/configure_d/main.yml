@@ -1,0 +1,35 @@
+---
+- import_tasks: "configure_d/key_revocation_list.yml"
+
+- import_tasks: "configure_d/print_issue.yml"
+
+- name: "security | sshd | delete a conf-d configuration file"
+  ansible.builtin.file:
+    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    state: "absent"
+  loop: "{{ sshd_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
+  notify: "security | sshd | reload service"
+
+- name: "security | sshd | create or update a conf-d configuration file"
+  ansible.builtin.template:
+    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    src: "{{ item.src | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    validate: "sshd -t -f %s"
+  loop: "{{ sshd_conf_d_file | selectattr('src', 'defined') }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "security | sshd | reload service"
+
+- name: "security | sshd | create or update a conf-d configuration file"
+  ansible.builtin.copy:
+    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    content: "{{ item.content | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    validate: "sshd -t -f %s"
+  loop: "{{ sshd_conf_d_file | selectattr('content', 'defined') }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "security | sshd | reload service"
