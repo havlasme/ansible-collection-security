@@ -3,7 +3,9 @@
 sshd_state: "present"
 # should start the sshd service at boot
 sshd_enabled: "yes"
-# can ansible restart the sshd service
+# can ansible reload the sshd service?
+sshd_ansible_reload: "yes"
+# can ansible restart the sshd service?
 sshd_ansible_restart: "yes"
 
 # the sshd port
@@ -16,20 +18,20 @@ sshd_port: [ "22" ]
 # the sshd conf file
 sshd_conf_file: "/etc/ssh/sshd_config"
 # the sshd conf template
-sshd_conf_template: "sshd_config.j2"
+sshd_conf_template: "etc/ssh/sshd_config.j2"
 # the sshd conf-d directory
 sshd_conf_d: "/etc/ssh/sshd_config.d"
 # the sshd conf-d file list
 sshd_conf_d_file:
 ## basic password / pubkey authentication
 - dest: "20_password_authentication.conf"
-  src: "sshd_config.d/authentication.conf.j2"
+  src: "etc/ssh/sshd_config.d/authentication.conf.j2"
 ## allow client to set the locale environment variables
-- dest: "60_accept_env_locale_only.conf"
-  src: "sshd_config.d/accept_env.conf.j2"
-  sshd_accept_key: "LANG LC_*"
+- dest: "40_accept_env_locale_only.conf"
+  src: "etc/ssh/sshd_config.d/accept_env.conf.j2"
+  sshd_accept_env: "LANG LC_*"
 
 # the sshd moduli file
 sshd_moduli_file: "/etc/ssh/moduli"
-# the sshd moduli minimal length
-#sshd_moduli_minimum: 3071
+# the sshd moduli minimal size
+#sshd_moduli_minsize: 3071

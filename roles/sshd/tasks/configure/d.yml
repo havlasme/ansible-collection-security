@@ -1,13 +1,45 @@
 ---
-- import_tasks: "configure_d/key_revocation_list.yml"
+- name: "security | sshd | create the key revocation list"
+  ansible.builtin.copy:
+    dest: "{{ sshd_key_revocation_list_file }}"
+    content: ""
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    force: "no"
+  when:
+  - "sshd_key_revocation_list_file is defined"
+  notify: "security | sshd | reload service"
 
-- import_tasks: "configure_d/print_issue.yml"
+- name: "security | sshd | create or update the key revocation list"
+  ansible.builtin.template:
+    dest: "{{ sshd_key_revocation_list_file }}"
+    src: "{{ sshd_key_revocation_list_template }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when:
+  - "sshd_key_revocation_list_template is defined"
+  notify: "security | sshd | reload service"
+
+- name: "security | sshd | create or update the issue.net file"
+  ansible.builtin.template:
+    dest: "{{ sshd_issue_file | d('/etc/issue.net') }}"
+    src: "{{ sshd_issue_template }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when:
+  - "sshd_issue_template is defined"
+  notify: "security | sshd | reload service"
 
 - name: "security | sshd | delete a conf-d configuration file"
   ansible.builtin.file:
     dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
     state: "absent"
   loop: "{{ sshd_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
+  loop_control:
+    label: "{{ item.dest | mandatory }}"
   notify: "security | sshd | reload service"
 
 - name: "security | sshd | create or update a conf-d configuration file"
@@ -19,6 +51,8 @@
     mode: "0644"
     validate: "sshd -t -f %s"
   loop: "{{ sshd_conf_d_file | selectattr('src', 'defined') }}"
+  loop_control:
+    label: "{{ item.dest | mandatory }}"
   when: "item.state | d('present') == 'present'"
   notify: "security | sshd | reload service"
 
@@ -31,5 +65,7 @@
     mode: "0644"
     validate: "sshd -t -f %s"
   loop: "{{ sshd_conf_d_file | selectattr('content', 'defined') }}"
+  loop_control:
+    label: "{{ item.dest | mandatory }}"
   when: "item.state | d('present') == 'present'"
   notify: "security | sshd | reload service"

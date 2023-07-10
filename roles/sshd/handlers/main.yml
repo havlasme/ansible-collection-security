@@ -3,6 +3,9 @@
   ansible.builtin.service:
     name: "{{ sshd_service_name }}"
     state: "reloaded"
+  when:
+  - "sshd_ansible_reload | bool"
+  tags: ["always"]
 
 - name: "security | sshd | restart service"
   ansible.builtin.service:
@@ -10,3 +13,4 @@
     state: "restarted"
   when:
   - "sshd_ansible_restart | bool"
+  tags: ["always"]

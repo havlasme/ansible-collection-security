@@ -1,5 +1,5 @@
 ---
-- name: "security | sshd | install or update a package via apt"
+- name: "security | sshd | install or update package via apt"
   ansible.builtin.apt:
     name: "{{ sshd_package_name }}"
     state: "{{ sshd_state }}"
@@ -15,4 +15,6 @@
   loop:
   - { dest: "{{ sshd_conf_file | dirname }}" }
   - { dest: "{{ sshd_conf_d }}" }
+  loop_control:
+    label: "{{ item.dest | mandatory }}"
   notify: "security | sshd | reload service"

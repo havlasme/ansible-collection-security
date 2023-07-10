@@ -1,0 +1,7 @@
+---
+- name: "security | molly-guard | include distribution-specific variables"
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: ["always"]
+
+- ansible.builtin.import_tasks: "install.yml"
+  tags: ["role::molly-guard", "task::install"]

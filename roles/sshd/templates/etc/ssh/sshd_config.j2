@@ -14,9 +14,9 @@ Include {{ sshd_conf_d | mandatory }}/*.conf
 
 # the host key type
 {% if sshd_host_key_type is defined %}
-{% for __host_key_type in sshd_host_key_type %}
+{%   for __host_key_type in sshd_host_key_type %}
 HostKey {{ sshd_conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
-{% endfor %}
+{%   endfor %}
 {% endif %}
 
 # define sftp subsystem; log sftp level file access

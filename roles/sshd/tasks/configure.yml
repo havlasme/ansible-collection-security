@@ -1,23 +1,25 @@
 ---
-- name: "security | sshd | check sshd moduli size"
-  shell: "awk '$5 < {{ sshd_moduli_minimum }}' '{{ sshd_moduli_file }}'"
-  changed_when: False
-  check_mode: False
+- name: "security | sshd | check available moduli size"
+  ansible.builtin.shell: > 
+    awk '$5 < {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}'
+  changed_when: "sshd_moduli_minsize_check.stdout"
+  check_mode: "no"
   when:
-  - "sshd_moduli_minimum is defined"
-  register: "sshd_moduli_minimum_check"
+  - "sshd_moduli_minsize is defined"
+  register: "sshd_moduli_minsize_check"
 
-- name: "security | sshd | delete small sshd moduli"
-  shell: awk '$5 >= {{ sshd_moduli_minimum }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
+- name: "security | sshd | delete small moduli"
+  ansible.builtin.shell: >
+    awk '$5 >= {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
     [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
   when:
-  - "sshd_moduli_minimum is defined"
-  - "sshd_moduli_minimum_check.stdout"
+  - "sshd_moduli_minsize is defined"
+  - "sshd_moduli_minsize_check.stdout"
   notify: "security | sshd | restart service"
 
-- import_tasks: "configure_d/main.yml"
+- ansible.builtin.import_tasks: "configure/d.yml"
 
-- name: "security | sshd | create or update the configuration file"
+- name: "security | sshd | create or update configuration file"
   ansible.builtin.template:
     dest: "{{ sshd_conf_file }}"
     src: "{{ sshd_conf_template }}"
