@@ -1,5 +1,5 @@
 ---
-- name: "security | sshd | create the key revocation list"
+- name: "security | sshd | ensure key revocation list exists (to avoid lock-out)"
   ansible.builtin.copy:
     dest: "{{ sshd_key_revocation_list_file }}"
     content: ""
@@ -11,7 +11,7 @@
   - "sshd_key_revocation_list_file is defined"
   notify: "security | sshd | reload service"
 
-- name: "security | sshd | create or update the key revocation list"
+- name: "security | sshd | create or update key revocation list"
   ansible.builtin.template:
     dest: "{{ sshd_key_revocation_list_file }}"
     src: "{{ sshd_key_revocation_list_template }}"
@@ -22,7 +22,7 @@
   - "sshd_key_revocation_list_template is defined"
   notify: "security | sshd | reload service"
 
-- name: "security | sshd | create or update the issue.net file"
+- name: "security | sshd | create or update issue.net file"
   ansible.builtin.template:
     dest: "{{ sshd_issue_file | d('/etc/issue.net') }}"
     src: "{{ sshd_issue_template }}"
@@ -33,7 +33,7 @@
   - "sshd_issue_template is defined"
   notify: "security | sshd | reload service"
 
-- name: "security | sshd | delete a conf-d configuration file"
+- name: "security | sshd | delete conf-d configuration file"
   ansible.builtin.file:
     dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
     state: "absent"
@@ -42,21 +42,7 @@
     label: "{{ item.dest | mandatory }}"
   notify: "security | sshd | reload service"
 
-- name: "security | sshd | create or update a conf-d configuration file"
-  ansible.builtin.template:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    src: "{{ item.src | mandatory }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    validate: "sshd -t -f %s"
-  loop: "{{ sshd_conf_d_file | selectattr('src', 'defined') }}"
-  loop_control:
-    label: "{{ item.dest | mandatory }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | reload service"
-
-- name: "security | sshd | create or update a conf-d configuration file"
+- name: "security | sshd | create or update conf-d configuration file"
   ansible.builtin.copy:
     dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
     content: "{{ item.content | mandatory }}"
@@ -65,6 +51,20 @@
     mode: "0644"
     validate: "sshd -t -f %s"
   loop: "{{ sshd_conf_d_file | selectattr('content', 'defined') }}"
+  loop_control:
+    label: "{{ item.dest | mandatory }}"
+  when: "item.state | d('present') == 'present'"
+  notify: "security | sshd | reload service"
+
+- name: "security | sshd | create or update conf-d configuration file via tempalte"
+  ansible.builtin.template:
+    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
+    src: "{{ item.src | mandatory }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    validate: "sshd -t -f %s"
+  loop: "{{ sshd_conf_d_file | selectattr('src', 'defined') }}"
   loop_control:
     label: "{{ item.dest | mandatory }}"
   when: "item.state | d('present') == 'present'"
