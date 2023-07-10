@@ -2,10 +2,10 @@
 - name: "security | sshd | check available moduli size"
   ansible.builtin.shell: > 
     awk '$5 < {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}'
-  changed_when: "sshd_moduli_minsize_check.stdout"
-  check_mode: "no"
   when:
   - "sshd_moduli_minsize is defined"
+  changed_when: "sshd_moduli_minsize_check.stdout"
+  check_mode: "no"
   register: "sshd_moduli_minsize_check"
 
 - name: "security | sshd | delete small moduli"
