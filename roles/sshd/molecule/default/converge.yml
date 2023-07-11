@@ -1,7 +1,7 @@
 ---
-- name: "converge"
-  hosts: "all"
+- name: 'converge'
+  hosts: 'all'
 
   tasks:
   - include_role:
-      name: "sshd"
+      name: 'sshd'

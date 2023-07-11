@@ -1,57 +1,65 @@
 ---
-- name: "security | sshd | ensure key revocation list exists (to avoid lock-out)"
+- name: 'security | sshd | ensure key revocation list exists (to avoid lock-out)'
   ansible.builtin.copy:
-    dest: "{{ sshd_key_revocation_list_file }}"
-    content: ""
-    owner: "root"
-    group: "root"
-    mode: "0600"
-    force: "no"
+    dest: '{{ sshd_key_revocation_list_file }}'
+    content: ''
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+    force: false
+  notify:
+  - 'security | sshd | validate conf and reload service'
   when:
-  - "sshd_key_revocation_list_file is defined"
-  notify: "security | sshd | validate conf and reload service"
+  - sshd_key_revocation_list_file is defined
 
-- name: "security | sshd | create or update key revocation list"
+- name: 'security | sshd | create or update key revocation list'
   ansible.builtin.template:
-    dest: "{{ sshd_key_revocation_list_file }}"
-    src: "{{ sshd_key_revocation_list_template }}"
-    owner: "root"
-    group: "root"
-    mode: "0600"
+    dest: '{{ sshd_key_revocation_list_file }}'
+    src: '{{ sshd_key_revocation_list_template }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  notify:
+  - 'security | sshd | validate conf and reload service'
   when:
-  - "sshd_key_revocation_list_template is defined"
-  notify: "security | sshd | validate conf and reload service"
+  - sshd_key_revocation_list_template is defined
 
-- name: "security | sshd | create or update issue.net file"
+- name: 'security | sshd | create or update issue.net file'
   ansible.builtin.template:
-    dest: "{{ sshd_issue_file | d('/etc/issue.net') }}"
-    src: "{{ sshd_issue_template }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
+    dest: '{{ sshd_issue_file | d("/etc/issue.net") }}'
+    src: '{{ sshd_issue_template }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify:
+  - 'security | sshd | validate conf and reload service'
   when:
-  - "sshd_issue_template is defined"
-  notify: "security | sshd | validate conf and reload service"
+  - sshd_issue_template is defined
 
-- name: "security | sshd | delete conf-d configuration file"
+- name: 'security | sshd | delete conf-d configuration file'
   ansible.builtin.file:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    state: "absent"
-  loop: "{{ sshd_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
+    dest: '{{ sshd_conf_d }}/{{ item.dest | mandatory }}'
+    state: 'absent'
+  loop:
+  - '{{ sshd_conf_d_file | selectattr("state", "defined") | selectattr("state", "equalto", "absent") | list }}'
   loop_control:
-    label: "{{ item.dest | mandatory }}"
-  notify: "security | sshd | validate conf and reload service"
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'security | sshd | validate conf and reload service'
 
-- name: "security | sshd | create or update conf-d configuration file"
+- name: 'security | sshd | create or update conf-d configuration file'
   ansible.builtin.template:
-    dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
-    src: "{{ item.src | d(sshd_conf_d_template) }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    validate: "sshd -t -f %s"
-  loop: "{{ sshd_conf_d_file }}"
+    dest: '{{ sshd_conf_d }}/{{ item.dest | mandatory }}'
+    src: '{{ item.src | d(sshd_conf_d_template) }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+    validate: sshd -t -f %s
+  loop:
+  - '{{ sshd_conf_d_file }}'
   loop_control:
-    label: "{{ item.dest | mandatory }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "security | sshd | validate conf and reload service"
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'security | sshd | validate conf and reload service'
+  when:
+  - item.state | d('present') == 'present'

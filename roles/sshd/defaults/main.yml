@@ -1,42 +1,42 @@
 ---
 # the sshd package state ('present', 'latest')
-sshd_state: "present"
+sshd_state: 'present'
 # should start the sshd service at boot
-sshd_enabled: "yes"
+sshd_enabled: true
 # can ansible reload the sshd service?
-sshd_ansible_reload: "yes"
+sshd_ansible_reload: true
 # can ansible restart the sshd service?
-sshd_ansible_restart: "yes"
+sshd_ansible_restart: true
 
 # the sshd port
-sshd_port: [ "22" ]
+sshd_port: [ '22' ]
 # the sshd listen
-#sshd_listen: [ "0.0.0.0" ]
+#sshd_listen: [ '0.0.0.0' ]
 # the ssh host key type
-#sshd_host_key_type: [ "ed25519", "rsa", "ecdsa" ]
+#sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
 # the sshd conf file
-sshd_conf_file: "/etc/ssh/sshd_config"
+sshd_conf_file: '/etc/ssh/sshd_config'
 # the sshd conf template
-sshd_conf_template: "etc/ssh/sshd_config.j2"
+sshd_conf_template: 'etc/ssh/sshd_config.j2'
 # the sshd conf.d directory
-sshd_conf_d: "/etc/ssh/sshd_config.d"
+sshd_conf_d: '/etc/ssh/sshd_config.d'
 # the sshd conf.d file list
 ## - dest: string
 ##   src: string | d(sshd_conf_d_template)
 ##   state: enum('present', 'absent') | d('present')
 sshd_conf_d_file:
 ## basic password / pubkey authentication
-- dest: "20_password_authentication.conf"
-  src: "etc/ssh/sshd_config.d/authentication.conf.j2"
+- dest: '20_password_authentication.conf'
+  src: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
-- dest: "40_accept_env_locale_only.conf"
-  src: "etc/ssh/sshd_config.d/accept_env.conf.j2"
-  sshd_accept_env: "LANG LC_*"
+- dest: '40_accept_env_locale_only.conf'
+  src: 'etc/ssh/sshd_config.d/accept_env.conf.j2'
+  sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
-sshd_conf_d_template: "etc/ssh/sshd_config.d/__copy__.conf.j2"
+sshd_conf_d_template: 'etc/ssh/sshd_config.d/__copy__.conf.j2'
 
 # the sshd moduli file
-sshd_moduli_file: "/etc/ssh/moduli"
+sshd_moduli_file: '/etc/ssh/moduli'
 # the sshd moduli minimal size
 #sshd_moduli_minsize: 3071

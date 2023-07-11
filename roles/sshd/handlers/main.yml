@@ -1,35 +1,32 @@
 ---
-- name: "security | sshd | validate conf and reload service"
+- name: 'security | sshd | validate conf and reload service'
   ansible.builtin.command: >
     sshd -t -f {{ sshd_conf_file | mandatory }}
-  when:
-  - "sshd_ansible_reload | bool"
+  notify:
+  - 'security | sshd | reload service'
   changed_when: true
-  notify: "security | sshd | reload service"
-  tags: ["always"]
+  tags: [ 'always' ]
 
-- name: "security | sshd | validate conf and restart service"
+- name: 'security | sshd | validate conf and restart service'
   ansible.builtin.command: >
     sshd -t -f {{ sshd_conf_file | mandatory }}
-  when:
-  - "sshd_ansible_restart | bool"
+  notify:
+  - 'security | sshd | restart service'
   changed_when: true
-  notify: "security | sshd | restart service"
-  tags: ["always"]
+  tags: [ 'always' ]
 
-
-- name: "security | sshd | reload service"
+- name: 'security | sshd | reload service'
   ansible.builtin.service:
-    name: "{{ sshd_service_name }}"
-    state: "reloaded"
+    name: '{{ sshd_service_name }}'
+    state: 'reloaded'
   when:
-  - "sshd_ansible_reload | bool"
-  tags: ["always"]
+  - sshd_ansible_reload | bool
+  tags: [ 'always' ]
 
-- name: "security | sshd | restart service"
+- name: 'security | sshd | restart service'
   ansible.builtin.service:
-    name: "{{ sshd_service_name }}"
-    state: "restarted"
+    name: '{{ sshd_service_name }}'
+    state: 'restarted'
   when:
-  - "sshd_ansible_restart | bool"
-  tags: ["always"]
+  - sshd_ansible_restart | bool
+  tags: [ 'always' ]

@@ -1,20 +1,22 @@
 ---
-- name: "security | sshd | install or update package via apt"
+- name: 'security | sshd | install or update package via apt'
   ansible.builtin.apt:
-    name: "{{ sshd_package_name }}"
-    state: "{{ sshd_state }}"
-  notify: "security | sshd | validate conf and restart service"
+    name: '{{ sshd_package_name }}'
+    state: '{{ sshd_state }}'
+  notify:
+  - 'security | sshd | validate conf and restart service'
 
-- name: "security | sshd | create a directory structure"
+- name: 'security | sshd | create directory structure'
   ansible.builtin.file:
-    dest: "{{ item.dest | mandatory }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    state: "directory"
+    dest: '{{ item.dest }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    state: 'directory'
   loop:
-  - { dest: "{{ sshd_conf_file | dirname }}" }
-  - { dest: "{{ sshd_conf_d }}" }
+  - { dest: '{{ sshd_conf_file | dirname }}' }
+  - { dest: '{{ sshd_conf_d }}' }
   loop_control:
-    label: "{{ item.dest | mandatory }}"
-  notify: "security | sshd | validate conf and reload service"
+    label: '{{ item.dest }}'
+  notify:
+  - 'security | sshd | validate conf and reload service'

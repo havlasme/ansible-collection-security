@@ -3,7 +3,7 @@
   ansible.builtin.file:
     name: "{{ nftables_conf_d }}/{{ item.dest | mandatory }}"
     state: "absent"
-  loop: "{{ nftables_conf_d_files | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
+  loop: "{{ nftables_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
   notify: "security | nftables | reload service"
 
 - name: "security | nftables | create or update conf-d configuration file"

@@ -12,31 +12,31 @@
     item.ssh_port: int | d(22)
 -#}
 
-add table inet filter
-add chain inet filter INPUT { type filter hook input priority 0; policy drop; }
-add chain inet filter FORWARD { type filter hook forward priority 0; policy drop; }
-add chain inet filter OUTPUT { type filter hook output priority 0; policy accept; }
-add chain inet filter TCP
-add chain inet filter UDP
+add table inet host
+add chain inet host INPUT { type filter hook input priority 0; policy drop; }
+add chain inet host FORWARD { type filter hook forward priority 0; policy drop; }
+add chain inet host OUTPUT { type filter hook output priority 0; policy accept; }
+add chain inet host TCP
+add chain inet host UDP
 {% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
-add chain inet filter MULTICAST
+add chain inet host MULTICAST
 {% endif %}
-add rule inet filter INPUT ct state related,established accept
-add rule inet filter INPUT iifname lo accept
-add rule inet filter INPUT ct state invalid counter drop
+add rule inet host INPUT ct state related,established accept
+add rule inet host INPUT iifname lo accept
+add rule inet host INPUT ct state invalid counter drop
 {% if item.nftables_accept_ping | d(nftables_accept_ping) | d('yes') | bool %}
-add rule inet filter INPUT meta l4proto icmp icmp type { destination-unreachable, echo-request, parameter-problem, router-advertisement, router-solicitation, time-exceeded } accept
-add rule inet filter INPUT meta l4proto ipv6-icmp icmpv6 type { destination-unreachable, echo-request, ind-neighbor-solicit, ind-neighbor-advert, mld-listener-query, mld-listener-report, mld-listener-reduction, mld2-listener-report, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, packet-too-big, parameter-problem, time-exceeded } accept
+add rule inet host INPUT meta l4proto icmp icmp type { destination-unreachable, echo-request, parameter-problem, router-advertisement, router-solicitation, time-exceeded } accept
+add rule inet host INPUT meta l4proto ipv6-icmp icmpv6 type { destination-unreachable, echo-request, ind-neighbor-solicit, ind-neighbor-advert, mld-listener-query, mld-listener-report, mld-listener-reduction, mld2-listener-report, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, packet-too-big, parameter-problem, time-exceeded } accept
 {% endif %}
 {% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
-add rule inet filter INPUT pkttype multicast jump MULTICAST
+add rule inet host INPUT pkttype multicast jump MULTICAST
 {% endif %}
-add rule inet filter INPUT meta l4proto udp ct state new jump UDP
-add rule inet filter INPUT tcp flags & (fin|syn|rst|ack) == syn ct state new jump TCP
-add rule inet filter INPUT meta l4proto udp counter reject
-add rule inet filter INPUT meta l4proto tcp counter reject with tcp reset
-add rule inet filter INPUT counter reject with icmpx type port-unreachable
-add rule inet filter TCP tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
+add rule inet host INPUT meta l4proto udp ct state new jump UDP
+add rule inet host INPUT tcp flags & (fin|syn|rst|ack) == syn ct state new jump TCP
+add rule inet host INPUT meta l4proto udp counter reject
+add rule inet host INPUT meta l4proto tcp counter reject with tcp reset
+add rule inet host INPUT counter reject with icmpx type port-unreachable
+add rule inet host TCP tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
 {% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
-add rule inet filter MULTICAST counter accept
+add rule inet host MULTICAST counter accept
 {% endif %}
