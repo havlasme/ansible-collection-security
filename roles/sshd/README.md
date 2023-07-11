@@ -3,8 +3,9 @@ havlasme.security.sshd
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure sshd.
+An [Ansible](https://www.ansible.com/) role to install and configure sshd service on [Debian](https://www.debian.org/).
 
+[[_TOC_]]
 
 Requirements
 ------------
@@ -235,7 +236,30 @@ Example Playbook
 ----------------
 
 ```yaml
-# TODO
+- hosts: "all"
+
+  tasks:
+  - include_role:
+      name: "havlasme.security.sshd"
+    vars:
+      # the sshd host key type 
+      sshd_host_key_type: [ "ed25519", "rsa", "ecdsa" ]
+      # the sshd moduli minimal size
+      sshd_moduli_minsize: 3071
+      # the sshd conf-d file list
+      sshd_conf_d_file:
+      ## the sshd client must authenticate using public key and password
+      - dest: "20_pubkey_password_authentication.yml"
+        src: "etc/ssh/sshd_config.d/authentication.yml.j2"
+        sshd_authentication_method: [ "publickey,password" ]
+      ## restrict root login via ssh
+      - dest: "20_no_permit_root_login.yml"
+        src: "etc/ssh/sshd_config.d/no_permit_root_login.yml.j2"
+        sshd_permit_root_login: "no"
+      ## don't print `/etc/motd` on interactive login
+      - dest: "40_no_print_motd.yml"
+        src: "etc/ssh/sshd_config.d/no_print_motd.yml.j2"
+        sshd_print_motd: "no"
 ```
 
 

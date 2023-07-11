@@ -56,7 +56,7 @@
   when: "item.state | d('present') == 'present'"
   notify: "security | sshd | reload service"
 
-- name: "security | sshd | create or update conf-d configuration file via tempalte"
+- name: "security | sshd | create or update conf-d configuration file via template"
   ansible.builtin.template:
     dest: "{{ sshd_conf_d }}/{{ item.dest | mandatory }}"
     src: "{{ item.src | mandatory }}"
