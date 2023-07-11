@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: "{{ sshd_package_name }}"
     state: "{{ sshd_state }}"
-  notify: "security | sshd | restart service"
+  notify: "security | sshd | validate conf and restart service"
 
 - name: "security | sshd | create a directory structure"
   ansible.builtin.file:
@@ -17,4 +17,4 @@
   - { dest: "{{ sshd_conf_d }}" }
   loop_control:
     label: "{{ item.dest | mandatory }}"
-  notify: "security | sshd | reload service"
+  notify: "security | sshd | validate conf and reload service"

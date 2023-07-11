@@ -3,12 +3,8 @@ havlasme.security.nftables
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to manage nftables.
+An [Ansible](https://www.ansible.com/) role to manage nftables on [Debian](https://www.debian.org/).
 
-Requirements
-------------
-
-None.
 
 Role Variables
 --------------
@@ -46,10 +42,6 @@ nftables_ruleset: []
 #   ssh_port: int | d(22)
 ```
 
-Dependencies
-------------
-
-None.
 
 Example Playbook
 ----------------
@@ -65,10 +57,12 @@ Example Playbook
         dest: "10-simple-stateful-firewall.conf"
 ```
 
+
 License
 -------
 
-Apache-2.0
+[Apache-2.0][license-link]
+
 
 Author Information
 ------------------

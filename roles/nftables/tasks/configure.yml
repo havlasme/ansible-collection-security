@@ -1,31 +1,13 @@
 ---
-- name: "(security.nftables) configure nftables service"
+- ansible.builtin.import_tasks: "configure/d.yml"
+
+- name: "security | nftables | create or update configuration file"
   ansible.builtin.template:
-    dest: "{{ nftables_conf_main }}"
-    src: "{{ nftables_conf_tmpl }}"
+    dest: "{{ nftables_conf_file }}"
+    src: "{{ nftables_conf_template }}"
     owner: "root"
     group: "root"
     mode: "0755"
     force: "yes"
-  when: "nftables_conf_tmpl is defined"
-  notify: "(security.nftables) reload service"
-
-- name: "(security.nftables) remove nftables ruleset"
-  ansible.builtin.file:
-    name: "{{ nftables_confdir }}/{{ item.dest | mandatory }}"
-    state: "absent"
-  loop: "{{ nftables_ruleset }}"
-  when: "item.state | d('present') == 'absent'"
-  notify: "(security.nftables) reload service"
-
-- name: "(security.nftables) create, or update nftables ruleset"
-  ansible.builtin.template:
-    dest: "{{ nftables_confdir }}/{{ item.dest | mandatory }}"
-    src: "{{ item.src | d(nftables_ruleset_tmpl) }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-    force: "yes"
-  loop: "{{ nftables_ruleset }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "(security.nftables) reload service"
+  when: "nftables_conf_template is defined"
+  notify: "security | nftables | reload service"

@@ -1,6 +1,6 @@
 ---
-- name: "(security.nftables) start and enable nftables service"
+- name: "security | nftables | start and enable service"
   ansible.builtin.service:
-    name: "{{ nftables_service }}"
-    enabled: "{{ nftables_service_enabled }}"
+    name: "{{ nftables_service_name }}"
+    enabled: "{{ nftables_enabled }}"
     state: "started"

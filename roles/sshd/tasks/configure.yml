@@ -15,7 +15,8 @@
   when:
   - "sshd_moduli_minsize is defined"
   - "sshd_moduli_minsize_check.stdout"
-  notify: "security | sshd | restart service"
+  changed_when: true
+  notify: "security | sshd | validate conf and restart service"
 
 - ansible.builtin.import_tasks: "configure/d.yml"
 
@@ -27,4 +28,4 @@
     group: "root"
     mode: "0644"
     validate: "sshd -t -f %s"
-  notify: "security | sshd | reload service"
+  notify: "security | sshd | validate conf and reload service"

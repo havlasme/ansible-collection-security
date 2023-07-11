@@ -19,9 +19,12 @@ sshd_port: [ "22" ]
 sshd_conf_file: "/etc/ssh/sshd_config"
 # the sshd conf template
 sshd_conf_template: "etc/ssh/sshd_config.j2"
-# the sshd conf-d directory
+# the sshd conf.d directory
 sshd_conf_d: "/etc/ssh/sshd_config.d"
-# the sshd conf-d file list
+# the sshd conf.d file list
+## - dest: string
+##   src: string | d(sshd_conf_d_template)
+##   state: enum('present', 'absent') | d('present')
 sshd_conf_d_file:
 ## basic password / pubkey authentication
 - dest: "20_password_authentication.conf"
@@ -30,6 +33,8 @@ sshd_conf_d_file:
 - dest: "40_accept_env_locale_only.conf"
   src: "etc/ssh/sshd_config.d/accept_env.conf.j2"
   sshd_accept_env: "LANG LC_*"
+# the sshd conf.d default template
+sshd_conf_d_template: "etc/ssh/sshd_config.d/__copy__.conf.j2"
 
 # the sshd moduli file
 sshd_moduli_file: "/etc/ssh/moduli"

@@ -20,9 +20,20 @@ else
 	$(GALAXY) collection install "$(DIST)/$(NAMESPACE)-$(ROLENAME)-$(ROLEVERSION).tar.gz"
 endif
 
+.PHONY: lint
+lint:
+	$(MAKE) -C roles/borgbackup lint
+	$(MAKE) -C roles/borgmatic lint
+	$(MAKE) -C roles/molly_guard lint
+	$(MAKE) -C roles/nftables lint
+	$(MAKE) -C roles/ssh_key lint
+	$(MAKE) -C roles/sshd lint
+
 .PHONY: test
 test:
 	$(MAKE) -C roles/borgbackup test
 	$(MAKE) -C roles/borgmatic test
+	$(MAKE) -C roles/molly_guard test
 	$(MAKE) -C roles/nftables test
 	$(MAKE) -C roles/ssh_key test
+	$(MAKE) -C roles/sshd test

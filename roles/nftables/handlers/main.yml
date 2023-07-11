@@ -1,11 +1,14 @@
 ---
-- name: "(security.nftables) reload service"
+- name: "security | nftables | reload service"
   ansible.builtin.service:
-    name: "{{ nftables_service }}"
+    name: "{{ nftables_service_name }}"
     state: "reloaded"
+  when: "nftables_ansible_reload | bool"
+  tags: ["always"]
 
-- name: "(security.nftables) restart service"
+- name: "security | nftables | restart service"
   ansible.builtin.service:
-    name: "{{ nftables_service }}"
+    name: "{{ nftables_service_name }}"
     state: "restarted"
-  when: "nftables_service_restart | bool"
+  when: "nftables_ansible_restart | bool"
+  tags: ["always"]

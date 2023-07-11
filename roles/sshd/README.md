@@ -5,13 +5,6 @@ havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure sshd service on [Debian](https://www.debian.org/).
 
-[TOC]
-
-Requirements
-------------
-
-None.
-
 
 Role Variables
 --------------
@@ -55,9 +48,9 @@ sshd_moduli_file: "/etc/ssh/moduli"
 #sshd_moduli_minsize: 3071
 ```
 
-### `accept_env.yml`
+### `etc/ssh/sshd_config.d/accept_env.yml`
 
-```yaml title="accept_env.yml"
+```yaml title="etc/ssh/sshd_config.d/accept_env.yml"
 # accept env sent by the ssh client
 sshd_accept_env: "no"
 ```
@@ -69,9 +62,9 @@ sshd_conf_d_file:
   sshd_accept_env: "LANG LC_*"
 ```
 
-### `allow_group.yml`
+### `etc/ssh/sshd_config.d/allow_group.yml`
 
-```yaml title="allow_group.yml"
+```yaml title="etc/ssh/sshd_config.d/allow_group.yml"
 # the ssh client must belong to this group, otherwise it will be rejected
 #sshd_allow_group: []
 ```
@@ -83,9 +76,9 @@ sshd_conf_d_file:
   sshd_allow_group: [ "sshd_client" ]
 ```
 
-### `authentication.yml`
+### `etc/ssh/sshd_config.d/authentication.yml`
 
-```yaml title="authentication.yml"
+```yaml title="etc/ssh/sshd_config.d/authentication.yml"
 # enable public key authentication method?
 sshd_pubkey_authentication: "yes"
 # enable password authentication method?
@@ -106,9 +99,9 @@ sshd_conf_d_file:
   sshd_authentication_method: [ "publickey,password" ]
 ```
 
-### `crypto_policy.yml`
+### `etc/ssh/sshd_config.d/crypto_policy.yml`
 
-```yaml title="crypto_policy.yml"
+```yaml title="etc/ssh/sshd_config.d/crypto_policy.yml"
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd_crypto_policy: "infosec.mozilla.org"
 ```
@@ -120,9 +113,9 @@ sshd_conf_d_file:
   sshd_crypto_policy: "ssh-audit.com"
 ```
 
-### `keepalive.yml`
+### `etc/ssh/sshd_config.d/keepalive.yml`
 
-```yaml title="keepalive.yml"
+```yaml title="etc/ssh/sshd_config.d/keepalive.yml"
 # send tcp keepalive message to the client
 sshd_tcp_keep_alive: "yes"
 # the client alive interval (in seconds)
@@ -139,9 +132,9 @@ sshd_conf_d_file:
   sshd_client_alive_count_max: 3
 ```
 
-### `key_revocation_list.yml`
+### `etc/ssh/sshd_config.d/key_revocation_list.yml`
 
-```yaml title="sshd_key_revocation_list.yml"
+```yaml title="etc/ssh/sshd_config.d/sshd_key_revocation_list.yml"
 # the sshd key revocation list
 #sshd_key_revocation_list_file: "/etc/ssh/sshd_key_revocation_list"
 # the sshd key revocation list template
@@ -154,9 +147,9 @@ sshd_conf_d_file:
   src: "etc/ssh/sshd_config.d/key_revocation_list.yml.j2"
 ```
 
-### `log_level.yml`
+### `etc/ssh/sshd_config.d/log_level.yml`
 
-```yaml title="log_level.yml
+```yaml title="etc/ssh/sshd_config.d/log_level.yml
 # the log verbosity level
 sshd_log_level: "VERBOSE"
 ```
@@ -168,9 +161,9 @@ sshd_conf_d_file:
   sshd_log_level: "VERBOSE"
 ```
 
-### `permit_root_login.yml`
+### `etc/ssh/sshd_config.d/permit_root_login.yml`
 
-```yaml title="permit_root_login.yml"
+```yaml title="etc/ssh/sshd_config.d/permit_root_login.yml"
 # permit root login via ssh
 sshd_permit_root_login: "no"
 ```
@@ -182,9 +175,9 @@ sshd_conf_d_file:
   sshd_permit_root_login: "no"
 ```
 
-### `print_issue.yml`
+### `etc/ssh/sshd_config.d/print_issue.yml`
 
-```yaml title="print_issue.yml"
+```yaml title="etc/ssh/sshd_config.d/print_issue.yml"
 # the sshd issue file
 sshd_issue_file: "/etc/issue.net"
 # the sshd issue template
@@ -197,9 +190,9 @@ sshd_conf_d_file:
   src: "etc/ssh/sshd_config.d/print_issue.yml.j2"
 ```
 
-### `print_lastlog.yml`
+### `etc/ssh/sshd_config.d/print_lastlog.yml`
 
-```yaml title="print_lastlog.yml"
+```yaml title="etc/ssh/sshd_config.d/print_lastlog.yml"
 # print `lastlog` on interactive login
 sshd_print_lastlog: "yes"
 ```
@@ -211,9 +204,9 @@ sshd_conf_d_file:
   sshd_print_lastlog: "yes"
 ```
 
-### `print_motd.yml`
+### `etc/ssh/sshd_config.d/print_motd.yml`
 
-```yaml title="print_motd.yml"
+```yaml title="etc/ssh/sshd_config.d/print_motd.yml"
 # print `/etc/motd` on interactive login
 sshd_print_motd: "no"
 ```
@@ -226,40 +219,15 @@ sshd_conf_d_file:
 ```
 
 
-Dependencies
-------------
-
-None.
-
-
 Example Playbook
 ----------------
 
-```yaml
+```yaml title="Minimal"
 - hosts: "all"
 
   tasks:
   - include_role:
       name: "havlasme.security.sshd"
-    vars:
-      # the sshd host key type 
-      sshd_host_key_type: [ "ed25519", "rsa", "ecdsa" ]
-      # the sshd moduli minimal size
-      sshd_moduli_minsize: 3071
-      # the sshd conf-d file list
-      sshd_conf_d_file:
-      ## the sshd client must authenticate using public key and password
-      - dest: "20_pubkey_password_authentication.yml"
-        src: "etc/ssh/sshd_config.d/authentication.yml.j2"
-        sshd_authentication_method: [ "publickey,password" ]
-      ## restrict root login via ssh
-      - dest: "20_no_permit_root_login.yml"
-        src: "etc/ssh/sshd_config.d/no_permit_root_login.yml.j2"
-        sshd_permit_root_login: "no"
-      ## don't print `/etc/motd` on interactive login
-      - dest: "40_no_print_motd.yml"
-        src: "etc/ssh/sshd_config.d/no_print_motd.yml.j2"
-        sshd_print_motd: "no"
 ```
 
 

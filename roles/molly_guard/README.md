@@ -3,13 +3,7 @@ havlasme.security.molly_guard
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure molly-guard.
-
-
-Requirements
-------------
-
-None.
+An [Ansible](https://www.ansible.com/) role to install and configure molly-guard on [Debian](https://www.debian.org/).
 
 
 Role Variables
@@ -21,16 +15,10 @@ molly_guard_state: "present"
 ```
 
 
-Dependencies
-------------
-
-None.
-
-
 Example Playbook
 ----------------
 
-```yaml
+```yaml title="Minimal"
 - hosts: all
   tasks:
   - include_role:
