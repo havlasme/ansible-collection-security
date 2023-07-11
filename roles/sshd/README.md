@@ -5,7 +5,7 @@ havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure sshd service on [Debian](https://www.debian.org/).
 
-[[_TOC_]]
+[TOC]
 
 Requirements
 ------------
