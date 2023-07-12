@@ -10,5 +10,3 @@
     mode: '0644'
   notify:
   - 'security | nftables | reload service'
-  when:
-  - nftables_conf_template is defined

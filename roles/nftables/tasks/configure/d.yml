@@ -3,7 +3,7 @@
   ansible.builtin.file:
     name: '{{ nftables_conf_d }}/{{ item.dest | mandatory }}'
     state: 'absent'
-  loop: '{{ nftables_conf_d_file | selectattr("state", "defined") | selectattr("state", "equalto", "absent") | list }}'
+  loop: '{{ nftables_conf_d_file | selectattr("state", "havlasme.security.is_absent") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
@@ -16,10 +16,8 @@
     owner: 'root'
     group: 'root'
     mode: '0644'
-  loop: '{{ nftables_conf_d_file }}'
+  loop: '{{ nftables_conf_d_file | selectattr("state", "havlasme.security.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'security | nftables | reload service'
-  when:
-  - item.state | d("present") == "present"

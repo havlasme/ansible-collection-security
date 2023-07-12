@@ -2,18 +2,18 @@
 dependencies: []
 
 galaxy_info:
-  author: "havlas.me"
-  description: "nftables management"
-  company: "havlas.me"
-  issue_tracker_url: "https://gitlab.com/havlas.me/ansible-collection-security/-/issues"
-  license: "Apache-2.0"
-  min_ansible_version: "2.9"
+  author: 'havlas.me'
+  description: 'An Ansible role to install and configure nftables on Debian.'
+  company: 'havlas.me'
+  issue_tracker_url: 'https://gitlab.com/havlas.me/ansible-collection-security/-/issues'
+  license: 'Apache-2.0'
+  min_ansible_version: '2.9'
   platforms:
-  - name: "Debian"
+  - name: 'Debian'
     versions:
-    - "all"
+    - 'all'
   galaxy_tags:
-  - "firewall"
-  - "linux"
-  - "netfilter"
-  - "nftables"
+  - 'firewall'
+  - 'linux'
+  - 'netfilter'
+  - 'nftables'

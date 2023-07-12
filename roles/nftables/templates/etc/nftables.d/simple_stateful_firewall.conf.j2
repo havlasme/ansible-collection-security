@@ -1,7 +1,4 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-#!/usr/sbin/nft -f
-{{ ansible_managed | comment }}
-
 {# --- an opinionated stateful firewall setup ---
  # @see https://wiki.archlinux.org/title/simple_stateful_firewall
  #
@@ -14,6 +11,8 @@
  # open ssh service port
  # nftables_ssh_port: int | d(22)
 -#}
+#!/usr/sbin/nft -f
+{{ ansible_managed | comment }}
 
 add table inet host
 add chain inet host INPUT { type filter hook input priority 0; policy drop; }

@@ -6,7 +6,7 @@
   notify:
   - 'security | nftables | restart service'
 
-- name: 'security | nftables | create a directory structure'
+- name: 'security | nftables | create directory structure'
   ansible.builtin.file:
     name: '{{ nftables_conf_d }}'
     owner: 'root'

@@ -18,7 +18,7 @@ molly_guard_state: 'present'
 Example Playbook
 ----------------
 
-```yaml title="Minimal"
+```yaml title='Minimal'
 - hosts: 'all'
 
   tasks:
@@ -37,6 +37,7 @@ Author Information
 ------------------
 
 Created by [Tomáš Havlas](https://havlas.me/).
+
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
 [license-link]: ../../LICENSE

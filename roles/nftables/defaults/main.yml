@@ -11,7 +11,7 @@ nftables_ansible_restart: true
 # the nftables conf file
 nftables_conf_file: '/etc/nftables.conf'
 # the nftables conf template
-#nftables_conf_template: 'etc/nftables.conf.j2'
+nftables_conf_template: 'etc/nftables.conf.j2'
 
 # the nftables conf.d directory
 nftables_conf_d: '/etc/nftables.d'
@@ -19,12 +19,10 @@ nftables_conf_d: '/etc/nftables.d'
 ## - dest: string
 ##   src: string | d(nftables_conf_d_template)
 ##   state: enum('present', 'absent') | d('present')
-## * etc/nftables.d/__copy__.conf.j2
-##   content: string
 ## * etc/nftables.d/simple_stateful_firewall.conf.j2
-##   accept_ping: boolean | d(true)
-##   accept_multicast: boolean | d(false)
-##   ssh_port: integer | d(22)
+##   nftables_accept_ping: boolean | d(true)
+##   nftables_accept_multicast: boolean | d(false)
+##   nftables_ssh_port: integer | d(22)
 nftables_conf_d_file: []
 # the nftables conf.d default template
-nftables_conf_d_template: 'etc/nftables.d/__copy__.conf.j2'
+nftables_conf_d_template: 'etc/nftables.d/__default__.conf.j2'

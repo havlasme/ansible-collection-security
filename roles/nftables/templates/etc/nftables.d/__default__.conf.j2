@@ -1,10 +1,10 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-#!/usr/sbin/nft -f
-{{ ansible_managed | comment }}
 {# --- emulate ansible copy ---
  #
  # the content (as in ansible copy module)
  # content: string
 -#}
+#!/usr/sbin/nft -f
+{{ ansible_managed | comment }}
 
 {{ item.content | mandatory }}

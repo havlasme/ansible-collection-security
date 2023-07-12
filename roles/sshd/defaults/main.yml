@@ -34,7 +34,7 @@ sshd_conf_d_file:
   src: 'etc/ssh/sshd_config.d/accept_env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
-sshd_conf_d_template: 'etc/ssh/sshd_config.d/__copy__.conf.j2'
+sshd_conf_d_template: 'etc/ssh/sshd_config.d/__default__.conf.j2'
 
 # the sshd moduli file
 sshd_moduli_file: '/etc/ssh/moduli'
