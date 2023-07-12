@@ -10,8 +10,8 @@ Role Variables
 --------------
 
 ```yaml
-# the molly-guard package state ('present', 'latest, 'absent'')
-molly_guard_state: "present"
+# the molly-guard package state ('present', 'latest, 'absent')
+molly_guard_state: 'present'
 ```
 
 
@@ -19,10 +19,11 @@ Example Playbook
 ----------------
 
 ```yaml title="Minimal"
-- hosts: all
+- hosts: 'all'
+
   tasks:
   - include_role:
-      name: havlasme.security.molly_guard
+      name: 'havlasme.security.molly_guard'
 ```
 
 

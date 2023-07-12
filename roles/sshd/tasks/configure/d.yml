@@ -52,10 +52,8 @@
     group: 'root'
     mode: '0644'
     validate: sshd -t -f %s
-  loop: '{{ sshd_conf_d_file }}'
+  loop: '{{ sshd_conf_d_file | selectattr("state", "havlasme.security.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'security | sshd | validate conf and reload service'
-  when:
-  - item.state | d('present') == 'present'
