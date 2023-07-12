@@ -1,20 +1,20 @@
 ---
 # the nftables package state ('present', 'latest')
-nftables_state: "present"
+nftables_state: 'present'
 # should start the nftables service at boot
-nftables_enabled: "yes"
+nftables_enabled: true
 # can ansible reload nftables service?
-nftables_ansible_reload: "yes"
+nftables_ansible_reload: true
 # can ansible restart nftables service?
-nftables_ansible_restart: "yes"
+nftables_ansible_restart: true
 
 # the nftables conf file
-nftables_conf_file: "/etc/nftables.conf"
+nftables_conf_file: '/etc/nftables.conf'
 # the nftables conf template
-#nftables_conf_template: "etc/nftables.conf.j2"
+#nftables_conf_template: 'etc/nftables.conf.j2'
 
 # the nftables conf.d directory
-nftables_conf_d: "/etc/nftables.d"
+nftables_conf_d: '/etc/nftables.d'
 # the nftables conf.d file list
 ## - dest: string
 ##   src: string | d(nftables_conf_d_template)
@@ -22,9 +22,9 @@ nftables_conf_d: "/etc/nftables.d"
 ## * etc/nftables.d/__copy__.conf.j2
 ##   content: string
 ## * etc/nftables.d/simple_stateful_firewall.conf.j2
-##   accept_ping: boolean | d('yes')
-##   accept_multicast: boolean | d('no')
+##   accept_ping: boolean | d(true)
+##   accept_multicast: boolean | d(false)
 ##   ssh_port: integer | d(22)
 nftables_conf_d_file: []
 # the nftables conf.d default template
-nftables_conf_d_template: "etc/nftables.d/__copy__.conf.j2"
+nftables_conf_d_template: 'etc/nftables.d/__copy__.conf.j2'

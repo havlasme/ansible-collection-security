@@ -1,15 +1,17 @@
 ---
-- name: "security | nftables | install or update package via apt"
+- name: 'security | nftables | install or update package via apt'
   ansible.builtin.apt:
-    name: "{{ nftables_package_name }}"
-    state: "{{ nftables_state }}"
-  notify: "security | nftables | restart service"
+    name: '{{ nftables_package_name }}'
+    state: '{{ nftables_state }}'
+  notify:
+  - 'security | nftables | restart service'
 
-- name: "security | nftables | create a directory structure"
+- name: 'security | nftables | create a directory structure'
   ansible.builtin.file:
-    name: "{{ nftables_conf_d }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    state: "directory"
-  notify: "security | nftables | reload service"
+    name: '{{ nftables_conf_d }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    state: 'directory'
+  notify:
+  - 'security | nftables | reload service'

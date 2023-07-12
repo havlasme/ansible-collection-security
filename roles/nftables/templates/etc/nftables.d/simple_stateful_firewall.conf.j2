@@ -2,14 +2,17 @@
 #!/usr/sbin/nft -f
 {{ ansible_managed | comment }}
 
-{#  an opinionated stateful firewall setup
-
-    # allow icmp ping traffic at the input chain
-    item.accept_ping: boolean | d('yes')
-    # allow multicast traffic at the input chain
-    item.accept_multicast: boolean | d('no')
-    # open ssh service port
-    item.ssh_port: int | d(22)
+{# --- an opinionated stateful firewall setup ---
+ # @see https://wiki.archlinux.org/title/simple_stateful_firewall
+ #
+ # allow icmp ping traffic at the input chain
+ # nftables_accept_ping: boolean | d(true)
+ #
+ # allow multicast traffic at the input chain
+ # nftables_accept_multicast: boolean | d(false)
+ #
+ # open ssh service port
+ # nftables_ssh_port: int | d(22)
 -#}
 
 add table inet host
@@ -18,17 +21,18 @@ add chain inet host FORWARD { type filter hook forward priority 0; policy drop; 
 add chain inet host OUTPUT { type filter hook output priority 0; policy accept; }
 add chain inet host TCP
 add chain inet host UDP
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
 add chain inet host MULTICAST
 {% endif %}
+
 add rule inet host INPUT ct state related,established accept
 add rule inet host INPUT iifname lo accept
 add rule inet host INPUT ct state invalid counter drop
-{% if item.nftables_accept_ping | d(nftables_accept_ping) | d('yes') | bool %}
+{% if item.nftables_accept_ping | d(nftables_accept_ping) | d(true) | bool %}
 add rule inet host INPUT meta l4proto icmp icmp type { destination-unreachable, echo-request, parameter-problem, router-advertisement, router-solicitation, time-exceeded } accept
 add rule inet host INPUT meta l4proto ipv6-icmp icmpv6 type { destination-unreachable, echo-request, ind-neighbor-solicit, ind-neighbor-advert, mld-listener-query, mld-listener-report, mld-listener-reduction, mld2-listener-report, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, packet-too-big, parameter-problem, time-exceeded } accept
 {% endif %}
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
 add rule inet host INPUT pkttype multicast jump MULTICAST
 {% endif %}
 add rule inet host INPUT meta l4proto udp ct state new jump UDP
@@ -36,7 +40,8 @@ add rule inet host INPUT tcp flags & (fin|syn|rst|ack) == syn ct state new jump 
 add rule inet host INPUT meta l4proto udp counter reject
 add rule inet host INPUT meta l4proto tcp counter reject with tcp reset
 add rule inet host INPUT counter reject with icmpx type port-unreachable
+
 add rule inet host TCP tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
 add rule inet host MULTICAST counter accept
 {% endif %}

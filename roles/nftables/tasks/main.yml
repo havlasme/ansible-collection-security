@@ -1,11 +1,11 @@
 ---
-- name: "security | nftables | include distribution-specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
-  tags: ["always"]
+- name: 'security | nftables | include distribution-specific variables'
+  ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yml'
+  tags: [ 'always' ]
 
-- ansible.builtin.import_tasks: "install.yml"
-  tags: ["role::nftables", "task::install"]
+- ansible.builtin.import_tasks: 'install.yml'
+  tags: [ 'role::nftables', 'task::install' ]
 - ansible.builtin.import_tasks: "configure.yml"
-  tags: ["role::nftables", "task::configure"]
+  tags: [ 'role::nftables', 'task::configure' ]
 - ansible.builtin.import_tasks: "service.yml"
-  tags: ["role::nftables", "task::service"]
+  tags: [ 'role::nftables', 'task::service' ]

@@ -1,18 +1,25 @@
 ---
-- name: "security | nftables | delete conf-d configuration file"
+- name: 'security | nftables | delete conf.d configuration file'
   ansible.builtin.file:
-    name: "{{ nftables_conf_d }}/{{ item.dest | mandatory }}"
-    state: "absent"
-  loop: "{{ nftables_conf_d_file | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list }}"
-  notify: "security | nftables | reload service"
+    name: '{{ nftables_conf_d }}/{{ item.dest | mandatory }}'
+    state: 'absent'
+  loop: '{{ nftables_conf_d_file | selectattr("state", "defined") | selectattr("state", "equalto", "absent") | list }}'
+  loop_control:
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'security | nftables | reload service'
 
-- name: "security | nftables | create or update conf-d configuration file"
+- name: 'security | nftables | create or update conf.d configuration file'
   ansible.builtin.template:
-    dest: "{{ nftables_conf_d }}/{{ item.dest | mandatory }}"
-    src: "{{ item.src | d(nftables_conf_d_template) }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  loop: "{{ nftables_conf_d_file }}"
-  when: "item.state | d('present') == 'present'"
-  notify: "security | nftables | reload service"
+    dest: '{{ nftables_conf_d }}/{{ item.dest | mandatory }}'
+    src: '{{ item.src | d(nftables_conf_d_template) }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop: '{{ nftables_conf_d_file }}'
+  loop_control:
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'security | nftables | reload service'
+  when:
+  - item.state | d("present") == "present"

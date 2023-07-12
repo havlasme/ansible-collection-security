@@ -1,13 +1,14 @@
 ---
-- ansible.builtin.import_tasks: "configure/d.yml"
+- ansible.builtin.import_tasks: 'configure/d.yml'
 
-- name: "security | nftables | create or update configuration file"
+- name: 'security | nftables | create or update configuration file'
   ansible.builtin.template:
-    dest: "{{ nftables_conf_file }}"
-    src: "{{ nftables_conf_template }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    force: "yes"
-  when: "nftables_conf_template is defined"
-  notify: "security | nftables | reload service"
+    dest: '{{ nftables_conf_file }}'
+    src: '{{ nftables_conf_template }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify:
+  - 'security | nftables | reload service'
+  when:
+  - nftables_conf_template is defined
