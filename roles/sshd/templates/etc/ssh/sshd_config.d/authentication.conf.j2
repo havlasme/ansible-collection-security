@@ -1,4 +1,21 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{# --- authentication ---
+ #
+ # enable public key authentication method?
+ # sshd_pubkey_authentication: boolean | d('yes')
+ #
+ # enable password authentication method?
+ # sshd_password_authentication: boolean | d('yes')
+ #
+ # enable keyboard-interactive authentication method?
+ # sshd_kbd_interactive_authentication: boolean | d('no')
+ #
+ # use pam?
+ # sshd_use_pam: boolean | d('yes')
+ #
+ # the sshd authentication method list
+ # sshd_authentication_method: string[] | d(['any'])
+-#}
 {{ ansible_managed | comment }}
 
 # enable public key authentication method?

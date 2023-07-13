@@ -1,14 +1,15 @@
 ---
-- name: "(security.borgbackup) install borgbackup package"
-  ansible.builtin.package:
-    name: "{{ borgbackup_package }}"
-    state: "{{ borgbackup_state }}"
+- name: 'security | borgbackup | install or update package via apt'
+  ansible.builtin.apt:
+    name: '{{ borgbackup_package_name }}'
+    state: '{{ borgbackup_state }}'
 
-- name: "(security.borgbackup) create directory structure"
+- name: 'security | borgbackup | create directory structure'
   ansible.builtin.file:
     name: "{{ borgbackup_datadir }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    state: "directory"
-  when: "borgbackup_state != 'absent'"
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    state: 'directory'
+  when:
+  - borgbackup_state != 'absent'

@@ -33,7 +33,7 @@ nftables_conf_d: '/etc/nftables.d'
 ## * etc/nftables.d/simple_stateful_firewall.conf.j2
 ##   nftables_accept_ping: boolean | d(true)
 ##   nftables_accept_multicast: boolean | d(false)
-##   nftables_ssh_port: integer | d(22)
+##   nftables_ssh_port: int | d(22)
 nftables_conf_d_file: []
 # the nftables conf.d default template
 nftables_conf_d_template: 'etc/nftables.d/__default__.conf.j2'
@@ -46,8 +46,13 @@ nftables_conf_d_template: 'etc/nftables.d/__default__.conf.j2'
 nftables_accept_ping: true
 # allow multicast traffic at the input chain
 nftables_accept_multicast: false
-# open ssh service port
+
+# the ssh service port
 nftables_ssh_port: 22
+# the ssh service ipv4 accept list
+nftables_ssh_ipv4_accept: [ '0.0.0.0/0' ]
+# the ssh service ipv6 accept list
+nftables_ssh_ipv6_accept: [ '::/0' ]
 ```
 
 ```yaml

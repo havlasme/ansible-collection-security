@@ -1,3 +1,3 @@
 ---
 # the borgbackup package name
-borgbackup_package: "borgbackup"
+borgbackup_package_name: 'borgbackup'

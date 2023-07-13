@@ -1,4 +1,9 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{# --- permit root login ---
+ #
+ # permit root login via ssh
+ # sshd_permit_root_login: string | d('prohibit-password')
+-#}
 {{ ansible_managed | comment }}
 
 # permit root login via ssh

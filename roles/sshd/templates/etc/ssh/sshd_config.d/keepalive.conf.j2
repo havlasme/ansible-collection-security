@@ -1,4 +1,15 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{# --- connection keepalive ---
+ #
+ # send tcp keepalive message to the client
+ # sshd_tcp_keep_alive: boolean | d('yes')
+ #
+ # the client alive interval (in seconds)
+ # sshd_client_alive_interval: int | d(60)
+ #
+ # the client alive message count (0 to disable)
+ # sshd_client_alive_count_max: int | d(0)
+-#}
 {{ ansible_managed | comment }}
 
 # send tcp keepalive message to the client

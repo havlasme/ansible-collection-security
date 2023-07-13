@@ -1,5 +1,13 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{# --- print `/etc/issue.net` ---
+ #
+ # the sshd issue file
+ # sshd_issue_file: '/etc/issue.net'
+ #
+ # the sshd issue template
+ # shd_issue_template: "etc/issue.net.j2"
+-#}
 {{ ansible_managed | comment }}
 
 # print `/etc/issue.net` on interactive login
-Banner {{ sshd_issue_file | d('/etc/issue.net') }}
+Banner {{ item.sshd_issue_file | d(sshd_issue_file) | d('/etc/issue.net') }}

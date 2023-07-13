@@ -1,9 +1,9 @@
 ---
-- name: "(security.borgbackup) include os specific variables"
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
-  tags: ["always"]
+- name: 'security | borgbackup | include distribution-specific variables'
+  ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yml'
+  tags: [ 'always' ]
 
-- import_tasks: "install.yml"
-  tags: ["role::borgbackup", "task::install"]
-- import_tasks: "repository.yml"
-  tags: ["role::borgbackup", "task::repository"]
+- import_tasks: 'install.yml'
+  tags: [ 'role::borgbackup', 'task::install' ]
+- import_tasks: 'repository.yml'
+  tags: [ 'role::borgbackup', 'task::repository' ]

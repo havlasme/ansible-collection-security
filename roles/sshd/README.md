@@ -55,7 +55,7 @@ sshd_moduli_file: '/etc/ssh/moduli'
 
 ### `etc/ssh/sshd_config.d/accept_env.yml`
 
-```yaml title="etc/ssh/sshd_config.d/accept_env.yml"
+```yaml title='etc/ssh/sshd_config.d/accept_env.yml'
 # accept env sent by the ssh client
 sshd_accept_env: 'no'
 ```
@@ -69,7 +69,7 @@ sshd_conf_d_file:
 
 ### `etc/ssh/sshd_config.d/allow_group.yml`
 
-```yaml title="etc/ssh/sshd_config.d/allow_group.yml"
+```yaml title='etc/ssh/sshd_config.d/allow_group.yml'
 # the ssh client must belong to this group, otherwise it will be rejected
 #sshd_allow_group: []
 ```
@@ -83,46 +83,46 @@ sshd_conf_d_file:
 
 ### `etc/ssh/sshd_config.d/authentication.yml`
 
-```yaml title="etc/ssh/sshd_config.d/authentication.yml"
+```yaml title='etc/ssh/sshd_config.d/authentication.yml'
 # enable public key authentication method?
-sshd_pubkey_authentication: "yes"
+sshd_pubkey_authentication: 'yes'
 # enable password authentication method?
-sshd_password_authentication: "yes"
+sshd_password_authentication: 'yes'
 # enable keyboard-interactive authentication method?
-sshd_kbd_interactive_authentication: "no"
+sshd_kbd_interactive_authentication: 'no'
 # use pam?
-sshd_use_pam: "yes"
+sshd_use_pam: 'yes'
 
 # the sshd authentication method list
-sshd_authentication_method: ["any"]
+sshd_authentication_method: [ 'any' ]
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "20_pubkey_password_authentication.yml"
-  src: "etc/ssh/sshd_config.d/authentication.yml.j2"
-  sshd_authentication_method: [ "publickey,password" ]
+- dest: '20_pubkey_password_authentication.yml'
+  src: 'etc/ssh/sshd_config.d/authentication.yml.j2'
+  sshd_authentication_method: [ 'publickey,password' ]
 ```
 
 ### `etc/ssh/sshd_config.d/crypto_policy.yml`
 
-```yaml title="etc/ssh/sshd_config.d/crypto_policy.yml"
+```yaml title='etc/ssh/sshd_config.d/crypto_policy.yml'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
-sshd_crypto_policy: "infosec.mozilla.org"
+sshd_crypto_policy: 'infosec.mozilla.org'
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_crypto_policy_ssh_audit.yml"
-  src: "etc/ssh/sshd_config.d/crypto_policy.yml.j2"
-  sshd_crypto_policy: "ssh-audit.com"
+- dest: '40_crypto_policy_ssh_audit.yml'
+  src: 'etc/ssh/sshd_config.d/crypto_policy.yml.j2'
+  sshd_crypto_policy: 'ssh-audit.com'
 ```
 
 ### `etc/ssh/sshd_config.d/keepalive.yml`
 
-```yaml title="etc/ssh/sshd_config.d/keepalive.yml"
+```yaml title='etc/ssh/sshd_config.d/keepalive.yml'
 # send tcp keepalive message to the client
-sshd_tcp_keep_alive: "yes"
+sshd_tcp_keep_alive: 'yes'
 # the client alive interval (in seconds)
 sshd_client_alive_interval: 60
 # the client alive message count (0 to disable)
@@ -131,96 +131,96 @@ sshd_client_alive_count_max: 0
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_keepalive_300_3.yml"
-  src: "etc/ssh/sshd_config.d/keepalive.yml.j2"
+- dest: '40_keepalive_300_3.yml'
+  src: 'etc/ssh/sshd_config.d/keepalive.yml.j2'
   sshd_client_alive_interval: 300
   sshd_client_alive_count_max: 3
 ```
 
 ### `etc/ssh/sshd_config.d/key_revocation_list.yml`
 
-```yaml title="etc/ssh/sshd_config.d/sshd_key_revocation_list.yml"
-# the sshd key revocation list
+```yaml title='etc/ssh/sshd_config.d/sshd_key_revocation_list.yml'
+# the ssh key revocation list
 #sshd_key_revocation_list_file: "/etc/ssh/sshd_key_revocation_list"
-# the sshd key revocation list template
-#sshd_key_revocation_list_template: "key_revocation_list.j2"
+# the ssh key revocation list template
+#sshd_key_revocation_list_template: "etc/ssh/key_revocation_list.j2"
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "20_key_revocation_list.yml"
-  src: "etc/ssh/sshd_config.d/key_revocation_list.yml.j2"
+- dest: '20_key_revocation_list.yml'
+  src: 'etc/ssh/sshd_config.d/key_revocation_list.yml.j2'
 ```
 
 ### `etc/ssh/sshd_config.d/log_level.yml`
 
-```yaml title="etc/ssh/sshd_config.d/log_level.yml
+```yaml title='etc/ssh/sshd_config.d/log_level.yml'
 # the log verbosity level
-sshd_log_level: "VERBOSE"
+sshd_log_level: 'VERBOSE'
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_log_level_verbose.yml"
-  src: "etc/ssh/sshd_config.d/log_level.yml.j2"
-  sshd_log_level: "VERBOSE"
+- dest: '40_log_level_verbose.yml'
+  src: 'etc/ssh/sshd_config.d/log_level.yml.j2'
+  sshd_log_level: 'VERBOSE'
 ```
 
 ### `etc/ssh/sshd_config.d/permit_root_login.yml`
 
-```yaml title="etc/ssh/sshd_config.d/permit_root_login.yml"
+```yaml title='etc/ssh/sshd_config.d/permit_root_login.yml'
 # permit root login via ssh
-sshd_permit_root_login: "no"
+sshd_permit_root_login: string | d('prohibit-password')
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "20_permit_root_login.yml"
-  src: "etc/ssh/sshd_config.d/no_permit_root_login.yml.j2"
-  sshd_permit_root_login: "no"
+- dest: '20_no_permit_root_login.yml'
+  src: 'etc/ssh/sshd_config.d/no_permit_root_login.yml.j2'
+  sshd_permit_root_login: 'no'
 ```
 
 ### `etc/ssh/sshd_config.d/print_issue.yml`
 
-```yaml title="etc/ssh/sshd_config.d/print_issue.yml"
+```yaml title='etc/ssh/sshd_config.d/print_issue.yml'
 # the sshd issue file
-sshd_issue_file: "/etc/issue.net"
+sshd_issue_file: '/etc/issue.net'
 # the sshd issue template
-#sshd_issue_template: "issue.net.j2"
+#sshd_issue_template: "etc/issue.net.j2"
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_print_issue.yml"
-  src: "etc/ssh/sshd_config.d/print_issue.yml.j2"
+- dest: '40_print_issue.yml'
+  src: 'etc/ssh/sshd_config.d/print_issue.yml.j2'
 ```
 
 ### `etc/ssh/sshd_config.d/print_lastlog.yml`
 
-```yaml title="etc/ssh/sshd_config.d/print_lastlog.yml"
+```yaml title='etc/ssh/sshd_config.d/print_lastlog.yml'
 # print `lastlog` on interactive login
-sshd_print_lastlog: "yes"
+sshd_print_lastlog: 'yes'
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_print_lastlog.yml"
-  src: "etc/ssh/sshd_config.d/print_lastlog.yml.j2"
-  sshd_print_lastlog: "yes"
+- dest: '40_print_lastlog.yml'
+  src: 'etc/ssh/sshd_config.d/print_lastlog.yml.j2'
+  sshd_print_lastlog: 'yes'
 ```
 
 ### `etc/ssh/sshd_config.d/print_motd.yml`
 
-```yaml title="etc/ssh/sshd_config.d/print_motd.yml"
+```yaml title='etc/ssh/sshd_config.d/print_motd.yml'
 # print `/etc/motd` on interactive login
-sshd_print_motd: "no"
+sshd_print_motd: 'no'
 ```
 
 ```yaml
 sshd_conf_d_file:
-- dest: "40_print_motd.yml"
-  src: "etc/ssh/sshd_config.d/no_print_motd.yml.j2"
-  sshd_print_motd: "no"
+- dest: '40_no_print_motd.yml'
+  src: 'etc/ssh/sshd_config.d/print_motd.yml.j2'
+  sshd_print_motd: 'no'
 ```
 
 

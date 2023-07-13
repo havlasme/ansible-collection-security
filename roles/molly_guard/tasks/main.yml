@@ -4,4 +4,4 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::molly-guard', 'task::install' ]
+  tags: [ 'role::molly_guard', 'task::install' ]

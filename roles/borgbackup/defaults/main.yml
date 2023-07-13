@@ -1,14 +1,14 @@
 ---
 # the borgbackup package state ('present', 'absent', 'latest')
-borgbackup_state: "present"
+borgbackup_state: 'present'
 
 # the borgbackup data directory
 borgbackup_datadir: "/var/lib/borgbackup"
 
 # the borgbackup repository list
+## - name: string
+##   comment: string | d('borgbackup_`item.name`')
+##   key: string
+##   storage: string
+##   state: enum('present', 'absent') | d('present')
 borgbackup_repository: []
-# - name: string
-#   comment: string | d('borgbackup_`item.name`')
-#   key: string
-#   storage: string
-#   state: enum('present', 'absent') | d('present')

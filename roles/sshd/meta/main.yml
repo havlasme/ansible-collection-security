@@ -14,5 +14,6 @@ galaxy_info:
     - 'all'
   galaxy_tags:
   - 'linux'
+  - 'security'
   - 'ssh'
   - 'sshd'

@@ -1,7 +1,7 @@
 ---
-- name: "(security.borgbackup) create, update, or remove borgbackup repository"
+- name: 'security | borgbackup | create, update, or delete borgbackup repository'
   include_role:
-    name: "havlasme.linux.user"
+    name: 'havlasme.linux.user'
   vars:
     linux_user:
     - name: "{{ _borgbackup_repository.name | mandatory }}"
@@ -12,6 +12,8 @@
       - key: "{{ lookup('file', _borgbackup_repository.key | d((_borgbackup_repository.name | mandatory) + '/id_ssh.pub')) }}"
         key_options: 'restrict,command="borg serve --restrict-to-path={{ _borgbackup_repository.storage | d(borgbackup_datadir + "/" + (_borgbackup_repository.name | mandatory)) }}"'
         comment: "{{ _borgbackup_repository.comment | d('borgbackup_%s' % (_borgbackup_repository.name | mandatory)) }}"
-  loop: "{{ borgbackup_repository }}"
+  loop: '{{ borgbackup_repository }}'
   loop_control:
     loop_var: "_borgbackup_repository"
+  when:
+  - borgbackup_state != 'absent'
