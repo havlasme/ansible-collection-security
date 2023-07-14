@@ -5,5 +5,5 @@
 
 - import_tasks: 'install.yml'
   tags: [ 'role::borgbackup', 'task::install' ]
-- import_tasks: 'configure.yml'
-  tags: [ 'role::borgbackup', 'task::configure' ]
+- import_tasks: 'repository.yml'
+  tags: [ 'role::borgbackup', 'task::repository' ]

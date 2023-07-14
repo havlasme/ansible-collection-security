@@ -1,0 +1,15 @@
+---
+- name: 'security | borgbackup | delete backup job'
+  ansible.builtin.file:
+    dest: '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}'
+    state: 'absent'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_absent") | list }}'
+
+- name: 'security | borgbackup | create or update backup job'
+  ansible.builtin.template:
+    dest: '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}'
+    src: '{{ item.template | d(borgbackup_job_template) }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'

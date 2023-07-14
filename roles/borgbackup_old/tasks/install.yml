@@ -6,10 +6,10 @@
 
 - name: 'security | borgbackup | create directory structure'
   ansible.builtin.file:
-    dest: '{{ borgbackup_job_d }}'
+    name: "{{ borgbackup_datadir }}"
     owner: 'root'
     group: 'root'
-    mode: '0700'
+    mode: '0755'
     state: 'directory'
   when:
-  - borgbackup_job | length > 0
+  - borgbackup_state != 'absent'

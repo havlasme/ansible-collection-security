@@ -1,4 +1,27 @@
 ---
+- name: 'security | borgbackup | create, update, or delete repository user'
+  ansible.builtin.user:
+    name: '{{ item.user | d(item.name | mandatory) }}'
+    home: '{{ item. }}'
+    createhome: true
+    shell: '/bin/bash'
+    comment: '{{ item.comment | d("borgbackup@%s" % item.name | mandatory) }}'
+    state: '{{ item.state | d("present") }}'
+  loop: '{{ borgbackup_repository }}'
+  when:
+  - borgbackup_state != 'absent'
+
+- name: 'security | borgbackup | create, update, or delete repository'
+  ansible.builtin.file:
+    dest: '{{ item.storage | d(borgbackup_datadir + "/" + item.name | mandatory) }}'
+    owner: '{{ item.user | d(item.name | mandatory) }}'
+    group: '{{ item.user | d(item.name | mandatory) }}'
+    mode: '0700'
+    state: '{{ item.state | d("present") | regex_replace("present", "directory") }}'
+  loop: '{{ borgbackup_repository }}'
+  when:
+  - borgbackup_state != 'absent
+
 - name: 'security | borgbackup | create, update, or delete borgbackup repository'
   include_role:
     name: 'havlasme.linux.user'
