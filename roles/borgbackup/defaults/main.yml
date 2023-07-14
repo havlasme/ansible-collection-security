@@ -1,22 +1,26 @@
 ---
-# the borgbackup package state ('present', 'latest', 'absent')
+# the borgbackup package state ('present', 'latest')
 borgbackup_state: 'present'
 
 # the borgbackup job.d directory
-borgbackup_job_d: '/etc/borgmatic'
+borgbackup_job_d: '/etc/borgbackup'
 
 # the borgbackup job list
 ## - name: string
 ##   passphrase: string
 ##   repository: dict[]
 ##   - name: string
+##     host: string
 ##     host_pub_key: string | d(omit)
 ##     state: enum('present', 'absent') | d('present')
 ##   management: dict[]
 ##   - host: string
+##   user: string | d('borgbackup')
+##   home: string | d('/var/lib/borgbackup')
+##   group: string | d(item.user)
 ##   template: string | d(borgbackup_job_template)
 ##   borgbackup_file: string | d(borgbackup_job_d + '/' + item.name + '.yaml')
 ##   state: enum('present', 'absent') | d('present')
 borgbackup_job: []
 # the borgbackup job default template
-borgbackup_job_template: 'etc/borgmatic/__default__.yaml.j2'
+borgbackup_job_template: 'etc/borgbackup/__default__.yaml.j2'

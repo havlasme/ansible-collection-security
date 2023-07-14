@@ -1,4 +1,43 @@
 ---
+- name: 'security | borgbackup | create or update `borgbackup` user'
+  ansible.builtin.user:
+    name: '{{ item.user | d("borgbackup") }}'
+    home: '{{ item.home | d("/var/lib/borgbackup") }}'
+    createhome: true
+    shell: '/usr/sbin/nologin'
+    system: true
+    state: '{{ borgbackup_state }}'
+  loop: '{{ borgbackup_job }}'
+
+- name: 'security | borgbackup | TODO'
+  ansible.builtin.file:
+    dest: '{{ item.home | d("/var/lib/borgbackup") }}/.ssh'
+    owner: '{{ item.user | d("borgbackup") }}'
+    group: '{{ item.group | d(item.user) | d("borgbackup") }}'
+    mode: '0700'
+    state: 'directory'
+  loop: '{{ borgbackup_job }}'
+
+- name: 'security | borgbackup | create ssh key'
+  community.crypto.openssh_keypair:
+    path: '{{ item.home | d("/var/lib/borgbackup") }}/.ssh/id_ed25519'
+    owner: '{{ item.user | d("borgbackup") }}'
+    group: '{{ item.group | d(item.user) | d("borgbackup") }}'
+    mode: '0600'
+    type: 'ed25519'
+  loop: '{{ borgbackup_job }}'
+
+- name: 'security | borgbackup | TODO'
+  community.general.sudoers:
+    name: 'borgbackup'
+    user: '{{ item.user | d("borgbackup") }}'
+    nopassword: true
+    commands:
+    - '/opt/borgmatic/bin/borg'
+    - '/usr/local/bin/borgmatic -c "{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}"'
+    state: 'present'
+  loop: '{{ borgbackup_job }}'
+
 - name: 'security | borgbackup | delete backup job'
   ansible.builtin.file:
     dest: '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}'
@@ -13,3 +52,5 @@
     group: 'root'
     mode: '0600'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
+
+- import_tasks: "configure/repository.yml"

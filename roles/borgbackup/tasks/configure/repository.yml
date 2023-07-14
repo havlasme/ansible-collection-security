@@ -1,0 +1,7 @@
+---
+- name: 'security | borgbackup | TODO'
+  delegate_to: '{{ item.host }}'
+  ansible.builtin.user:
+    name: '{{ item.user }}'
+    home: '{{ item.home }}'
+    state: 'present'
