@@ -9,16 +9,16 @@ borgbackup_state: 'present'
 ##   - name: string
 ##     host: string
 ##     user: string
-##     home: string | d('/var/lib/borgbackup/' + item.user)
+##     home: string
 ##     group: string | d(item.user)
 ##     host_pub_key: string | d(omit)
 ##     encryption: string | d('repokey')
 ##     state: enum('present', 'absent') | d('present')
 ##   management: dict[]
 ##   - host: string
-##   user: string | d('borgbackup')
-##   home: string | d('/var/lib/borgbackup')
+##   user: string | d('root')
 ##   group: string | d(item.user)
+##   home: string | d(omit)
 ##   template: string | d(borgbackup_job_template)
 ##   borgbackup_file: string | d(borgbackup_job_d + '/' + item.name + '.yaml')
 ##   state: enum('present', 'absent') | d('present')

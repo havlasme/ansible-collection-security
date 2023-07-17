@@ -1,30 +1,30 @@
 ---
 - name: 'security | borgbackup | create or update local user'
   ansible.builtin.user:
-    name: '{{ item.user | d("borgbackup") }}'
-    home: '{{ item.home | d("/var/lib/borgbackup") }}'
+    name: '{{ item.user | mandatory }}'
+    home: '{{ item.home | mandatory }}'
     createhome: true
     shell: '/usr/sbin/nologin'
     system: true
     state: '{{ borgbackup_state }}'
   loop: '{{ borgbackup_job }}'
   when:
-  - item.user | d('borgbackup') != 'root'
+  - item.user | d('root') != 'root'
 
-- name: 'security | borgbackup | TODO'
+- name: 'security | borgbackup | ensure local user ssh config directory'
   ansible.builtin.file:
-    dest: '{{ item.home | d("/var/lib/borgbackup") }}/.ssh'
-    owner: '{{ item.user | d("borgbackup") }}'
-    group: '{{ item.group | d(item.user) | d("borgbackup") }}'
+    dest: '{{ item.home | d("/root") }}/.ssh'
+    owner: '{{ item.user | d("root") }}'
+    group: '{{ item.group | d(item.user) | d("root") }}'
     mode: '0700'
     state: 'directory'
   loop: '{{ borgbackup_job }}'
 
 - name: 'security | borgbackup | create ssh key'
   community.crypto.openssh_keypair:
-    path: '{{ item.home | d("/var/lib/borgbackup") }}/.ssh/id_ed25519'
-    owner: '{{ item.user | d("borgbackup") }}'
-    group: '{{ item.group | d(item.user) | d("borgbackup") }}'
+    path: '{{ item.home | d("/root") }}/.ssh/id_ed25519'
+    owner: '{{ item.user | d("root") }}'
+    group: '{{ item.group | d(item.user) | d("root") }}'
     mode: '0600'
     type: 'ed25519'
   loop: '{{ borgbackup_job }}'
@@ -32,13 +32,15 @@
 - name: 'security | borgbackup | TODO'
   community.general.sudoers:
     name: 'borgbackup'
-    user: '{{ item.user | d("borgbackup") }}'
+    user: '{{ item.user | mandatory }}'
     nopassword: true
     commands:
     - '/usr/bin/borg'
     - '/usr/bin/borgmatic -c "{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}"'
     state: 'present'
   loop: '{{ borgbackup_job }}'
+  when:
+  - item.user | d('root') != 'root'
 
 - name: 'security | borgbackup | delete backup job'
   ansible.builtin.file:
@@ -61,7 +63,6 @@
     key: "{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}"
     hash_host: true
   loop: '{{ borgbackup_job | subelements("repository") }}'
-
 
 - import_tasks: "configure/repository.yml"
 

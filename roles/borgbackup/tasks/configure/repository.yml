@@ -21,7 +21,7 @@
 
 - name: 'security | borgbackup | TODO 3'
   ansible.builtin.slurp:
-    src: '{{ item.0.home | d("/var/lib/borgbackup") }}/.ssh/id_ed25519.pub'
+    src: '{{ item.0.home | d("/root") }}/.ssh/id_ed25519.pub'
   register: test_fact
   loop: '{{ borgbackup_job | subelements("repository") }}'
 
