@@ -1,7 +1,36 @@
 ---
-- name: 'security | borgbackup | TODO'
-  delegate_to: '{{ item.host }}'
+- name: 'security | borgbackup | TODO 1'
+  delegate_to: '{{ item.1.host }}'
   ansible.builtin.user:
-    name: '{{ item.user }}'
-    home: '{{ item.home }}'
+    name: '{{ item.1.user }}'
+    home: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}'
+    createhome: true
+    shell: '/bin/bash'
     state: 'present'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+
+- name: 'security | borgbackup | TODO 2'
+  delegate_to: '{{ item.1.host }}'
+  ansible.builtin.file:
+    dest: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}'
+    owner: '{{ item.1.user }}'
+    group: '{{ item.1.group | d(item.1.user) }}'
+    mode: '0700'
+    state: 'directory'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+
+- name: 'security | borgbackup | TODO 3'
+  ansible.builtin.slurp:
+    src: '{{ item.0.home | d("/var/lib/borgbackup") }}/.ssh/id_ed25519.pub'
+  register: test_fact
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+
+- name: 'security | borgbackup | TODO 4'
+  delegate_to: '{{ item.1.host }}'
+  ansible.posix.authorized_key:
+    user: '{{ item.1.user }}'
+    key: '{{ test_fact.results[my_idx].content | b64decode }}'
+    key_options: 'restrict,command="borg serve --restrict-to-path={{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}"'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop_control:
+    index_var: my_idx

@@ -13,3 +13,4 @@
     state: 'directory'
   when:
   - borgbackup_job | length > 0
+...

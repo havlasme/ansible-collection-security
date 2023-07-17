@@ -22,12 +22,14 @@ location:
   source_directories:
   {{ item.directory | mandatory | to_nice_yaml(indent=2) | indent(2) }}
   repositories:
-  - "{{ inventory_hostname }}@{{ item.repository.name | mandatory }}:{{ item.name | mandatory }}"
+{% for sitem in item.repository %}
+  - "ssh://{{ sitem.user | mandatory }}@{{ sitem.host | mandatory }}/./{{ item.name | mandatory }}"
+{% endfor %}
   exclude_if_present: "{{ item.exclude_mark | d('.nobackup') }}"
 storage:
   encryption_passphrase: "{{ item.passphrase | mandatory }}"
   compression: "{{ item.compression | d('auto,zstd') }}"
-  ssh_command: "ssh -i {{ item.key | mandatory }}"
+  ssh_command: "ssh -i {{ item.home | d("/var/lib/borgbackup") }}/.ssh/id_ed25519"
   archive_name_format: "{{ item.name | mandatory }}-{now}"
 retention:
   keep_daily: {{ item.retention.daily | d(7) }}

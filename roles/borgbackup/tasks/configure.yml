@@ -1,5 +1,5 @@
 ---
-- name: 'security | borgbackup | create or update `borgbackup` user'
+- name: 'security | borgbackup | create or update local user'
   ansible.builtin.user:
     name: '{{ item.user | d("borgbackup") }}'
     home: '{{ item.home | d("/var/lib/borgbackup") }}'
@@ -8,6 +8,8 @@
     system: true
     state: '{{ borgbackup_state }}'
   loop: '{{ borgbackup_job }}'
+  when:
+  - item.user | d('borgbackup') != 'root'
 
 - name: 'security | borgbackup | TODO'
   ansible.builtin.file:
@@ -33,8 +35,8 @@
     user: '{{ item.user | d("borgbackup") }}'
     nopassword: true
     commands:
-    - '/opt/borgmatic/bin/borg'
-    - '/usr/local/bin/borgmatic -c "{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}"'
+    - '/usr/bin/borg'
+    - '/usr/bin/borgmatic -c "{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}"'
     state: 'present'
   loop: '{{ borgbackup_job }}'
 
@@ -53,4 +55,19 @@
     mode: '0600'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
 
+- name: "(security.borgmatic) manage borgbackup repository host public key"
+  ansible.builtin.known_hosts:
+    host: "{{ item.1.host | mandatory }}"
+    key: "{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}"
+    hash_host: true
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+
+
 - import_tasks: "configure/repository.yml"
+
+- name: 'security | borgbackup | TODO 5'
+  ansible.builtin.shell: |
+    borgmatic -c '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.0.name | mandatory) + ".yaml") }}' init --encryption={{ item.1.encryption | d("repokey") }}
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  register: borgbackup_init
+  changed_when: borgbackup_init.rc == 0 and borgbackup_init.stderr | length > 0
