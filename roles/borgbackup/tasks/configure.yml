@@ -6,12 +6,23 @@
     createhome: true
     shell: '/usr/sbin/nologin'
     system: true
-    state: '{{ borgbackup_state }}'
   loop: '{{ borgbackup_job }}'
   when:
   - item.user | d('root') != 'root'
 
-- name: 'security | borgbackup | ensure local user ssh config directory'
+- name: 'security | borgbackup | create sudo rule for local user'
+  community.general.sudoers:
+    name: 'borgbackup'
+    user: '{{ item.user | mandatory }}'
+    nopassword: true
+    commands:
+    - '/usr/bin/borgmatic -c "{{ borgbackup_job_d }}"'
+    validation: 'required'
+  loop: '{{ borgbackup_job }}'
+  when:
+  - item.user | d('root') != 'root'
+
+- name: 'security | borgbackup | create ssh configuration directory'
   ansible.builtin.file:
     dest: '{{ item.home | d("/root") }}/.ssh'
     owner: '{{ item.user | d("root") }}'
@@ -20,55 +31,45 @@
     state: 'directory'
   loop: '{{ borgbackup_job }}'
 
-- name: 'security | borgbackup | create ssh key'
+- name: 'security | borgbackup | generate local ssh key'
   community.crypto.openssh_keypair:
-    path: '{{ item.home | d("/root") }}/.ssh/id_ed25519'
+    path: '{{ item.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}'
     owner: '{{ item.user | d("root") }}'
     group: '{{ item.group | d(item.user) | d("root") }}'
     mode: '0600'
-    type: 'ed25519'
+    type: '{{ borgbackup_ssh_key_type }}'
   loop: '{{ borgbackup_job }}'
 
-- name: 'security | borgbackup | TODO'
-  community.general.sudoers:
-    name: 'borgbackup'
-    user: '{{ item.user | mandatory }}'
-    nopassword: true
-    commands:
-    - '/usr/bin/borg'
-    - '/usr/bin/borgmatic -c "{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}"'
-    state: 'present'
-  loop: '{{ borgbackup_job }}'
-  when:
-  - item.user | d('root') != 'root'
+- name: 'security | borgbackup | ensure remote repository host public key'
+  ansible.builtin.known_hosts:
+    host: '{{ item.1.host | mandatory }}'
+    key: '{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}'
+    hash_host: true
+  loop: '{{ borgbackup_job | subelements("repository") }}'
 
-- name: 'security | borgbackup | delete backup job'
+- name: 'security | borgbackup | delete job.d configuration'
   ansible.builtin.file:
-    dest: '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}'
+    dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
     state: 'absent'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_absent") | list }}'
 
-- name: 'security | borgbackup | create or update backup job'
+- name: 'security | borgbackup | create or update job.d configuration'
   ansible.builtin.template:
-    dest: '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml") }}'
+    dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
     src: '{{ item.template | d(borgbackup_job_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0600'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
 
-- name: "(security.borgmatic) manage borgbackup repository host public key"
-  ansible.builtin.known_hosts:
-    host: "{{ item.1.host | mandatory }}"
-    key: "{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}"
-    hash_host: true
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+- ansible.builtin.import_tasks: 'configure/repository.yml'
 
-- import_tasks: "configure/repository.yml"
-
-- name: 'security | borgbackup | TODO 5'
-  ansible.builtin.shell: |
-    borgmatic -c '{{ item.borgbackup_file | d(borgbackup_job_d + "/" + (item.0.name | mandatory) + ".yaml") }}' init --encryption={{ item.1.encryption | d("repokey") }}
+- name: 'security | borgbackup | initialize backup repository'
+  ansible.builtin.command: |
+    borgmatic init
+    --config '{{ borgbackup_job_d + "/" + (item.0.name | mandatory) + ".yaml" }}'
+    --encryption={{ item.1.encryption | d("repokey") }}
   loop: '{{ borgbackup_job | subelements("repository") }}'
   register: borgbackup_init
   changed_when: borgbackup_init.rc == 0 and borgbackup_init.stderr | length > 0
+...

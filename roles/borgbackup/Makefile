@@ -1,3 +1,4 @@
+ANSIBLE_LINT = @ansible-lint
 MOLECULE = @molecule
 
 .PHONY: lint

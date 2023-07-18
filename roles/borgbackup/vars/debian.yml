@@ -1,3 +1,6 @@
 ---
 # the borgbackup package name
 borgbackup_package_name: [ 'borgbackup', 'borgmatic' ]
+# the borgbackup service name
+borgbackup_service_name: 'borgbackup.timer'
+...

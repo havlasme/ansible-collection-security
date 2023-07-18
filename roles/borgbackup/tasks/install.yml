@@ -13,4 +13,15 @@
     state: 'directory'
   when:
   - borgbackup_job | length > 0
+
+- name: 'security | borgbackup | create systemd service and timer'
+  ansible.builtin.template:
+    dest: '/etc/systemd/system/{{ item.dest }}'
+    src: '{{ item.src }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop:
+  - { dest: '{{ borgbackup_service_name | regex_replace("\.timer$", ".service") }}', src: 'etc/systemd/system/borgbackup.service.j2' }
+  - { dest: '{{ borgbackup_service_name }}', src: 'etc/systemd/system/borgbackup.timer.j2' }
 ...

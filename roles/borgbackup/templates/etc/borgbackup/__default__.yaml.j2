@@ -1,4 +1,9 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
+{#  --- emulate ansible copy ---
+ #
+ # the content (as in ansible copy module)
+ # content: string
+-#}
 {{ ansible_managed | comment }}
 
 {{ item.content | mandatory }}

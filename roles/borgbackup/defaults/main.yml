@@ -1,30 +1,33 @@
 ---
 # the borgbackup package state ('present', 'latest')
 borgbackup_state: 'present'
+# should start the borgbackup service at boot
+borgbackup_enabled: true
 
 # the borgbackup job list
 ## - name: string
 ##   passphrase: string
 ##   repository: dict[]
-##   - name: string
-##     host: string
+##   - host: string
 ##     user: string
 ##     home: string
 ##     group: string | d(item.user)
-##     host_pub_key: string | d(omit)
 ##     encryption: string | d('repokey')
+##     host_pub_key: string | d(omit)
 ##     state: enum('present', 'absent') | d('present')
 ##   management: dict[]
 ##   - host: string
 ##   user: string | d('root')
-##   group: string | d(item.user)
 ##   home: string | d(omit)
+##   group: string | d(item.user)
 ##   template: string | d(borgbackup_job_template)
-##   borgbackup_file: string | d(borgbackup_job_d + '/' + item.name + '.yaml')
 ##   state: enum('present', 'absent') | d('present')
 borgbackup_job: []
 # the borgbackup job default template
 borgbackup_job_template: 'etc/borgbackup/__default__.yaml.j2'
 # the borgbackup job.d directory
 borgbackup_job_d: '/etc/borgbackup'
+
+# the borgbackup ssh key type
+borgbackup_ssh_key_type: 'ed25519'
 ...
