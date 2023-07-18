@@ -5,11 +5,11 @@ Ansible Collection - havlasme.security
 
 An [Ansible](https://www.ansible.com/) collection of security-related roles, plugins, and modules:
 
-- [havlasme.security.borgbackup](/roles/borgbackup_old/README.md)
+- [havlasme.security.borgbackup](/roles/borgbackup/README.md)
 - [havlasme.security.molly_guard](/roles/molly_guard/README.md)
 - [havlasme.security.nftables](/roles/nftables/README.md)
-- [havlasme.security.ssh_key](/roles/ssh_key/README.md)
 - [havlasme.security.sshd](/roles/sshd/README.md)
+
 
 Installation
 ------------
@@ -24,6 +24,7 @@ collections:
 - name: havlasme.security
 ```
 
+
 Development
 -----------
 
@@ -31,19 +32,26 @@ Development
 make build
 ```
 
+```shell title="ansible-lint"
+make lint
+```
+
 ```shell title="molecule"
 make test
 ```
+
 
 License
 -------
 
 Apache-2.0
 
+
 Author Information
 ------------------
 
 Created by [Tomáš Havlas](https://havlas.me/).
+
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
 [license-link]: LICENSE

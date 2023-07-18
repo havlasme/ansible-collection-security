@@ -2,14 +2,17 @@
 dependencies: []
 
 galaxy_info:
+  description: 'An Ansible role to install and configure molly-guard on Debian or Ubuntu.'
   author: 'havlas.me'
-  description: 'An Ansible role to install and configure molly-guard on Debian.'
   company: 'havlas.me'
   issue_tracker_url: 'https://gitlab.com/havlas.me/ansible-collection-security/-/issues'
   license: 'Apache-2.0'
   min_ansible_version: '2.9'
   platforms:
   - name: 'Debian'
+    versions:
+    - 'all'
+  - name: 'Ubuntu'
     versions:
     - 'all'
   galaxy_tags:

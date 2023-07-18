@@ -12,11 +12,13 @@ borgbackup_enabled: true
 ##     user: string
 ##     home: string
 ##     group: string | d(item.user)
+##     append_only: boolean | d(false)
 ##     encryption: string | d('repokey')
 ##     host_pub_key: string | d(omit)
+##     management: dict[] | d(omit)
+##     - host: string
+##       state: enum('present', 'absent') | d('present')
 ##     state: enum('present', 'absent') | d('present')
-##   management: dict[]
-##   - host: string
 ##   user: string | d('root')
 ##   home: string | d(omit)
 ##   group: string | d(item.user)
