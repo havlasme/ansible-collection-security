@@ -64,6 +64,22 @@
 
 - ansible.builtin.import_tasks: 'configure/repository.yml'
 
+- name: 'security | borgbackup | download public ssh key'
+  ansible.builtin.slurp:
+    src: '{{ item.0.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}.pub'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  register: borgbackup_client_pub_key
+
+- name: 'security | borgbackup | configure ssh key at remote repository'
+  delegate_to: '{{ item.1.host }}'
+  ansible.posix.authorized_key:
+    user: '{{ item.1.user }}'
+    key: '{{ borgbackup_client_pub_key.results[borgbackup_client_pub_key_index].content | b64decode }}'
+    key_options: 'restrict,command="borg serve {% if item.1.append_only | d(false) | bool %}--append-only {% endif %}--restrict-to-path={{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}"'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop_control:
+    index_var: borgbackup_client_pub_key_index
+
 - name: 'security | borgbackup | initialize backup repository'
   ansible.builtin.command: |
     borgmatic init
