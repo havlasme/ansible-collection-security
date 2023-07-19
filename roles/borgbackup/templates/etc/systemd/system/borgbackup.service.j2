@@ -8,8 +8,9 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+EnvironmentFile=/etc/default/{{ borgbackup_service_name | regex_replace('\.timer$', '') }}
 ExecStartPre=sleep 1m
-ExecStart=systemd-inhibit --who="borgbackup" --what="sleep:shutdown" --why="Prevent interrupting scheduled backup" /usr/bin/borgmatic --config "{{ borgbackup_job_d }}" --verbosity -2 --syslog-verbosity 1
+ExecStart=systemd-inhibit --who="borgbackup" --what="sleep:shutdown" --why="Prevent interrupting scheduled backup" /usr/bin/borgmatic $OPTIONS
 Restart=no
 LogRateLimitIntervalSec=0
 

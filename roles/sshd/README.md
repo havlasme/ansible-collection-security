@@ -3,7 +3,7 @@ havlasme.security.sshd
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure sshd service on [Debian](https://www.debian.org/).
+An [Ansible](https://www.ansible.com/) role to install and configure [sshd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
 
 Role Variables

@@ -1,5 +1,5 @@
 ---
-- name: 'security | borgbackup | create or update remote repository user'
+- name: 'security | borgbackup | repository | create or update remote repository user'
   delegate_to: '{{ item.1.host }}'
   ansible.builtin.user:
     name: '{{ item.1.user }}'
@@ -9,7 +9,7 @@
     state: 'present'
   loop: '{{ borgbackup_job | subelements("repository") }}'
 
-- name: 'security | borgbackup | create ssh configuration directory'
+- name: 'security | borgbackup | repository | create ssh configuration directory'
   delegate_to: '{{ item.1.host }}'
   ansible.builtin.file:
     dest: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}'

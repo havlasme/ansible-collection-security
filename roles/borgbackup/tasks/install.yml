@@ -1,10 +1,10 @@
 ---
-- name: 'security | borgbackup | install or update package via apt'
+- name: 'security | borgbackup | install or update borgbackup package via apt'
   ansible.builtin.apt:
     name: '{{ borgbackup_package_name }}'
     state: '{{ borgbackup_state }}'
 
-- name: 'security | borgbackup | create directory structure'
+- name: 'security | borgbackup | create configuration directory structure'
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d }}'
     owner: 'root'
@@ -14,14 +14,18 @@
   when:
   - borgbackup_job | length > 0
 
-- name: 'security | borgbackup | create systemd service and timer'
+- name: 'security | borgbackup | create borgbackup systemd service'
   ansible.builtin.template:
-    dest: '/etc/systemd/system/{{ item.dest }}'
+    dest: '{{ item.dest }}'
     src: '{{ item.src }}'
     owner: 'root'
     group: 'root'
     mode: '0644'
   loop:
-  - { dest: '{{ borgbackup_service_name | regex_replace("\.timer$", ".service") }}', src: 'etc/systemd/system/borgbackup.service.j2' }
-  - { dest: '{{ borgbackup_service_name }}', src: 'etc/systemd/system/borgbackup.timer.j2' }
+  - dest: '/etc/systemd/system/{{ borgbackup_service_name | regex_replace("\.timer$", ".service") }}'
+    src: 'etc/systemd/system/borgbackup.service.j2'
+  - dest: '/etc/systemd/system/{{ borgbackup_service_name }}'
+    src: 'etc/systemd/system/borgbackup.timer.j2'
+  - dest: '/etc/default/{{ borgbackup_service_name | regex_replace("\.timer$", "") }}'
+    src: 'etc/default/borgbackup.j2'
 ...

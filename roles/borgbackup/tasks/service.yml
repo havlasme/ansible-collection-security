@@ -1,5 +1,5 @@
 ---
-- name: 'security | borgbackup | start and enable service'
+- name: 'security | borgbackup | start and enable borgbackup service'
   ansible.builtin.service:
     name: '{{ borgbackup_service_name }}'
     enabled: '{{ borgbackup_enabled }}'

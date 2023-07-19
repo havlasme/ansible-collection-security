@@ -21,10 +21,12 @@
 {{ ansible_managed | comment }}
 
 location:
+{% if item.directory is defined %}
   source_directories:
   {{ item.directory | mandatory | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
   repositories:
-{% for sitem in item.repository %}
+{% for sitem in item.repository | mandatory %}
   - "ssh://{{ sitem.user | mandatory }}@{{ sitem.host | mandatory }}/./{{ item.name | mandatory }}"
 {% endfor %}
   exclude_if_present: "{{ item.exclude_mark | d('.nobackup') }}"

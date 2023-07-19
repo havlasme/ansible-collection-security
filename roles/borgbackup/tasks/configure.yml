@@ -88,4 +88,6 @@
   loop: '{{ borgbackup_job | subelements("repository") }}'
   register: borgbackup_init
   changed_when: borgbackup_init.rc == 0 and borgbackup_init.stderr | length > 0
+
+- ansible.builtin.import_tasks: 'configure/management.yml'
 ...
