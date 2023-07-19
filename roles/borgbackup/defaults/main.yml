@@ -5,9 +5,16 @@ borgbackup_state: 'present'
 borgbackup_enabled: true
 # the borgbackup service option
 borgbackup_service_option:
-- --config {{ borgbackup_job_d | quote }}
-- --verbosity -2
-- --syslog-verbosity 1
+- '--config {{ borgbackup_job_d | quote }}'
+- '--verbosity -2'
+- '--syslog-verbosity 1'
+
+# the borgbackup dedicated user
+borgbackup_user: 'root'
+# the borgbackup dedicated group
+borgbackup_group: '{{ borgbackup_user }}'
+# the borgbackup dedicated home directory
+borgbackup_home: '/root'
 
 # the borgbackup job list
 ## - name: string
@@ -26,9 +33,6 @@ borgbackup_service_option:
 ##       home: string | d(omit)
 ##       group: string | d(item.user)
 ##     state: enum('present', 'absent') | d('present')
-##   user: string | d('root')
-##   home: string | d(omit)
-##   group: string | d(item.user)
 ##   template: string | d(borgbackup_job_template)
 ##   state: enum('present', 'absent') | d('present')
 borgbackup_job: []
@@ -36,7 +40,6 @@ borgbackup_job: []
 borgbackup_job_template: 'etc/borgbackup/__default__.yaml.j2'
 # the borgbackup job.d directory
 borgbackup_job_d: '/etc/borgbackup'
-
 # the borgbackup ssh key type
 borgbackup_ssh_key_type: 'ed25519'
 

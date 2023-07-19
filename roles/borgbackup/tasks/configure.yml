@@ -1,59 +1,58 @@
 ---
-- name: 'security | borgbackup | create or update local user'
+- name: 'security | borgbackup | configure | create borgbackup client group'
+  ansible.builtin.group:
+    name: '{{ borgbackup_group }}'
+    system: true
+  when:
+  - borgbackup_group != 'root'
+
+- name: 'security | borgbackup | configure | create borgbackup client user'
   ansible.builtin.user:
-    name: '{{ item.user | mandatory }}'
-    home: '{{ item.home | mandatory }}'
+    name: '{{ borgbackup_user }}'
+    home: '{{ borgbackup_home }}'
     createhome: true
+    group: '{{ borgbackup_group }}'
     shell: '/usr/sbin/nologin'
     system: true
-  loop: '{{ borgbackup_job }}'
   when:
-  - item.user | d('root') != 'root'
+  - borgbackup_user != 'root'
 
-- name: 'security | borgbackup | create sudo rule for local user'
-  community.general.sudoers:
-    name: 'borgbackup'
-    user: '{{ item.user | mandatory }}'
-    nopassword: true
-    commands:
-    - '/usr/bin/borgmatic -c "{{ borgbackup_job_d }}"'
-    validation: 'required'
-  loop: '{{ borgbackup_job }}'
-  when:
-  - item.user | d('root') != 'root'
-
-- name: 'security | borgbackup | create ssh configuration directory'
+- name: 'security | borgbackup | configure | create borgbackup client ssh configuration directory'
   ansible.builtin.file:
-    dest: '{{ item.home | d("/root") }}/.ssh'
-    owner: '{{ item.user | d("root") }}'
-    group: '{{ item.group | d(item.user) | d("root") }}'
+    dest: '{{ borgbackup_home }}/.ssh'
+    owner: '{{ borgbackup_user }}'
+    group: '{{ borgbackup_group }}'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job }}'
 
-- name: 'security | borgbackup | generate local ssh key'
+- name: 'security | borgbackup | configure | generate borgbackup client ssh key'
   community.crypto.openssh_keypair:
-    path: '{{ item.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}'
-    owner: '{{ item.user | d("root") }}'
-    group: '{{ item.group | d(item.user) | d("root") }}'
+    path: '{{ borgbackup_home }}/.ssh/id_{{ borgbackup_ssh_key_type }}'
+    owner: '{{ borgbackup_user }}'
+    group: '{{ borgbackup_group }}'
     mode: '0600'
     type: '{{ borgbackup_ssh_key_type }}'
-  loop: '{{ borgbackup_job }}'
 
-- name: 'security | borgbackup | ensure remote repository host public key'
+- name: 'security | borgbackup | configure | add repository host key to known host list'
   ansible.builtin.known_hosts:
     host: '{{ item.1.host | mandatory }}'
     key: '{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}'
     hash_host: true
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop: '{{ borgbackup_job | subelements("repository") 
+    | selectattr("0.state", "havlasme.security.is_present") | list
+    | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.host | mandatory }}'
 
-- name: 'security | borgbackup | delete job.d configuration'
+- name: 'security | borgbackup | configure | delete borgbackup job configuration'
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
     state: 'absent'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_absent") | list }}'
+  loop_control:
+    label: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
 
-- name: 'security | borgbackup | create or update job.d configuration'
+- name: 'security | borgbackup | configure | create or update borgbackup job configuration'
   ansible.builtin.template:
     dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
     src: '{{ item.template | d(borgbackup_job_template) }}'
@@ -61,8 +60,8 @@
     group: 'root'
     mode: '0600'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
-
-- ansible.builtin.import_tasks: 'configure/repository.yml'
+  loop_control:
+    label: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
 
 - name: 'security | borgbackup | download public ssh key'
   ansible.builtin.slurp:

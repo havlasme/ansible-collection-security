@@ -4,9 +4,11 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::borgbackup', 'task::install' ]
+  tags: [ 'role::borgbackup', 'task::install', 'role::borgbackup:install' ]
+- ansible.builtin.import_tasks: 'repository.yml'
+  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure', 'role::borgbackup:repository' ]
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::borgbackup', 'task::configure' ]
+  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure' ]
 - ansible.builtin.import_tasks: 'service.yml'
-  tags: [ 'role::borgbackup', 'task::service' ]
+  tags: [ 'role::borgbackup', 'task::service', 'role::borgbackup:service' ]
 ...

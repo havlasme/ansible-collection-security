@@ -1,15 +1,15 @@
 ---
-- name: 'security | borgbackup | repository | create or update remote repository user'
+- name: 'security | borgbackup | repository | create, update, or delete borgbackup repository user'
   delegate_to: '{{ item.1.host }}'
   ansible.builtin.user:
     name: '{{ item.1.user }}'
     home: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}'
     createhome: true
     shell: '/bin/bash'
-    state: 'present'
+    state: '{{ item.1.state | d(item.0.state) | d("present") }}'
   loop: '{{ borgbackup_job | subelements("repository") }}'
 
-- name: 'security | borgbackup | repository | create ssh configuration directory'
+- name: 'security | borgbackup | repository | create borgbackup repository ssh configuration directory'
   delegate_to: '{{ item.1.host }}'
   ansible.builtin.file:
     dest: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}'
@@ -17,5 +17,7 @@
     group: '{{ item.1.group | d(item.1.user) }}'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop: '{{ borgbackup_job | subelements("repository")
+    | selectattr("0.state", "havlasme.security.is_present") | list
+    | selectattr("1.state", "havlasme.security.is_present") | list }}'
 ...

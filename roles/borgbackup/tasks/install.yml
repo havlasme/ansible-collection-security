@@ -1,20 +1,18 @@
 ---
-- name: 'security | borgbackup | install or update borgbackup package via apt'
+- name: 'security | borgbackup | install | install or update borgbackup package via apt'
   ansible.builtin.apt:
     name: '{{ borgbackup_package_name }}'
     state: '{{ borgbackup_state }}'
 
-- name: 'security | borgbackup | create configuration directory structure'
+- name: 'security | borgbackup | install | create configuration directory structure'
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d }}'
     owner: 'root'
     group: 'root'
     mode: '0700'
     state: 'directory'
-  when:
-  - borgbackup_job | length > 0
 
-- name: 'security | borgbackup | create borgbackup systemd service'
+- name: 'security | borgbackup | install | create borgbackup systemd service unit'
   ansible.builtin.template:
     dest: '{{ item.dest }}'
     src: '{{ item.src }}'
@@ -28,4 +26,6 @@
     src: 'etc/systemd/system/borgbackup.timer.j2'
   - dest: '/etc/default/{{ borgbackup_service_name | regex_replace("\.timer$", "") }}'
     src: 'etc/default/borgbackup.j2'
+  loop_control:
+    label: '{{ item.dest }}'
 ...
