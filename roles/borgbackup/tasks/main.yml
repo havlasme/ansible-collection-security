@@ -9,6 +9,8 @@
   tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure', 'role::borgbackup:repository' ]
 - ansible.builtin.import_tasks: 'configure.yml'
   tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure' ]
+- ansible.builtin.import_tasks: 'management.yml'
+  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure', 'role::borgbackup:management' ]
 - ansible.builtin.import_tasks: 'service.yml'
   tags: [ 'role::borgbackup', 'task::service', 'role::borgbackup:service' ]
 ...

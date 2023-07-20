@@ -1,0 +1,137 @@
+---
+- name: 'security | borgbackup | management | create borgbackup management group'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.group:
+    name: '{{ item.1.management.group | d(item.1.management.user) | mandatory }}'
+    system: true
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
+  when:
+  - item.1.management.group | d('root') != 'root'
+
+- name: 'security | borgbackup | management | create borgbackup management user'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.user:
+    name: '{{ item.1.management.user | mandatory }}'
+    home: '{{ item.1.management.home | mandatory }}'
+    createhome: true
+    group: '{{ item.1.management.group | d(item.1.management.user) | mandatory }}'
+    shell: '/usr/sbin/nologin'
+    system: true
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.management.user | d("root") }}'
+  when:
+  - item.1.management.user | d('root') != 'root'
+
+- name: 'security | borgbackup | management | create borgbackup management ssh configuration directory'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.file:
+    dest: '{{ item.1.management.home | d("/root") }}/.ssh'
+    owner: '{{ item.1.management.user | d("root") }}'
+    group: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
+    mode: '0700'
+    state: 'directory'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.management.user | d("root") }}'
+
+- name: 'security | borgbackup | management | generate borgbackup management ssh key'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  community.crypto.openssh_keypair:
+    path: '{{ item.1.management.home | d("/root") }}/.ssh/id_{{ borgbackup_management_ssh_key_type }}'
+    owner: '{{ item.1.management.user | d("root") }}'
+    group: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
+    mode: '0600'
+    type: '{{ borgbackup_ssh_key_type }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.management.user | d("root") }}'
+
+- name: 'security | borgbackup | management | add repository host key to known host list'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.known_hosts:
+    host: '{{ item.1.host | mandatory }}'
+    key: '{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}'
+    hash_host: true
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.host | mandatory }}'
+
+- name: 'security | borgbackup | management | create borgbackup management configuration directory'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.file:
+    dest: '{{ borgbackup_management_d }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0700'
+    state: 'directory'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.1.management.host | mandatory }}'
+
+- name: 'security | borgbackup | management | create or delete borgbackup management configuration directory'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.file:
+    dest: '{{ borgbackup_management_d }}/{{ inventory_hostname }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0700'
+    state: '{{ item.1.state | d(item.0.state) | d("present") | regex_replace("^present$", "directory") }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list | subelements("repository") }}'
+  loop_control:
+    label: '{{ item.1.management.host | mandatory }}'
+
+- name: 'security | borgbackup | management | create or update borgbackup management configuration'
+  delegate_to: '{{ borgbackup_management_job.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.template:
+    dest: '{{ borgbackup_management_d + "/" + inventory_hostname + "/" + (borgbackup_management_job.0.name | mandatory) + ".yaml" }}'
+    src: '{{ borgbackup_management_job.0.template | d(borgbackup_management_template) }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ borgbackup_management_d + "/" + inventory_hostname + "/" + (borgbackup_management_job.0.name | mandatory) + ".yaml" }}'
+    loop_var: borgbackup_management_job
+  vars:
+    item: '{{ borgbackup_management_job.0 }}'
+
+- name: 'security | borgbackup | management | download borgbackup management public ssh key'
+  delegate_to: '{{ item.1.management.host | mandatory }}'
+  remote_user: 'ansible'
+  ansible.builtin.slurp:
+    src: '{{ item.1.management.home | d("/root") }}/.ssh/id_{{ borgbackup_management_ssh_key_type }}.pub'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop_control:
+    label: '{{ item.1.management.host | mandatory }}'
+  register: borgbackup_management_pub_key
+
+- name: 'security | borgbackup | management | configure borgbackup management ssh key at repository'
+  delegate_to: '{{ item.1.host | mandatory }}'
+  ansible.posix.authorized_key:
+    user: '{{ item.1.user | mandatory }}'
+    key: '{{ borgbackup_management_pub_key.results[borgbackup_management_pub_key_index].content | b64decode }}'
+    key_options: 'restrict,command="borg serve --restrict-to-path={{ item.1.home | d("/var/lib/borgbackup/" + item.1.user | mandatory) }}/{{ item.0.name | mandatory }}"'
+    state: '{{ item.1.state | d(item.0.state) | d("present") }}'
+  loop: '{{ borgbackup_job | subelements("repository") }}'
+  loop_control:
+    label: '{{ item.1.user | mandatory }} | {{ item.1.state | d(item.0.state) | d("present") }}'
+    index_var: borgbackup_management_pub_key_index
+...

@@ -4,11 +4,11 @@
     name: '{{ borgbackup_package_name }}'
     state: '{{ borgbackup_state }}'
 
-- name: 'security | borgbackup | install | create configuration directory structure'
+- name: 'security | borgbackup | install | create borgbackup configuration directory structure'
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d }}'
-    owner: 'root'
-    group: 'root'
+    owner: '{{ borgbackup_user }}'
+    group: '{{ borgbackup_group }}'
     mode: '0700'
     state: 'directory'
 

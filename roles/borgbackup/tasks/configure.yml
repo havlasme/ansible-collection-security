@@ -46,47 +46,47 @@
 
 - name: 'security | borgbackup | configure | delete borgbackup job configuration'
   ansible.builtin.file:
-    dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
+    dest: '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
     state: 'absent'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_absent") | list }}'
   loop_control:
-    label: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
+    label: '{{ item.name | mandatory }}.yaml'
 
 - name: 'security | borgbackup | configure | create or update borgbackup job configuration'
   ansible.builtin.template:
-    dest: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
+    dest: '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
     src: '{{ item.template | d(borgbackup_job_template) }}'
-    owner: 'root'
-    group: 'root'
+    owner: '{{ borgbackup_user }}'
+    group: '{{ borgbackup_group }}'
     mode: '0600'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
   loop_control:
-    label: '{{ borgbackup_job_d + "/" + (item.name | mandatory) + ".yaml" }}'
+    label: '{{ item.name | mandatory }}.yaml'
 
-- name: 'security | borgbackup | download public ssh key'
+- name: 'security | borgbackup | configure | download borgbackup client public ssh key'
   ansible.builtin.slurp:
-    src: '{{ item.0.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}.pub'
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+    src: '{{ borgbackup_home }}/.ssh/id_{{ borgbackup_ssh_key_type }}.pub'
   register: borgbackup_client_pub_key
 
-- name: 'security | borgbackup | configure ssh key at remote repository'
-  delegate_to: '{{ item.1.host }}'
+- name: 'security | borgbackup | configure | configure borgbackup client ssh key at repository'
+  delegate_to: '{{ item.1.host | mandatory }}'
   ansible.posix.authorized_key:
-    user: '{{ item.1.user }}'
-    key: '{{ borgbackup_client_pub_key.results[borgbackup_client_pub_key_index].content | b64decode }}'
-    key_options: 'restrict,command="borg serve {% if item.1.append_only | d(false) | bool %}--append-only {% endif %}--restrict-to-path={{ item.1.home | d("/var/lib/borgbackup/" + item.1.user) }}/{{ item.0.name }}"'
+    user: '{{ item.1.user | mandatory }}'
+    key: '{{ borgbackup_client_pub_key.content | b64decode }}'
+    key_options: 'restrict,command="borg serve {% if item.1.append_only | d(false) | bool %}--append-only {% endif %}--restrict-to-path={{ item.1.home | d("/var/lib/borgbackup/" + item.1.user | mandatory) }}/{{ item.0.name | mandatory }}"'
+    state: '{{ item.1.state | d(item.0.state) | d("present") }}'
   loop: '{{ borgbackup_job | subelements("repository") }}'
   loop_control:
-    index_var: borgbackup_client_pub_key_index
+    label: '{{ item.1.user | mandatory }} | {{ item.0.name | mandatory }} | {{ item.1.state | d(item.0.state) | d("present") }}'
 
-- name: 'security | borgbackup | initialize backup repository'
+- name: 'security | borgbackup | configure | initialize borgbackup repository'
   ansible.builtin.command: |
     borgmatic init
-    --config '{{ borgbackup_job_d + "/" + (item.0.name | mandatory) + ".yaml" }}'
-    --encryption={{ item.1.encryption | d("repokey") }}
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+    --config '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
+    --encryption={{ item.encryption | d("repokey") | quote }}
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.name | mandatory }}'
   register: borgbackup_init
   changed_when: borgbackup_init.rc == 0 and borgbackup_init.stderr | length > 0
-
-- ansible.builtin.import_tasks: 'configure/management.yml'
 ...

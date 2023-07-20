@@ -6,7 +6,7 @@ borgbackup_enabled: true
 # the borgbackup service option
 borgbackup_service_option:
 - '--config {{ borgbackup_job_d | quote }}'
-- '--verbosity -2'
+- '--verbosity -1'
 - '--syslog-verbosity 1'
 
 # the borgbackup dedicated user
@@ -19,13 +19,13 @@ borgbackup_home: '/root'
 # the borgbackup job list
 ## - name: string
 ##   passphrase: string
+##   encryption: string | d('repokey')
 ##   repository: dict[]
 ##   - host: string
 ##     user: string
 ##     home: string
 ##     group: string | d(item.user)
 ##     append_only: boolean | d(false)
-##     encryption: string | d('repokey')
 ##     host_pub_key: string | d(omit)
 ##     management: dict | d(omit)
 ##       host: string

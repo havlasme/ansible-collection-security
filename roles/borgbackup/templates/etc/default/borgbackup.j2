@@ -1,4 +1,4 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-OPTIONS="{{ borgbackup_service_option | join('\n         ') }}"
+BORGBACKUP_OPTIONS="{{ borgbackup_service_option | join('\n         ') }}"
