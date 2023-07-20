@@ -4,4 +4,11 @@
     name: '{{ borgbackup_service_name }}'
     enabled: '{{ borgbackup_enabled }}'
     state: 'started'
+
+- name: 'security | borgbackup | service | mask implicit service provided by borgbackup package'
+  ansible.builtin.systemd:
+    name: 'borgmatic.timer'
+    state: 'stopped'
+    enabled: false
+    masked: true
 ...

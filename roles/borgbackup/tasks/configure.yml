@@ -36,7 +36,7 @@
 - name: 'security | borgbackup | configure | add repository host key to known host list'
   ansible.builtin.known_hosts:
     host: '{{ item.1.host | mandatory }}'
-    key: '{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}'
+    key: '{{ item.1.host_pub_key | mandatory }}'
     hash_host: true
   loop: '{{ borgbackup_job | subelements("repository") 
     | selectattr("0.state", "havlasme.security.is_present") | list
@@ -80,7 +80,7 @@
     label: '{{ item.1.user | mandatory }} | {{ item.0.name | mandatory }} | {{ item.1.state | d(item.0.state) | d("present") }}'
 
 - name: 'security | borgbackup | configure | initialize borgbackup repository'
-  ansible.builtin.command: |
+  ansible.builtin.command: >
     borgmatic init
     --config '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
     --encryption={{ item.encryption | d("repokey") | quote }}

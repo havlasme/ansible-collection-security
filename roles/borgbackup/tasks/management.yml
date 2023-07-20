@@ -62,7 +62,7 @@
   remote_user: 'ansible'
   ansible.builtin.known_hosts:
     host: '{{ item.1.host | mandatory }}'
-    key: '{{ item.1.host | mandatory }} {{ item.1.host_pub_key | mandatory }}'
+    key: '{{ item.1.host_pub_key | mandatory }}'
     hash_host: true
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
     | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'

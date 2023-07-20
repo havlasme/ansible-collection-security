@@ -33,7 +33,7 @@ location:
 storage:
   encryption_passphrase: "{{ item.passphrase | mandatory }}"
   compression: "{{ item.compression | d('auto,zstd') }}"
-  ssh_command: "ssh -i {{ item.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}"
+  ssh_command: "ssh -o BatchMode=yes -i {{ item.home | d("/root") }}/.ssh/id_{{ borgbackup_ssh_key_type }}"
   archive_name_format: "{{ item.name | mandatory }}-{now}"
 retention:
   keep_daily: {{ item.retention.daily | d(7) }}
