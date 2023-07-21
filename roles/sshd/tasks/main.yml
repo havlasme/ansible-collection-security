@@ -4,8 +4,8 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::sshd', 'task::install' ]
+  tags: [ 'role::sshd', 'task::install', 'role::sshd:install' ]
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::sshd', 'task::configure' ]
+  tags: [ 'role::sshd', 'task::configure', 'role::sshd:configure' ]
 - ansible.builtin.import_tasks: 'service.yml'
-  tags: [ 'role::sshd', 'task::service' ]
+  tags: [ 'role::sshd', 'task::service', 'role::sshd:service' ]

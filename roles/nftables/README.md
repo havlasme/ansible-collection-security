@@ -19,29 +19,26 @@ nftables_ansible_reload: true
 # can ansible restart nftables service?
 nftables_ansible_restart: true
 
-# the nftables conf file
-nftables_conf_file: '/etc/nftables.conf'
-# the nftables conf template
-nftables_conf_template: 'etc/nftables.conf.j2'
-
-# the nftables conf.d directory
-nftables_conf_d: '/etc/nftables.d'
-# the nftables conf.d file list
+# the nftables conf list
 ## - dest: string
-##   src: string | d(nftables_conf_d_template)
+##   src: string | d(nftables_conf_template)
 ##   state: enum('present', 'absent') | d('present')
-## * etc/nftables.d/simple_stateful_firewall.conf.j2
+## * etc/nftables.d/simple-stateful-firewall.conf.j2
 ##   nftables_accept_ping: boolean | d(true)
 ##   nftables_accept_multicast: boolean | d(false)
 ##   nftables_ssh_port: int | d(22)
-nftables_conf_d_file: []
-# the nftables conf.d default template
-nftables_conf_d_template: 'etc/nftables.d/__default__.conf.j2'
+nftables_conf:
+- dest: '/etc/nftables.conf'
+  src: 'etc/nftables.conf.j2'
+# the nftables conf default template
+nftables_conf_template: 'etc/nftables.d/__default__.conf.j2'
+# the nftables conf.d directory
+nftables_conf_d: '/etc/nftables.d'
 ```
 
-### `etc/nftables.d/simple_stateful_firewall.conf.j2`
+### `etc/nftables.d/simple-stateful-firewall.conf.j2`
 
-```yaml title='etc/nftables.d/simple_stateful_firewall.conf.j2'
+```yaml title='etc/nftables.d/simple-stateful-firewall.conf.j2'
 # allow icmp ping traffic at the input chain
 nftables_accept_ping: true
 # allow multicast traffic at the input chain
@@ -56,9 +53,9 @@ nftables_ssh_ipv6_accept: [ '::/0' ]
 ```
 
 ```yaml
-nftables_conf_d_file:
+nftables_conf:
 - dest: '10-simple-stateful-firewall.conf'
-  src: 'etc/nftables.d/simple_stateful_firewall.conf.j2'
+  src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
 ```
 
 
@@ -69,8 +66,14 @@ Example Playbook
 - hosts: 'all'
 
   tasks:
-  - include_role:
+  - ansible.builtin.include_role:
       name: 'havlasme.security.nftables'
+    vars:
+      nftables_conf:
+      - dest: '/etc/nftables.conf'
+        src: 'etc/nftables.conf.j2'
+      - dest: '10-simple-stateful-firewall.conf'
+        src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
 ```
 
 

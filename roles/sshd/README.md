@@ -26,26 +26,24 @@ sshd_port: [ '22' ]
 # the ssh host key type
 #sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
-# the sshd conf file
-sshd_conf_file: '/etc/ssh/sshd_config'
-# the sshd conf template
-sshd_conf_template: 'etc/ssh/sshd_config.j2'
-# the sshd conf.d directory
-sshd_conf_d: '/etc/ssh/sshd_config.d'
-# the sshd conf.d file list
+# the sshd conf list
 ## - dest: string
-##   src: string | d(sshd_conf_d_template)
+##   src: string | d(sshd_conf_template)
 ##   state: enum('present', 'absent') | d('present')
-sshd_conf_d_file:
-## basic password / pubkey authentication
-- dest: '20_password_authentication.conf'
+sshd_conf:
+- dest: '/etc/ssh/sshd_config'
+  src: 'etc/ssh/sshd_config.j2'
+## basic password or pubkey authentication
+- dest: '20-password-authentication.conf'
   src: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
-- dest: '40_accept_env_locale_only.conf'
-  src: 'etc/ssh/sshd_config.d/accept_env.conf.j2'
+- dest: '40-accept-env-locale-only.conf'
+  src: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
-sshd_conf_d_template: 'etc/ssh/sshd_config.d/__default__.conf.j2'
+sshd_conf_template: 'etc/ssh/sshd_config.d/__default__.conf.j2'
+# the sshd conf.d directory
+sshd_conf_d: '/etc/ssh/sshd_config.d'
 
 # the sshd moduli file
 sshd_moduli_file: '/etc/ssh/moduli'
@@ -53,31 +51,31 @@ sshd_moduli_file: '/etc/ssh/moduli'
 #sshd_moduli_minsize: 3071
 ```
 
-### `etc/ssh/sshd_config.d/accept_env.yml`
+### `etc/ssh/sshd_config.d/accept-env.yml`
 
-```yaml title='etc/ssh/sshd_config.d/accept_env.yml'
+```yaml title='etc/ssh/sshd_config.d/accept-env.yml'
 # accept env sent by the ssh client
 sshd_accept_env: 'no'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_accept_env_locale_only.yml'
-  src: 'etc/ssh/sshd_config.d/accept_env.yml.j2'
+sshd_conf:
+- dest: '40-accept-env-locale-only.yml'
+  src: 'etc/ssh/sshd_config.d/accept-env.yml.j2'
   sshd_accept_env: 'LANG LC_*'
 ```
 
-### `etc/ssh/sshd_config.d/allow_group.yml`
+### `etc/ssh/sshd_config.d/allow-group.yml`
 
-```yaml title='etc/ssh/sshd_config.d/allow_group.yml'
+```yaml title='etc/ssh/sshd_config.d/allow-group.yml'
 # the ssh client must belong to this group, otherwise it will be rejected
 #sshd_allow_group: []
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '30_allow_group_sshd_client.yml'
-  src: 'etc/ssh/sshd_config.d/allow_group.yml.j2'
+sshd_conf:
+- dest: '30-allow-group-sshd-client.yml'
+  src: 'etc/ssh/sshd_config.d/allow-group.yml.j2'
   sshd_allow_group: [ 'sshd-client' ]
 ```
 
@@ -98,23 +96,23 @@ sshd_authentication_method: [ 'any' ]
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '20_pubkey_password_authentication.yml'
+sshd_conf:
+- dest: '20-pubkey-password-authentication.yml'
   src: 'etc/ssh/sshd_config.d/authentication.yml.j2'
   sshd_authentication_method: [ 'publickey,password' ]
 ```
 
-### `etc/ssh/sshd_config.d/crypto_policy.yml`
+### `etc/ssh/sshd_config.d/crypto-policy.yml`
 
-```yaml title='etc/ssh/sshd_config.d/crypto_policy.yml'
+```yaml title='etc/ssh/sshd_config.d/crypto-policy.yml'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd_crypto_policy: 'infosec.mozilla.org'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_crypto_policy_ssh_audit.yml'
-  src: 'etc/ssh/sshd_config.d/crypto_policy.yml.j2'
+sshd_conf:
+- dest: '40-crypto-policy-ssh-audit.yml'
+  src: 'etc/ssh/sshd_config.d/crypto-policy.yml.j2'
   sshd_crypto_policy: 'ssh-audit.com'
 ```
 
@@ -130,16 +128,16 @@ sshd_client_alive_count_max: 0
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_keepalive_300_3.yml'
+sshd_conf:
+- dest: '40-keepalive-300-3.yml'
   src: 'etc/ssh/sshd_config.d/keepalive.yml.j2'
   sshd_client_alive_interval: 300
   sshd_client_alive_count_max: 3
 ```
 
-### `etc/ssh/sshd_config.d/key_revocation_list.yml`
+### `etc/ssh/sshd_config.d/key-revocation-list.yml`
 
-```yaml title='etc/ssh/sshd_config.d/sshd_key_revocation_list.yml'
+```yaml title='etc/ssh/sshd_config.d/sshd_key-revocation-list.yml'
 # the ssh key revocation list
 #sshd_key_revocation_list_file: "/etc/ssh/sshd_key_revocation_list"
 # the ssh key revocation list template
@@ -147,42 +145,42 @@ sshd_conf_d_file:
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '20_key_revocation_list.yml'
-  src: 'etc/ssh/sshd_config.d/key_revocation_list.yml.j2'
+sshd_conf:
+- dest: '20-key-revocation-list.yml'
+  src: 'etc/ssh/sshd_config.d/key-revocation-list.yml.j2'
 ```
 
-### `etc/ssh/sshd_config.d/log_level.yml`
+### `etc/ssh/sshd_config.d/log-level.yml`
 
-```yaml title='etc/ssh/sshd_config.d/log_level.yml'
+```yaml title='etc/ssh/sshd_config.d/log-level.yml'
 # the log verbosity level
 sshd_log_level: 'VERBOSE'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_log_level_verbose.yml'
-  src: 'etc/ssh/sshd_config.d/log_level.yml.j2'
+sshd_conf:
+- dest: '40-log-level-verbose.yml'
+  src: 'etc/ssh/sshd_config.d/log-level.yml.j2'
   sshd_log_level: 'VERBOSE'
 ```
 
-### `etc/ssh/sshd_config.d/permit_root_login.yml`
+### `etc/ssh/sshd_config.d/permit-root-login.yml`
 
-```yaml title='etc/ssh/sshd_config.d/permit_root_login.yml'
+```yaml title='etc/ssh/sshd_config.d/permit-root-login.yml'
 # permit root login via ssh
 sshd_permit_root_login: string | d('prohibit-password')
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '20_no_permit_root_login.yml'
-  src: 'etc/ssh/sshd_config.d/no_permit_root_login.yml.j2'
+sshd_conf:
+- dest: '20-no-permit-root-login.yml'
+  src: 'etc/ssh/sshd_config.d/no-permit-root-login.yml.j2'
   sshd_permit_root_login: 'no'
 ```
 
-### `etc/ssh/sshd_config.d/print_issue.yml`
+### `etc/ssh/sshd_config.d/print-issue.yml`
 
-```yaml title='etc/ssh/sshd_config.d/print_issue.yml'
+```yaml title='etc/ssh/sshd_config.d/print-issue.yml'
 # the sshd issue file
 sshd_issue_file: '/etc/issue.net'
 # the sshd issue template
@@ -190,36 +188,36 @@ sshd_issue_file: '/etc/issue.net'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_print_issue.yml'
-  src: 'etc/ssh/sshd_config.d/print_issue.yml.j2'
+sshd_conf:
+- dest: '40-print-issue.yml'
+  src: 'etc/ssh/sshd_config.d/print-issue.yml.j2'
 ```
 
-### `etc/ssh/sshd_config.d/print_lastlog.yml`
+### `etc/ssh/sshd_config.d/print-lastlog.yml`
 
-```yaml title='etc/ssh/sshd_config.d/print_lastlog.yml'
+```yaml title='etc/ssh/sshd_config.d/print-lastlog.yml'
 # print `lastlog` on interactive login
 sshd_print_lastlog: 'yes'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_print_lastlog.yml'
-  src: 'etc/ssh/sshd_config.d/print_lastlog.yml.j2'
+sshd_conf:
+- dest: '40-print-lastlog.yml'
+  src: 'etc/ssh/sshd_config.d/print-lastlog.yml.j2'
   sshd_print_lastlog: 'yes'
 ```
 
-### `etc/ssh/sshd_config.d/print_motd.yml`
+### `etc/ssh/sshd_config.d/print-motd.yml`
 
-```yaml title='etc/ssh/sshd_config.d/print_motd.yml'
+```yaml title='etc/ssh/sshd_config.d/print-motd.yml'
 # print `/etc/motd` on interactive login
 sshd_print_motd: 'no'
 ```
 
 ```yaml
-sshd_conf_d_file:
-- dest: '40_no_print_motd.yml'
-  src: 'etc/ssh/sshd_config.d/print_motd.yml.j2'
+sshd_conf:
+- dest: '40-no-print-motd.yml'
+  src: 'etc/ssh/sshd_config.d/print-motd.yml.j2'
   sshd_print_motd: 'no'
 ```
 
@@ -227,12 +225,12 @@ sshd_conf_d_file:
 Example Playbook
 ----------------
 
-```yaml title="Minimal"
-- hosts: "all"
+```yaml title='Minimal'
+- hosts: 'all'
 
   tasks:
-  - include_role:
-      name: "havlasme.security.sshd"
+  - ansible.builtin.include_role:
+      name: 'havlasme.security.sshd'
 ```
 
 

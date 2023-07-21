@@ -15,7 +15,6 @@ def is_present(value):
         return True
 
 
-
 class TestModule(object):
     def tests(self):
         return {

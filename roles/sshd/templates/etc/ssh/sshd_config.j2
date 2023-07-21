@@ -1,5 +1,20 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{% from 'sshd_option.macro.j2' import sshd_option %}
+{% macro sshd_option(key, value) %}
+    {%   if value is defined %}
+        {%     if value is sameas true %}
+            {{ key }} yes
+        {%     elif value is sameas false %}
+            {{ key }} no
+        {%     elif value is string or value is number %}
+            {{ key }} {{ value | string }}
+        {%     else %}
+            {%       for i in value %}
+                {{ key }} {{ i | string }}
+            {%       endfor %}
+        {%     endif %}
+    {%   endif %}
+{% endmacro -%}
+
 {{ ansible_managed | comment }}
 
 # include configuration from `{{ sshd_conf_d }}`

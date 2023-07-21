@@ -40,17 +40,12 @@ Role Variables
 borgbackup_state: 'present'
 # should start the borgbackup service at boot
 borgbackup_enabled: true
-# the borgbackup service option
-borgbackup_service_option:
-- '--config {{ borgbackup_job_d | quote }}'
-- '--verbosity -1'
-- '--syslog-verbosity 1'
 
 # the borgbackup dedicated user
 borgbackup_user: 'root'
 # the borgbackup dedicated group
 borgbackup_group: '{{ borgbackup_user }}'
-# the borgbackup dedicated home directory
+# the borgbackup home directory
 borgbackup_home: '/root'
 
 # the borgbackup job list
@@ -86,6 +81,9 @@ borgbackup_management_template: '{{ borgbackup_job_template }}'
 borgbackup_management_d: '/etc/borgbackup/management.d'
 # the borgbackup management ssh key type
 borgbackup_management_ssh_key_type: '{{ borgbackup_ssh_key_type }}'
+
+# the borgbackup service option
+borgbackup_service_option: '--config {{ borgbackup_job_d | quote }} --verbosity -1 --syslog-verbosity 1'
 ```
 
 

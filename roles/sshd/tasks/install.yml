@@ -8,15 +8,10 @@
 
 - name: 'security | sshd | create directory structure'
   ansible.builtin.file:
-    dest: '{{ item.dest }}'
+    dest: '{{ sshd_conf_d }}'
     owner: 'root'
     group: 'root'
     mode: '0755'
     state: 'directory'
-  loop:
-  - { dest: '{{ sshd_conf_file | dirname }}' }
-  - { dest: '{{ sshd_conf_d }}' }
-  loop_control:
-    label: '{{ item.dest }}'
   notify:
   - 'security | sshd | validate conf and reload service'

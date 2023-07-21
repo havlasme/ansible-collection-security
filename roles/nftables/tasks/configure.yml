@@ -1,12 +1,23 @@
 ---
-- ansible.builtin.import_tasks: 'configure/d.yml'
+- name: 'security | nftables | delete nftables configuration file'
+  ansible.builtin.file:
+    name: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
+    state: 'absent'
+  loop: '{{ nftables_conf | selectattr("state", "havlasme.security.is_absent") | list }}'
+  loop_control:
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'security | nftables | reload service'
 
-- name: 'security | nftables | create or update configuration file'
+- name: 'security | nftables | create or update nftables configuration file'
   ansible.builtin.template:
-    dest: '{{ nftables_conf_file }}'
-    src: '{{ nftables_conf_template }}'
+    dest: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
+    src: '{{ item.src | d(nftables_conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0644'
+  loop: '{{ nftables_conf | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop_control:
+    label: '{{ item.dest | mandatory }}'
   notify:
   - 'security | nftables | reload service'
