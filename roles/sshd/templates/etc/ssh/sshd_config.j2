@@ -1,19 +1,20 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {% macro sshd_option(key, value) %}
-    {%   if value is defined %}
-        {%     if value is sameas true %}
-            {{ key }} yes
-        {%     elif value is sameas false %}
-            {{ key }} no
-        {%     elif value is string or value is number %}
-            {{ key }} {{ value | string }}
-        {%     else %}
-            {%       for i in value %}
-                {{ key }} {{ i | string }}
-            {%       endfor %}
-        {%     endif %}
-    {%   endif %}
+{%   if value is defined %}
+{%     if value is sameas true %}
+{{ key }} yes
+{%     elif value is sameas false %}
+{{ key }} no
+{%     elif value is string or value is number %}
+{{ key }} {{ value | string }}
+{%     else %}
+{%       for i in value %}
+{{ key }} {{ i | string }}
+{%       endfor %}
+{%     endif %}
+{%   endif %}
 {% endmacro -%}
+
 
 {{ ansible_managed | comment }}
 
@@ -30,7 +31,7 @@ Include {{ sshd_conf_d | mandatory }}/*.conf
 # the host key type
 {% if sshd_host_key_type is defined %}
 {%   for __host_key_type in sshd_host_key_type %}
-HostKey {{ sshd_conf_file | dirname }}/ssh_host_{{ __host_key_type }}_key
+HostKey {{ sshd_conf_d | dirname }}/ssh_host_{{ __host_key_type }}_key
 {%   endfor %}
 {% endif %}
 
