@@ -1,7 +1,7 @@
 ---
 - name: 'security | sshd | validate conf and reload service'
   ansible.builtin.command: >
-    sshd -t -f {{ sshd_conf_file | mandatory }}
+    sshd -t -f /etc/ssh/sshd_config
   notify:
   - 'security | sshd | reload service'
   changed_when: true
@@ -9,7 +9,7 @@
 
 - name: 'security | sshd | validate conf and restart service'
   ansible.builtin.command: >
-    sshd -t -f {{ sshd_conf_file | mandatory }}
+    sshd -t -f /etc/ssh/sshd_config
   notify:
   - 'security | sshd | restart service'
   changed_when: true
