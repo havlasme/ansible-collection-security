@@ -1,13 +1,13 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- an opinionated stateful firewall setup ---
+{# --- An Opinionated Stateful Firewall Setup ---
  # @see https://wiki.archlinux.org/title/simple_stateful_firewall
  # @see https://gbe0.com/pages/linux/nftables-configuration-templates/
  #
  # allow icmp ping traffic at the input chain
- # nftables_accept_ping: boolean | d(true)
+ # nftables_accept_ping: boolean | d('yes')
  #
  # allow multicast traffic at the input chain
- # nftables_accept_multicast: boolean | d(false)
+ # nftables_accept_multicast: boolean | d('no')
  #
  # the ssh service port
  # nftables_ssh_port: int | d(22)
@@ -27,32 +27,32 @@ add chain inet host FORWARD { type filter hook forward priority 0; policy drop; 
 add chain inet host OUTPUT { type filter hook output priority 0; policy accept; }
 add chain inet host TCP
 add chain inet host UDP
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
 add chain inet host MULTICAST
 {% endif %}
 
-# nft add element inet host input_ssh_ipv4_accept '{ 0.0.0.0/0 }'
-add set inet host input_ssh_ipv4_accept { type ipv4_addr; flags interval; comment "Permit SSH on IPv4"; }
-# nft add element inet host input_ssh_ipv6_accept '{ ::/0 }'
-add set inet host input_ssh_ipv6_accept { type ipv6_addr; flags interval; comment "Permit SSH on IPv6"; }
+# EXAMPLE: nft add element inet host INPUT_SSH_IPV4_ACCEPT '{ 0.0.0.0/0 }'
+add set inet host INPUT_SSH_IPV4_ACCEPT { type ipv4_addr; flags interval; comment "Permit SSH on IPv4"; }
+# EXAMPLE: nft add element inet host INPUT_SSH_IPV6_ACCEPT '{ ::/0 }'
+add set inet host INPUT_SSH_IPV6_ACCEPT { type ipv6_addr; flags interval; comment "Permit SSH on IPv6"; }
 
-add rule inet host INPUT ct state established,related accept comment "Permit established/related connection"
-add rule inet host INPUT iifname lo accept comment "Permit loopback"
-add rule inet host INPUT ct state invalid counter drop comment "Drop invalid connection state"
+add rule inet host INPUT ct state established,related accept comment "Permit Established/Related Connection"
+add rule inet host INPUT iifname lo accept comment "Permit Loop-Back"
+add rule inet host INPUT ct state invalid counter drop comment "Drop Invalid Connection State"
 
-add rule inet host INPUT ip protocol icmp icmp type { destination-unreachable, source-quench, time-exceeded, parameter-problem } accept comment "Permit required ICMPv4"
-{% if item.nftables_accept_ping | d(nftables_accept_ping) | d(true) | bool %}
+add rule inet host INPUT ip protocol icmp icmp type { destination-unreachable, source-quench, time-exceeded, parameter-problem } accept comment "Permit Required ICMPv4"
+{% if item.nftables_accept_ping | d(nftables_accept_ping) | d('yes') | bool %}
 add rule inet host INPUT ip protocol icmp icmp type { echo-reply, echo-request } accept comment "Permit IPv4 echo (ping)"
 {% endif %}
-add rule inet host INPUT ip protocol icmp counter drop comment "Drop ICMPv4"
+add rule inet host INPUT ip protocol icmp counter drop comment "Drop Any ICMPv4"
 
-add rule inet host INPUT ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, ind-neighbor-advert, ind-neighbor-solicit, mld-listener-query, mld-listener-reduction, mld-listener-report, mld2-listener-report, nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-router-solicit, packet-too-big, parameter-problem, time-exceeded } accept comment "Permit required ICMPv6"
-{% if item.nftables_accept_ping | d(nftables_accept_ping) | d(true) | bool %}
+add rule inet host INPUT ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, ind-neighbor-advert, ind-neighbor-solicit, mld-listener-query, mld-listener-reduction, mld-listener-report, mld2-listener-report, nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert, nd-router-solicit, packet-too-big, parameter-problem, time-exceeded } accept comment "Permit Required ICMPv6"
+{% if item.nftables_accept_ping | d(nftables_accept_ping) | d('yes') | bool %}
 add rule inet host INPUT ip6 nexthdr icmpv6 icmpv6 type { echo-reply, echo-request } accept comment "Permit IPv6 echo (ping)"
 {% endif %}
-add rule inet host INPUT ip6 nexthdr icmpv6 counter drop comment "Drop ICMPv6"
+add rule inet host INPUT ip6 nexthdr icmpv6 counter drop comment "Drop Any ICMPv6"
 
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
 add rule inet host INPUT pkttype multicast jump MULTICAST
 {% endif %}
 add rule inet host INPUT meta l4proto udp ct state new jump UDP
@@ -61,11 +61,11 @@ add rule inet host INPUT meta l4proto udp counter reject
 add rule inet host INPUT meta l4proto tcp counter reject with tcp reset
 add rule inet host INPUT counter reject with icmpx type port-unreachable
 
-add rule inet host TCP ip saddr @input_ssh_ipv4_accept tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
-add rule inet host TCP ip6 saddr @input_ssh_ipv6_accept tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
-add element inet host input_ssh_ipv4_accept { {{ item.nftables_ssh_ipv4_accept | d(nftables_ssh_ipv4_accept) | d(['0.0.0.0/0']) | join(', ') }} }
-add element inet host input_ssh_ipv6_accept { {{ item.nftables_ssh_ipv6_accept | d(nftables_ssh_ipv6_accept) | d(['::/0']) | join(', ') }} }
+add rule inet host TCP ip saddr @INPUT_SSH_IPV4_ACCEPT tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
+add rule inet host TCP ip6 saddr @INPUT_SSH_IPV6_ACCEPT tcp dport {{ item.nftables_ssh_port | d(nftables_ssh_port) | d(22) }} accept
+add element inet host INPUT_SSH_IPV4_ACCEPT { {{ item.nftables_ssh_ipv4_accept | d(nftables_ssh_ipv4_accept) | d(['0.0.0.0/0']) | join(', ') }} }
+add element inet host INPUT_SSH_IPV6_ACCEPT { {{ item.nftables_ssh_ipv6_accept | d(nftables_ssh_ipv6_accept) | d(['::/0']) | join(', ') }} }
 
-{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d(false) | bool %}
+{% if item.nftables_accept_multicast | d(nftables_accept_multicast) | d('no') | bool %}
 add rule inet host MULTICAST counter accept
 {% endif %}

@@ -14,6 +14,10 @@ Role Variables
 sshd_state: 'present'
 # should start the sshd service at boot
 sshd_enabled: true
+# can ansible reload sshd service?
+sshd_ansible_reload: true
+# can ansible restart sshd service?
+sshd_ansible_restart: true
 
 # the sshd port
 sshd_port: [ '22' ]
@@ -135,9 +139,9 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/sshd_key-revocation-list.yml'
 # the ssh key revocation list
-#sshd_key_revocation_list_file: "/etc/ssh/sshd_key_revocation_list"
+#sshd_key_revocation_list_file: '/etc/ssh/sshd_key_revocation_list'
 # the ssh key revocation list template
-#sshd_key_revocation_list_template: "etc/ssh/key_revocation_list.j2"
+#sshd_key_revocation_list_template: 'etc/ssh/key_revocation_list.j2'
 ```
 
 ```yaml
@@ -180,7 +184,7 @@ sshd_conf:
 # the sshd issue file
 sshd_issue_file: '/etc/issue.net'
 # the sshd issue template
-#sshd_issue_template: "etc/issue.net.j2"
+#sshd_issue_template: 'etc/issue.net.j2'
 ```
 
 ```yaml

@@ -5,7 +5,9 @@
   notify:
   - 'Security | SSHd | Reload Service'
   changed_when: true
-  tags: [ 'role:sshd', 'task::reload', 'role::sshd:reload' ]
+  when:
+  - sshd_ansible_reload | bool
+  tags: [ 'always' ]
 
 - name: 'Security | SSHd | Validate Conf and Restart Service'
   ansible.builtin.command: >
@@ -13,17 +15,23 @@
   notify:
   - 'Security | SSHd | Restart Service'
   changed_when: true
-  tags: [ 'role::sshd', 'task::restart', 'role::sshd:restart' ]
+  when:
+  - sshd_ansible_restart | bool
+  tags: [ 'always' ]
 
 - name: 'Security | SSHd | Reload Service'
   ansible.builtin.service:
     name: '{{ sshd_service_name }}'
     state: 'reloaded'
-  tags: [ 'role:sshd', 'task::reload', 'role::sshd:reload' ]
+  when:
+  - sshd_ansible_reload | bool
+  tags: [ 'always' ]
 
 - name: 'Security | SSHd | Restart Service'
   ansible.builtin.service:
     name: '{{ sshd_service_name }}'
     state: 'restarted'
-  tags: [ 'role::sshd', 'task::restart', 'role::sshd:restart' ]
+  when:
+  - sshd_ansible_restart | bool
+  tags: [ 'always' ]
 ...

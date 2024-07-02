@@ -3,6 +3,10 @@
 sshd_state: 'present'
 # should the sshd service start at boot
 sshd_enabled: true
+# can ansible reload sshd service?
+sshd_ansible_reload: true
+# can ansible restart sshd service?
+sshd_ansible_restart: true
 
 # the sshd port
 sshd_port: [ '22' ]
@@ -34,3 +38,4 @@ sshd_conf_d: '/etc/ssh/sshd_config.d'
 sshd_moduli_file: '/etc/ssh/moduli'
 # the sshd moduli minimal size
 #sshd_moduli_minsize: 3071
+...

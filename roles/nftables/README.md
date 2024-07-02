@@ -3,7 +3,7 @@ havlasme.security.nftables
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure nftables on [Debian](https://www.debian.org/).
+An [Ansible](https://www.ansible.com/) role to install and configure nftables on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
 
 Role Variables
@@ -40,9 +40,9 @@ nftables_conf_d: '/etc/nftables.d'
 
 ```yaml title='etc/nftables.d/simple-stateful-firewall.conf.j2'
 # allow icmp ping traffic at the input chain
-nftables_accept_ping: true
+nftables_accept_ping: 'yes'
 # allow multicast traffic at the input chain
-nftables_accept_multicast: false
+nftables_accept_multicast: 'no'
 
 # the ssh service port
 nftables_ssh_port: 22
