@@ -10,7 +10,7 @@ Role Variables
 --------------
 
 ```yaml
-# the nftables package state ('present', 'latest')
+# the nftables package state ('present', 'latest', 'absent')
 nftables_state: 'present'
 # should start the nftables service at boot
 nftables_enabled: true
@@ -23,10 +23,6 @@ nftables_ansible_restart: true
 ## - dest: string
 ##   src: string | d(nftables_conf_template)
 ##   state: enum('present', 'absent') | d('present')
-## * etc/nftables.d/simple-stateful-firewall.conf.j2
-##   nftables_accept_ping: boolean | d(true)
-##   nftables_accept_multicast: boolean | d(false)
-##   nftables_ssh_port: int | d(22)
 nftables_conf:
 - dest: '/etc/nftables.conf'
   src: 'etc/nftables.conf.j2'
