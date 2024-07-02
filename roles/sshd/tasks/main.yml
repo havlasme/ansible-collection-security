@@ -1,5 +1,5 @@
 ---
-- name: 'security | sshd | include distribution-specific variables'
+- name: 'Security | SSHd | Include Distribution-Specific Variables'
   ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yml'
   tags: [ 'always' ]
 
@@ -9,3 +9,4 @@
   tags: [ 'role::sshd', 'task::configure', 'role::sshd:configure' ]
 - ansible.builtin.import_tasks: 'service.yml'
   tags: [ 'role::sshd', 'task::service', 'role::sshd:service' ]
+...

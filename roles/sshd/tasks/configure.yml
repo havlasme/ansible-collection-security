@@ -1,5 +1,5 @@
 ---
-- name: 'security | sshd | check available moduli size'
+- name: 'Security | SSHd | Configure | Check Available Moduli Size'
   ansible.builtin.shell: >
     awk '$5 < {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}'
   when:
@@ -8,17 +8,17 @@
   changed_when: sshd_moduli_minsize_check.stdout
   check_mode: false
 
-- name: 'security | sshd | delete small moduli'
+- name: 'Security | SSHd | Configure | Remove Small Moduli'
   ansible.builtin.shell: >
     awk '$5 >= {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
     [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
   notify:
-  - 'security | sshd | validate conf and restart service'
+  - 'Security | SSHd | Validate Conf and Restart Service'
   when:
   - sshd_moduli_minsize_check.stdout
   changed_when: true
 
-- name: 'security | sshd | ensure key revocation list exists (to avoid lock-out)'
+- name: 'Security | SSHd | Configure | Ensure Key Revocation List Exists (to Avoid Lock-Out)'
   ansible.builtin.copy:
     dest: '{{ sshd_key_revocation_list_file }}'
     content: ''
@@ -27,11 +27,11 @@
     mode: '0600'
     force: false
   notify:
-  - 'security | sshd | validate conf and reload service'
+  - 'Security | SSHd | Validate Conf and Reload Service'
   when:
   - sshd_key_revocation_list_file is defined
 
-- name: 'security | sshd | create or update key revocation list'
+- name: 'Security | SSHd | Configure | Create or Update Key Revocation List'
   ansible.builtin.template:
     dest: '{{ sshd_key_revocation_list_file }}'
     src: '{{ sshd_key_revocation_list_template }}'
@@ -39,11 +39,11 @@
     group: 'root'
     mode: '0600'
   notify:
-  - 'security | sshd | validate conf and reload service'
+  - 'Security | SSHd | Validate Conf and Reload Service'
   when:
   - sshd_key_revocation_list_template is defined
 
-- name: 'security | sshd | create or update issue file'
+- name: 'Security | SSHd | Configure | Create or Update `issue` File'
   ansible.builtin.template:
     dest: '{{ sshd_issue_file | d("/etc/issue.net") }}'
     src: '{{ sshd_issue_template }}'
@@ -53,7 +53,7 @@
   when:
   - sshd_issue_template is defined
 
-- name: 'security | sshd | delete conf.d configuration file'
+- name: 'Security | SSHd | Configure | Remove Configuration File'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
     state: 'absent'
@@ -61,9 +61,9 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'security | sshd | validate conf and reload service'
+  - 'Security | SSHd | Validate Conf and Reload Service'
 
-- name: 'security | sshd | create or update conf.d configuration file'
+- name: 'Security | SSHd | Configure | Create or Update Configuration File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
     src: '{{ item.src | d(sshd_conf_template) }}'
@@ -75,4 +75,4 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'security | sshd | validate conf and reload service'
+  - 'Security | SSHd | Validate Conf and Reload Service'

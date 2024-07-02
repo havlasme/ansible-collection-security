@@ -1,10 +1,9 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- accept env ---
+{# --- Accept ENV ---
  #
- # accept env sent by the ssh client
+ # accept listed env sent by the ssh client
  # sshd_accept_env: string | d('no')
 -#}
 {{ ansible_managed | comment }}
 
-# accept env sent by the ssh client
 AcceptEnv {{ item.sshd_accept_env | d(sshd_accept_env) | d('no') }}

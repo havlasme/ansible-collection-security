@@ -3,3 +3,4 @@
 sshd_package_name: 'openssh-server'
 # the sshd service name
 sshd_service_name: 'sshd.service'
+...

@@ -1,39 +1,21 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{% macro sshd_option(key, value) %}
-{%   if value is defined %}
-{%     if value is sameas true %}
-{{ key }} yes
-{%     elif value is sameas false %}
-{{ key }} no
-{%     elif value is string or value is number %}
-{{ key }} {{ value | string }}
-{%     else %}
-{%       for i in value %}
-{{ key }} {{ i | string }}
-{%       endfor %}
-{%     endif %}
-{%   endif %}
-{% endmacro -%}
-
-
 {{ ansible_managed | comment }}
 
-# include configuration from `{{ sshd_conf_d }}`
 Include {{ sshd_conf_d | mandatory }}/*.conf
 
-# the sshd port
-{{ sshd_option('Port', sshd_port | mandatory) }}
+{% for __sshd_port in sshd_port %}
+Port {{ __sshd_port }}
+{% endfor %}
 {% if sshd_listen is defined %}
-# the sshd listen
-{{ sshd_option('ListenAddress', sshd_listen) }}
+{%   for __sshd_listen in sshd_listen %}
+ListenAddress {{ __sshd_listen }}
+{%   endfor %}
 {% endif %}
 
-# the host key type
 {% if sshd_host_key_type is defined %}
 {%   for __host_key_type in sshd_host_key_type %}
 HostKey {{ sshd_conf_d | dirname }}/ssh_host_{{ __host_key_type }}_key
 {%   endfor %}
 {% endif %}
 
-# define sftp subsystem; log sftp level file access
-Subsystem   sftp    /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO
+Subsystem  sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

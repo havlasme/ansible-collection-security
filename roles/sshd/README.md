@@ -50,7 +50,7 @@ sshd_moduli_file: '/etc/ssh/moduli'
 ### `etc/ssh/sshd_config.d/accept-env.yml`
 
 ```yaml title='etc/ssh/sshd_config.d/accept-env.yml'
-# accept env sent by the ssh client
+# accept listed env sent by the ssh client
 sshd_accept_env: 'no'
 ```
 
@@ -64,8 +64,8 @@ sshd_conf:
 ### `etc/ssh/sshd_config.d/allow-group.yml`
 
 ```yaml title='etc/ssh/sshd_config.d/allow-group.yml'
-# the ssh client must belong to this group, otherwise it will be rejected
-#sshd_allow_group: []
+# the ssh client must belong to at least one of these groups
+#sshd_allow_group: string[]
 ```
 
 ```yaml
@@ -84,7 +84,7 @@ sshd_pubkey_authentication: 'yes'
 sshd_password_authentication: 'yes'
 # enable keyboard-interactive authentication method?
 sshd_kbd_interactive_authentication: 'no'
-# use pam?
+# use linux pam?
 sshd_use_pam: 'yes'
 
 # the sshd authentication method list
@@ -164,7 +164,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/permit-root-login.yml'
 # permit root login via ssh
-sshd_permit_root_login: string | d('prohibit-password')
+sshd_permit_root_login: 'prohibit-password'
 ```
 
 ```yaml

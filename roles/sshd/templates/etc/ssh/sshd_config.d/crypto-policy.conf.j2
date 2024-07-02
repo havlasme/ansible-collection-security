@@ -1,12 +1,11 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- cryptography policy ---
+{# --- Cryptography Policy ---
  #
  # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
  # sshd_crypto_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 -#}
 {{ ansible_managed | comment }}
 
-# the sshd cryptography policy
 {% if item.sshd_crypto_policy | d(sshd_crypto_policy) | d('infosec.mozilla.org') == 'ssh-audit.com' %}
 # @see https://github.com/jtesta/ssh-audit
 KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256

@@ -1,5 +1,5 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- key revocation list ---
+{# --- Key Revocation List ---
  #
  # the ssh key revocation list
  # sshd_key_revocation_list_file: string
@@ -9,5 +9,4 @@
 -#}
 {{ ansible_managed | comment }}
 
-# the ssh key revocation list
 RevokedKeys {{ sshd_key_revocation_list_file | mandatory }}

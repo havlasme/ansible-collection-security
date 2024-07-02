@@ -1,28 +1,29 @@
 ---
-- name: 'security | sshd | validate conf and reload service'
+- name: 'Security | SSHd | Validate Conf and Reload Service'
   ansible.builtin.command: >
     sshd -t -f /etc/ssh/sshd_config
   notify:
-  - 'security | sshd | reload service'
+  - 'Security | SSHd | Reload Service'
   changed_when: true
   tags: [ 'role:sshd', 'task::reload', 'role::sshd:reload' ]
 
-- name: 'security | sshd | validate conf and restart service'
+- name: 'Security | SSHd | Validate Conf and Restart Service'
   ansible.builtin.command: >
     sshd -t -f /etc/ssh/sshd_config
   notify:
-  - 'security | sshd | restart service'
+  - 'Security | SSHd | Restart Service'
   changed_when: true
   tags: [ 'role::sshd', 'task::restart', 'role::sshd:restart' ]
 
-- name: 'security | sshd | reload service'
+- name: 'Security | SSHd | Reload Service'
   ansible.builtin.service:
     name: '{{ sshd_service_name }}'
     state: 'reloaded'
   tags: [ 'role:sshd', 'task::reload', 'role::sshd:reload' ]
 
-- name: 'security | sshd | restart service'
+- name: 'Security | SSHd | Restart Service'
   ansible.builtin.service:
     name: '{{ sshd_service_name }}'
     state: 'restarted'
   tags: [ 'role::sshd', 'task::restart', 'role::sshd:restart' ]
+...

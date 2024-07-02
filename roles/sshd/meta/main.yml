@@ -3,13 +3,16 @@ dependencies: []
 
 galaxy_info:
   author: 'havlas.me'
-  description: 'An Ansible role to install and configure sshd service on Debian.'
+  description: 'An Ansible role to install and configure SSHd service on Debian or Ubuntu.'
   company: 'havlas.me'
   issue_tracker_url: 'https://gitlab.com/havlas.me/ansible-collection-security/-/issues'
   license: 'Apache-2.0'
   min_ansible_version: '2.9'
   platforms:
   - name: 'Debian'
+    versions:
+    - 'all'
+  - name: 'Ubuntu'
     versions:
     - 'all'
   galaxy_tags:

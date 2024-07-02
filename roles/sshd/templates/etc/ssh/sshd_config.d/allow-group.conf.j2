@@ -1,10 +1,9 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- allow group ---
+{# --- Allow Group ---
  #
- # the ssh client must belong to this group, otherwise it will be rejected
- # sshd_allow_group: string
+ # the ssh client must belong to at least one of these groups
+ # sshd_allow_group: string[]
 -#}
 {{ ansible_managed | comment }}
 
-# the ssh client must belong to this group, otherwise it will be rejected
 AllowGroups {{ item.sshd_allow_group | d(sshd_allow_group) | mandatory | join(' ') }}

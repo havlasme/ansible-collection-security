@@ -1,12 +1,12 @@
 ---
 # the sshd package state ('present', 'latest')
 sshd_state: 'present'
-# should start the sshd service at boot
+# should the sshd service start at boot
 sshd_enabled: true
 
 # the sshd port
 sshd_port: [ '22' ]
-# the sshd listen
+# the sshd listen ip
 #sshd_listen: [ '0.0.0.0' ]
 # the ssh host key type
 #sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
