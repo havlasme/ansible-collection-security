@@ -6,5 +6,5 @@
   tasks:
   - name: 'assert that molly-guard package is present'
     ansible.builtin.package:
-      name: 'cron'
+      name: 'molly-guard'
       state: 'present'

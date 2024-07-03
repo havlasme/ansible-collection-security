@@ -1,5 +1,5 @@
 ---
-- name: 'Security | nftables | Remove Configuration File'
+- name: 'Security | nftables | Delete Configuration File'
   ansible.builtin.file:
     name: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
     state: 'absent'
@@ -12,7 +12,7 @@
 - name: 'Security | nftables | Create or Update Configuration File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
-    src: '{{ item.src | d(nftables_conf_template) }}'
+    src: '{{ item.tmpl | d(nftables_conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0644'

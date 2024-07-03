@@ -1,11 +1,10 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {# --- Print `/etc/issue.net` on Connect ---
- #
+
  # the sshd issue file
- # sshd_issue_file: '/etc/issue.net'
- #
+ sshd_issue_file: string | d('/etc/issue.net')
  # the sshd issue template
- # shd_issue_template: 'etc/issue.net.j2'
+ sshd_issue_template: string | d('etc/issue.net.j2')
 -#}
 {{ ansible_managed | comment }}
 

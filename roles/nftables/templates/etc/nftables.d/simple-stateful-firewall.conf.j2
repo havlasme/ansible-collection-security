@@ -2,21 +2,18 @@
 {# --- An Opinionated Stateful Firewall Setup ---
  # @see https://wiki.archlinux.org/title/simple_stateful_firewall
  # @see https://gbe0.com/pages/linux/nftables-configuration-templates/
- #
+
  # allow icmp ping traffic at the input chain
- # nftables_accept_ping: boolean | d('yes')
- #
+ nftables_accept_ping: boolean | d('yes')
  # allow multicast traffic at the input chain
- # nftables_accept_multicast: boolean | d('no')
- #
+ nftables_accept_multicast: boolean | d('no')
+
  # the ssh service port
- # nftables_ssh_port: int | d(22)
- #
+ nftables_ssh_port: int | d(22)
  # the ssh service ipv4 accept list
- # nftables_ssh_ipv4_accept: string[] | d(['0.0.0.0/0'])
- #
+ nftables_ssh_ipv4_accept: string[] | d(['0.0.0.0/0'])
  # the ssh service ipv6 accept list
- # nftables_ssh_ipv6_accept: string[] | d(['::/0'])
+ nftables_ssh_ipv6_accept: string[] | d(['::/0'])
 -#}
 #!/usr/sbin/nft -f
 {{ ansible_managed | comment }}

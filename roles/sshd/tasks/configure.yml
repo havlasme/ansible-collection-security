@@ -8,7 +8,7 @@
   changed_when: sshd_moduli_minsize_check.stdout
   check_mode: false
 
-- name: 'Security | SSHd | Configure | Remove Small Moduli'
+- name: 'Security | SSHd | Configure | Delete Small Moduli'
   ansible.builtin.shell: >
     awk '$5 >= {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
     [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
@@ -53,7 +53,7 @@
   when:
   - sshd_issue_template is defined
 
-- name: 'Security | SSHd | Configure | Remove Configuration File'
+- name: 'Security | SSHd | Configure | Delete Configuration File'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
     state: 'absent'
@@ -66,7 +66,7 @@
 - name: 'Security | SSHd | Configure | Create or Update Configuration File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
-    src: '{{ item.src | d(sshd_conf_template) }}'
+    src: '{{ item.tmpl | d(sshd_conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0644'

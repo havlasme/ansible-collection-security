@@ -3,7 +3,7 @@ Ansible Collection - havlasme.security
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) collection of security-related roles, plugins, and modules:
+An [Ansible](https://www.ansible.com/) collection of security related roles, plugins, and modules:
 
 - [havlasme.security.borgbackup](/roles/borgbackup/README.md)
 - [havlasme.security.molly_guard](/roles/molly_guard/README.md)
@@ -18,7 +18,7 @@ Installation
 ansible-galaxy collection install havlasme.security
 ```
 
-```shell title="requirements.yml"
+```yaml title="requirements.yml"
 ---
 collections:
 - name: havlasme.security

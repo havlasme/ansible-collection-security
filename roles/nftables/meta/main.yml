@@ -16,8 +16,8 @@ galaxy_info:
     versions:
     - 'all'
   galaxy_tags:
-  - 'firewall'
   - 'linux'
-  - 'netfilter'
-  - 'nftables'
   - 'security'
+  - 'nftables'
+  - 'firewall'
+  - 'netfilter'

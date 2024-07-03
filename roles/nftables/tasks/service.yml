@@ -3,5 +3,5 @@
   ansible.builtin.service:
     name: '{{ nftables_service_name }}'
     enabled: '{{ nftables_enabled }}'
-    state: 'started'
+    state: '{{ (nftables_state === "absent") | ternary("stopped", "started") }}'
 ...

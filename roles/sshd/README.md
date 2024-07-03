@@ -3,16 +3,16 @@ havlasme.security.sshd
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure [sshd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
 
 Role Variables
 --------------
 
 ```yaml
-# the sshd package state ('present', 'latest')
+# the sshd package state ('present', 'latest') - 'absent' is not supported
 sshd_state: 'present'
-# should start the sshd service at boot
+# should the sshd service start at boot
 sshd_enabled: true
 # can ansible reload sshd service?
 sshd_ansible_reload: true
@@ -21,24 +21,24 @@ sshd_ansible_restart: true
 
 # the sshd port
 sshd_port: [ '22' ]
-# the sshd listen
+# the sshd listen ip
 #sshd_listen: [ '0.0.0.0' ]
 # the ssh host key type
 #sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
 # the sshd conf list
 ## - dest: string
-##   src: string | d(sshd_conf_template)
+##   tmpl: string | d(sshd_conf_template)
 ##   state: enum('present', 'absent') | d('present')
 sshd_conf:
 - dest: '/etc/ssh/sshd_config'
-  src: 'etc/ssh/sshd_config.j2'
+  tmpl: 'etc/ssh/sshd_config.j2'
 ## basic password or pubkey authentication
 - dest: '20-password-authentication.conf'
-  src: 'etc/ssh/sshd_config.d/authentication.conf.j2'
+  tmpl: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
 - dest: '40-accept-env-locale-only.conf'
-  src: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
+  tmpl: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
 sshd_conf_template: 'etc/ssh/sshd_config.d/__default__.conf.j2'
@@ -55,7 +55,7 @@ sshd_moduli_file: '/etc/ssh/moduli'
 
 ```yaml title='etc/ssh/sshd_config.d/accept-env.yml'
 # accept listed env sent by the ssh client
-sshd_accept_env: 'no'
+sshd_accept_env: string | d('no')
 ```
 
 ```yaml
@@ -69,7 +69,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/allow-group.yml'
 # the ssh client must belong to at least one of these groups
-#sshd_allow_group: string[]
+sshd_allow_group: string[]
 ```
 
 ```yaml
@@ -83,16 +83,16 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/authentication.yml'
 # enable public key authentication method?
-sshd_pubkey_authentication: 'yes'
+sshd_pubkey_authentication: boolean | d('yes')
 # enable password authentication method?
-sshd_password_authentication: 'yes'
+sshd_password_authentication: boolean | d('yes')
 # enable keyboard-interactive authentication method?
-sshd_kbd_interactive_authentication: 'no'
+sshd_kbd_interactive_authentication: boolean | d('no')
 # use linux pam?
-sshd_use_pam: 'yes'
+sshd_use_pam: boolean | d('yes')
 
 # the sshd authentication method list
-sshd_authentication_method: [ 'any' ]
+sshd_authentication_method: string[] | d(['any'])
 ```
 
 ```yaml
@@ -106,7 +106,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/crypto-policy.yml'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
-sshd_crypto_policy: 'infosec.mozilla.org'
+sshd_crypto_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
 
 ```yaml
@@ -120,11 +120,11 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/keepalive.yml'
 # send tcp keepalive message to the client
-sshd_tcp_keep_alive: 'yes'
+sshd_tcp_keep_alive: boolean | d('yes')
 # the client alive interval (in seconds)
-sshd_client_alive_interval: 60
+sshd_client_alive_interval: int | d(60)
 # the client alive message count (0 to disable)
-sshd_client_alive_count_max: 0
+sshd_client_alive_count_max: int | d(0)
 ```
 
 ```yaml
@@ -139,9 +139,9 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/sshd_key-revocation-list.yml'
 # the ssh key revocation list
-#sshd_key_revocation_list_file: '/etc/ssh/sshd_key_revocation_list'
+sshd_key_revocation_list_file: string
 # the ssh key revocation list template
-#sshd_key_revocation_list_template: 'etc/ssh/key_revocation_list.j2'
+sshd_key_revocation_list_template: string | d(omit)
 ```
 
 ```yaml
@@ -154,7 +154,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/log-level.yml'
 # the log verbosity level
-sshd_log_level: 'VERBOSE'
+sshd_log_level: string | d('VERBOSE')
 ```
 
 ```yaml
@@ -168,7 +168,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/permit-root-login.yml'
 # permit root login via ssh
-sshd_permit_root_login: 'prohibit-password'
+sshd_permit_root_login: string | d('prohibit-password')
 ```
 
 ```yaml
@@ -182,9 +182,9 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/print-issue.yml'
 # the sshd issue file
-sshd_issue_file: '/etc/issue.net'
+sshd_issue_file: string | d('/etc/issue.net')
 # the sshd issue template
-#sshd_issue_template: 'etc/issue.net.j2'
+sshd_issue_template: string | d('etc/issue.net.j2')
 ```
 
 ```yaml
@@ -197,7 +197,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/print-lastlog.yml'
 # print `lastlog` on interactive login
-sshd_print_lastlog: 'yes'
+sshd_print_lastlog: boolean | d('yes')
 ```
 
 ```yaml
@@ -211,7 +211,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/print-motd.yml'
 # print `/etc/motd` on interactive login
-sshd_print_motd: 'no'
+sshd_print_motd: boolean | d('no')
 ```
 
 ```yaml
@@ -244,6 +244,7 @@ Author Information
 ------------------
 
 Created by [Tomáš Havlas](https://havlas.me/).
+
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
 [license-link]: ../../LICENSE

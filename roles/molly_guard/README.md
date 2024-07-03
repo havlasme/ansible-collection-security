@@ -3,7 +3,7 @@ havlasme.security.molly_guard
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure molly-guard on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure Molly-Guard on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
 
 Role Variables

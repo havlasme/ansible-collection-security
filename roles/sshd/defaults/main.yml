@@ -1,5 +1,5 @@
 ---
-# the sshd package state ('present', 'latest')
+# the sshd package state ('present', 'latest') - 'absent' is not supported
 sshd_state: 'present'
 # should the sshd service start at boot
 sshd_enabled: true
@@ -17,17 +17,17 @@ sshd_port: [ '22' ]
 
 # the sshd conf list
 ## - dest: string
-##   src: string | d(sshd_conf_template)
+##   tmpl: string | d(sshd_conf_template)
 ##   state: enum('present', 'absent') | d('present')
 sshd_conf:
 - dest: '/etc/ssh/sshd_config'
-  src: 'etc/ssh/sshd_config.j2'
+  tmpl: 'etc/ssh/sshd_config.j2'
 ## basic password or pubkey authentication
 - dest: '20-password-authentication.conf'
-  src: 'etc/ssh/sshd_config.d/authentication.conf.j2'
+  tmpl: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
 - dest: '40-accept-env-locale-only.conf'
-  src: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
+  tmpl: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
 sshd_conf_template: 'etc/ssh/sshd_config.d/__default__.conf.j2'
