@@ -5,6 +5,9 @@ havlasme.security.nftables
 
 An [Ansible](https://www.ansible.com/) role to install and configure [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
+* Install, Update or Uninstall Package via APT
+* Create, Update, or Delete Configuration File
+* Start and Enable Service
 
 Role Variables
 --------------

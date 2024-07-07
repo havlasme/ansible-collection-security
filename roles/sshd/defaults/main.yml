@@ -23,10 +23,10 @@ sshd_conf:
 - dest: '/etc/ssh/sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
 ## basic password or pubkey authentication
-- dest: '20-password-authentication.conf'
+- dest: '20_password-authentication.conf'
   tmpl: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
-- dest: '40-accept-env-locale-only.conf'
+- dest: '40_accept-env-locale-only.conf'
   tmpl: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template

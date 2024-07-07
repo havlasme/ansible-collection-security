@@ -5,6 +5,12 @@ havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
+* Install or Update Package via APT
+* (Optional) Delete Small Moduli
+* (Optional) Create or Update Key Revocation List
+* (Optional) Create or Update `issue` File
+* Create, Update, or Delete Configuration File
+* Start and Enable Service
 
 Role Variables
 --------------
@@ -34,10 +40,10 @@ sshd_conf:
 - dest: '/etc/ssh/sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
 ## basic password or pubkey authentication
-- dest: '20-password-authentication.conf'
+- dest: '20_password-authentication.conf'
   tmpl: 'etc/ssh/sshd_config.d/authentication.conf.j2'
 ## allow client to set the locale environment variables
-- dest: '40-accept-env-locale-only.conf'
+- dest: '40_accept-env-locale-only.conf'
   tmpl: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
 # the sshd conf.d default template
@@ -60,7 +66,7 @@ sshd_accept_env: string | d('no')
 
 ```yaml
 sshd_conf:
-- dest: '40-accept-env-locale-only.yml'
+- dest: '40_accept-env-locale-only.yml'
   src: 'etc/ssh/sshd_config.d/accept-env.yml.j2'
   sshd_accept_env: 'LANG LC_*'
 ```
@@ -74,7 +80,7 @@ sshd_allow_group: string[]
 
 ```yaml
 sshd_conf:
-- dest: '30-allow-group-sshd-client.yml'
+- dest: '30_allow-group-sshd-client.yml'
   src: 'etc/ssh/sshd_config.d/allow-group.yml.j2'
   sshd_allow_group: [ 'sshd-client' ]
 ```
@@ -97,7 +103,7 @@ sshd_authentication_method: string[] | d(['any'])
 
 ```yaml
 sshd_conf:
-- dest: '20-pubkey-password-authentication.yml'
+- dest: '20_pubkey-password-authentication.yml'
   src: 'etc/ssh/sshd_config.d/authentication.yml.j2'
   sshd_authentication_method: [ 'publickey,password' ]
 ```
@@ -111,7 +117,7 @@ sshd_crypto_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mo
 
 ```yaml
 sshd_conf:
-- dest: '40-crypto-policy-ssh-audit.yml'
+- dest: '40_crypto-policy-ssh-audit.yml'
   src: 'etc/ssh/sshd_config.d/crypto-policy.yml.j2'
   sshd_crypto_policy: 'ssh-audit.com'
 ```
@@ -129,7 +135,7 @@ sshd_client_alive_count_max: int | d(0)
 
 ```yaml
 sshd_conf:
-- dest: '40-keepalive-300-3.yml'
+- dest: '40_keepalive-300-3.yml'
   src: 'etc/ssh/sshd_config.d/keepalive.yml.j2'
   sshd_client_alive_interval: 300
   sshd_client_alive_count_max: 3
@@ -146,7 +152,7 @@ sshd_key_revocation_list_template: string | d(omit)
 
 ```yaml
 sshd_conf:
-- dest: '20-key-revocation-list.yml'
+- dest: '20_key-revocation-list.yml'
   src: 'etc/ssh/sshd_config.d/key-revocation-list.yml.j2'
 ```
 
@@ -159,7 +165,7 @@ sshd_log_level: string | d('VERBOSE')
 
 ```yaml
 sshd_conf:
-- dest: '40-log-level-verbose.yml'
+- dest: '40_log-level-verbose.yml'
   src: 'etc/ssh/sshd_config.d/log-level.yml.j2'
   sshd_log_level: 'VERBOSE'
 ```
@@ -173,7 +179,7 @@ sshd_permit_root_login: string | d('prohibit-password')
 
 ```yaml
 sshd_conf:
-- dest: '20-no-permit-root-login.yml'
+- dest: '20_no-permit-root-login.yml'
   src: 'etc/ssh/sshd_config.d/no-permit-root-login.yml.j2'
   sshd_permit_root_login: 'no'
 ```
@@ -189,7 +195,7 @@ sshd_issue_template: string | d('etc/issue.net.j2')
 
 ```yaml
 sshd_conf:
-- dest: '40-print-issue.yml'
+- dest: '40_print-issue.yml'
   src: 'etc/ssh/sshd_config.d/print-issue.yml.j2'
 ```
 
@@ -202,7 +208,7 @@ sshd_print_lastlog: boolean | d('yes')
 
 ```yaml
 sshd_conf:
-- dest: '40-print-lastlog.yml'
+- dest: '40_print-lastlog.yml'
   src: 'etc/ssh/sshd_config.d/print-lastlog.yml.j2'
   sshd_print_lastlog: 'yes'
 ```
@@ -216,7 +222,7 @@ sshd_print_motd: boolean | d('no')
 
 ```yaml
 sshd_conf:
-- dest: '40-no-print-motd.yml'
+- dest: '40_no-print-motd.yml'
   src: 'etc/ssh/sshd_config.d/print-motd.yml.j2'
   sshd_print_motd: 'no'
 ```

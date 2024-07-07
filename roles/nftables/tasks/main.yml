@@ -4,9 +4,9 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::nftables', 'task::install', 'role::nftables::install' ]
+  tags: [ 'role::nftables', 'role::nftables::install', 'task::install' ]
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::nftables', 'task::configure', 'role::nftables::configure' ]
+  tags: [ 'role::nftables', 'role::nftables::configure', 'task::configure' ]
 - ansible.builtin.import_tasks: 'service.yml'
-  tags: [ 'role::nftables', 'task::service', 'role::nftables::service' ]
+  tags: [ 'role::nftables', 'role::nftables::service', 'task::service' ]
 ...
