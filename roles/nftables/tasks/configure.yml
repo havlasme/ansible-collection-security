@@ -8,6 +8,8 @@
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'Security | nftables | Reload Service'
+  when:
+  - nftables_state != 'absent'
 
 - name: 'Security | nftables | Create or Update Configuration File'
   ansible.builtin.template:
@@ -21,4 +23,6 @@
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'Security | nftables | Reload Service'
+  when:
+  - nftables_state != 'absent'
 ...

@@ -1,5 +1,5 @@
 ---
-- name: 'Security | nftables | Install, Update or Uninstall Package via APT'
+- name: 'Security | nftables | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") Package via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
     state: '{{ nftables_state }}'
@@ -15,4 +15,6 @@
     state: 'directory'
   notify:
   - 'Security | nftables | Reload Service'
+  when:
+  - nftables_state != 'absent'
 ...
