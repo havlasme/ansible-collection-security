@@ -14,7 +14,7 @@ ListenAddress {{ __sshd_listen }}
 
 {% if sshd_host_key_type is defined %}
 {%   for __host_key_type in sshd_host_key_type %}
-HostKey {{ sshd_conf_d | dirname }}/ssh_host_{{ __host_key_type }}_key
+HostKey {{ sshd_conf_d }}/ssh_host_{{ __host_key_type }}_key
 {%   endfor %}
 {% endif %}
 
