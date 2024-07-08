@@ -5,12 +5,13 @@ havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
-* Install or Update Package via APT
+* Install or Update SSHd Package via APT
 * (Optional) Delete Small Moduli
 * (Optional) Create or Update Key Revocation List
 * (Optional) Create or Update `issue` File
 * Create, Update, or Delete Configuration File
 * Start and Enable Service
+
 
 Role Variables
 --------------
@@ -36,6 +37,23 @@ sshd_port: [ '22' ]
 ## - dest: string
 ##   tmpl: string | d(sshd_conf_template)
 ##   state: enum('present', 'absent') | d('present')
+##   * etc/ssh/sshd_config.j2
+##   * etc/ssh/sshd_config.d/accept-env.conf.j2
+##   sshd_accept_env: string | d('no')
+##   * etc/ssh/sshd_config.d/allow-group.conf.j2
+##   sshd_allow_group: string[]
+##   * etc/ssh/sshd_config.d/authentication.conf.j2
+##   sshd_pubkey_authentication: boolean | d('yes')
+##   sshd_password_authentication: boolean | d('yes')
+##   sshd_kbd_interactive_authentication: boolean | d('no')
+##   sshd_use_pam: boolean | d('yes')
+##   sshd_authentication_method: string[] | d(['any'])
+##   * etc/ssh/sshd_config.d/crypto-policy.conf.j2
+##   sshd_crypto_policy: string | d('infosec.mozilla.org')
+##   * etc/ssh/sshd_config.d/keepalive.conf.j2
+##   sshd_tcp_keepalive: boolean | d('yes')
+##   sshd_client_alive_interval: int | d(300)
+##   sshd_client_alive_count_max: int | d(0)
 sshd_conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
@@ -46,9 +64,9 @@ sshd_conf:
 - dest: 'sshd_config.d/40_accept-env-locale-only.conf'
   tmpl: 'etc/ssh/sshd_config.d/accept-env.conf.j2'
   sshd_accept_env: 'LANG LC_*'
-# the sshd conf.d default template
-sshd_conf_template: 'etc/ssh/sshd_config.d/__copy__.conf.j2'
-# the sshd conf.d directory
+# the sshd conf default template
+sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
+# the sshd conf directory
 sshd_conf_d: '/etc/ssh'
 
 # the sshd moduli file
@@ -126,7 +144,7 @@ sshd_conf:
 
 ```yaml title='etc/ssh/sshd_config.d/keepalive.yml'
 # send tcp keepalive message to the client
-sshd_tcp_keep_alive: boolean | d('yes')
+sshd_tcp_keepalive: boolean | d('yes')
 # the client alive interval (in seconds)
 sshd_client_alive_interval: int | d(60)
 # the client alive message count (0 to disable)

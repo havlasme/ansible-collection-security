@@ -1,12 +1,12 @@
 ---
-- name: 'Security | nftables | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") Package via APT'
+- name: 'Security | nftables | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} nftables Package via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
     state: '{{ nftables_state }}'
   notify:
   - 'Security | nftables | Restart Service'
 
-- name: 'Security | nftables | Create Directory Structure'
+- name: 'Security | nftables | Create Conf Directory Structure'
   ansible.builtin.file:
     name: '{{ nftables_conf_d }}'
     owner: 'root'

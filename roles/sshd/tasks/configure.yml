@@ -53,7 +53,7 @@
   when:
   - sshd_issue_template is defined
 
-- name: 'Security | SSHd | Configure | Delete Configuration File'
+- name: 'Security | SSHd | Configure | Delete SSHd Conf File'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
     state: 'absent'
@@ -63,13 +63,14 @@
   notify:
   - 'Security | SSHd | Validate Conf and Reload Service'
 
-- name: 'Security | SSHd | Configure | Create or Update Configuration File'
+- name: 'Security | SSHd | Configure | Create or Update SSHd Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
     src: '{{ item.tmpl | d(sshd_conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0644'
+    force: true
     validate: sshd -t -f %s
   loop: '{{ sshd_conf | selectattr("state", "havlasme.security.is_present") | list }}'
   loop_control:

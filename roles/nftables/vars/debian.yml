@@ -1,6 +1,6 @@
 ---
 # the nftables package name
-nftables_package_name: "nftables"
+nftables_package_name: 'nftables'
 # the nftables service name
-nftables_service_name: "nftables.service"
+nftables_service_name: 'nftables.service'
 ...

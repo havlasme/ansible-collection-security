@@ -2,7 +2,7 @@
 {# --- Connection Keep-Alive ---
 
  # send tcp keepalive message to the client
- sshd_tcp_keep_alive: boolean | d('yes')
+ sshd_tcp_keepalive: boolean | d('yes')
  # the client alive interval (in seconds)
  sshd_client_alive_interval: int | d(60)
  # the client alive message count (0 to disable)
@@ -10,6 +10,6 @@
 -#}
 {{ ansible_managed | comment }}
 
-TCPKeepAlive {{ item.sshd_tcp_keep_alive | d(sshd_tcp_keep_alive) | d('yes') }}
+TCPKeepAlive {{ item.sshd_tcp_keepalive | d(sshd_tcp_keepalive) | d('yes') }}
 ClientAliveInterval {{ item.sshd_client_alive_interval | d(sshd_client_alive_interval) | d(60) }}
 ClientAliveCountMax {{ item.sshd_client_alive_count_max | d(sshd_client_alive_count_max) | d(0) }}

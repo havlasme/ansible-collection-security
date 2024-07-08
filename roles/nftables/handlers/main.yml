@@ -5,6 +5,7 @@
     state: 'reloaded'
   when:
   - nftables_ansible_reload | bool
+  - nftables_state != 'absent'
   tags: [ 'always' ]
 
 - name: 'Security | nftables | Restart Service'
@@ -13,5 +14,6 @@
     state: 'restarted'
   when:
   - nftables_ansible_restart | bool
+  - nftables_state != 'absent'
   tags: [ 'always' ]
 ...

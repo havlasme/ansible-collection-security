@@ -16,7 +16,7 @@ nftables_conf:
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # the nftables conf default template
-nftables_conf_template: 'etc/nftables.d/__default__.conf.j2'
-# the nftables conf.d directory
+nftables_conf_template: 'etc/nftables.d/[content].conf.j2'
+# the nftables conf directory
 nftables_conf_d: '/etc/nftables.d'
 ...

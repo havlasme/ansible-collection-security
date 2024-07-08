@@ -5,7 +5,7 @@ havlasme.security.molly_guard
 
 An [Ansible](https://www.ansible.com/) role to install and configure Molly-Guard on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
-* Install, Update, or Uninstall Package via APT
+* Install, Update, or Uninstall Molly-Guard Package via APT
 
 Role Variables
 --------------

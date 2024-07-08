@@ -5,7 +5,7 @@ havlasme.security.nftables
 
 An [Ansible](https://www.ansible.com/) role to install and configure [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
-* Install, Update or Uninstall Package via APT
+* Install, Update or Uninstall nftables Package via APT
 * Create, Update, or Delete Configuration File
 * Start and Enable Service
 
@@ -24,14 +24,14 @@ nftables_ansible_restart: true
 
 # the nftables conf list
 ## - dest: string
-##   src: string | d(nftables_conf_template)
+##   tmpl: string | d(nftables_conf_template)
 ##   state: enum('present', 'absent') | d('present')
 nftables_conf:
 - dest: '/etc/nftables.conf'
-  src: 'etc/nftables.conf.j2'
+  tmpl: 'etc/nftables.conf.j2'
 # the nftables conf default template
-nftables_conf_template: 'etc/nftables.d/__default__.conf.j2'
-# the nftables conf.d directory
+nftables_conf_template: 'etc/nftables.d/[content].conf.j2'
+# the nftables conf directory
 nftables_conf_d: '/etc/nftables.d'
 ```
 
@@ -53,7 +53,7 @@ nftables_ssh_ipv6_accept: [ '::/0' ]
 
 ```yaml
 nftables_conf:
-- dest: '10-simple-stateful-firewall.conf'
+- dest: '10_simple-stateful-firewall.conf'
   src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
 ```
 
@@ -71,7 +71,7 @@ Example Playbook
       nftables_conf:
       - dest: '/etc/nftables.conf'
         src: 'etc/nftables.conf.j2'
-      - dest: '10-simple-stateful-firewall.conf'
+      - dest: '10_simple-stateful-firewall.conf'
         src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
 ```
 
