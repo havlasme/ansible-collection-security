@@ -75,6 +75,21 @@ Example Playbook
         src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
 ```
 
+```yaml title='Configure-Only'
+- hosts: 'all'
+
+  tasks:
+  - ansible.builtin.include_role:
+      name: 'havlasme.security.nftables'
+      tasks_from: 'configure-only'
+    vars:
+      nftables_conf:
+      - dest: '/etc/nftables.conf'
+        src: 'etc/nftables.conf.j2'
+      - dest: '10_simple-stateful-firewall.conf'
+        src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
+```
+
 
 License
 -------
