@@ -3,11 +3,12 @@ havlasme.security.nftables
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure firewall using [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
-* Install, Update or Uninstall nftables Package via APT
-* Create, Update, or Delete Configuration File
-* Start and Enable Service
+* Install, Update or Uninstall the NFTables Package via APT
+* Create, Update, or Delete a NFTables Conf File
+* Start and Enable the NFTables Service
+
 
 Role Variables
 --------------

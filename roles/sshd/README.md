@@ -257,6 +257,15 @@ Example Playbook
       name: 'havlasme.security.sshd'
 ```
 
+```yaml title='Configure-Only'
+- hosts: 'all'
+
+  tasks:
+  - ansible.builtin.include_role:
+      name: 'havlasme.security.sshd'
+      tasks_from: 'configure-only'
+```
+
 
 License
 -------

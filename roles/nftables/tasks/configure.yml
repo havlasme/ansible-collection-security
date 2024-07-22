@@ -1,5 +1,5 @@
 ---
-- name: 'Security | nftables | Delete nftables Conf File'
+- name: 'Security | NFTables | Delete a NFTables Conf File'
   ansible.builtin.file:
     name: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
     state: 'absent'
@@ -7,11 +7,11 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | nftables | Reload Service'
+  - 'Security | NFTables | Reload Service'
   when:
   - nftables_state != 'absent'
 
-- name: 'Security | nftables | Create or Update nftables Conf File'
+- name: 'Security | NFTables | Create or Update a NFTables Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
     src: '{{ item.tmpl | d(nftables_conf_template) }}'
@@ -22,7 +22,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | nftables | Reload Service'
+  - 'Security | NFTables | Reload Service'
   when:
   - nftables_state != 'absent'
 ...

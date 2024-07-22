@@ -22,6 +22,7 @@ ansible-galaxy collection install havlasme.security
 ---
 collections:
 - name: havlasme.security
+...
 ```
 
 

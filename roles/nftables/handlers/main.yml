@@ -1,5 +1,5 @@
 ---
-- name: 'Security | nftables | Reload Service'
+- name: 'Security | NFTables | Reload Service'
   ansible.builtin.service:
     name: '{{ nftables_service_name }}'
     state: 'reloaded'
@@ -8,7 +8,7 @@
   - nftables_state != 'absent'
   tags: [ 'always' ]
 
-- name: 'Security | nftables | Restart Service'
+- name: 'Security | NFTables | Restart Service'
   ansible.builtin.service:
     name: '{{ nftables_service_name }}'
     state: 'restarted'
