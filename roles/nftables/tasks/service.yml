@@ -1,5 +1,5 @@
 ---
-- name: 'Security | NFTables | {{ (nftables_state == "absent") | ternary("Stop and Disable", "Start and Enable") }} the NFTables Service'
+- name: 'Security | NFTables | Service | {{ (nftables_state == "absent") | ternary("Stop and Disable", "Start and Enable") }} the NFTables Service'
   ansible.builtin.service:
     name: '{{ nftables_service_name }}'
     enabled: '{{ (nftables_state == "absent") | ternary("no", nftables_enabled) }}'

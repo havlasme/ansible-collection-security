@@ -1,5 +1,5 @@
 ---
-- name: 'Security | NFTables | Delete a NFTables Conf File'
+- name: 'Security | NFTables | Configure | Delete a NFTables Conf File'
   ansible.builtin.file:
     name: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
     state: 'absent'
@@ -11,7 +11,7 @@
   when:
   - nftables_state != 'absent'
 
-- name: 'Security | NFTables | Create or Update a NFTables Conf File'
+- name: 'Security | NFTables | Configure | Create or Update a NFTables Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_conf_d) }}'
     src: '{{ item.tmpl | d(nftables_conf_template) }}'
