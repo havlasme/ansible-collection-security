@@ -1,5 +1,5 @@
 ---
-- name: 'Security | Molly-Guard | Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} Molly-Guard Package via APT'
+- name: 'Security | Molly-Guard | Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard Package via APT'
   ansible.builtin.apt:
     name: '{{ molly_guard_package_name }}'
     state: '{{ molly_guard_state }}'

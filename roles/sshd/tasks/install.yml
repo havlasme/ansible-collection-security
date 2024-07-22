@@ -1,12 +1,12 @@
 ---
-- name: 'Security | SSHd | Install | Install or Update SSHd Package via APT'
+- name: 'Security | SSHd | Install | Install or Update the SSHd Package via APT'
   ansible.builtin.apt:
     name: '{{ sshd_package_name }}'
     state: '{{ sshd_state }}'
   notify:
   - 'Security | SSHd | Validate Conf and Restart Service'
 
-- name: 'Security | SSHd | Install | Create Conf Directory Structure'
+- name: 'Security | SSHd | Install | Create the SSHd Conf Directory Structure'
   ansible.builtin.file:
     dest: '{{ sshd_conf_d }}'
     owner: 'root'

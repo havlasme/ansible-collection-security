@@ -5,12 +5,12 @@ havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) or [Ubuntu](https://www.ubuntu.com/).
 
-* Install or Update SSHd Package via APT
-* (Optional) Delete Small Moduli
-* (Optional) Create or Update Key Revocation List
-* (Optional) Create or Update `issue` File
-* Create, Update, or Delete Configuration File
-* Start and Enable Service
+* Install or Update the SSHd Package via APT
+* (Optional) Create or Update the Key Revocation List
+* (Optional) Create or Update the `issue` File
+* Create, Update, or Delete a SSHd Conf File
+* (Optional) Delete the Small Moduli
+* Start and Enable the SSHd Service
 
 
 Role Variables
@@ -261,7 +261,7 @@ Example Playbook
 License
 -------
 
-Apache-2.0
+[Apache-2.0][license-link]
 
 
 Author Information
