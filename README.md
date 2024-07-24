@@ -3,13 +3,14 @@ Ansible Collection - havlasme.security
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) collection of security related roles, plugins, and modules:
+An [Ansible](https://www.ansible.com/) collection of linux security related content that supports [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/).
+
+### Included content
 
 - [havlasme.security.borgbackup](/roles/borgbackup/README.md)
 - [havlasme.security.molly_guard](/roles/molly_guard/README.md)
 - [havlasme.security.nftables](/roles/nftables/README.md)
 - [havlasme.security.sshd](/roles/sshd/README.md)
-
 
 Installation
 ------------
@@ -21,10 +22,9 @@ ansible-galaxy collection install havlasme.security
 ```yaml title="requirements.yml"
 ---
 collections:
-- name: havlasme.security
+- name: 'havlasme.security'
 ...
 ```
-
 
 Development
 -----------
@@ -41,12 +41,10 @@ make lint
 make test
 ```
 
-
 License
 -------
 
 [Apache-2.0][license-link]
-
 
 Author Information
 ------------------
