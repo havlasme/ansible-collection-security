@@ -5,8 +5,6 @@ Ansible Role - havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
 
-### Included Content
-
 - Install or Update the SSHd Package via APT
 - (Optional) Create or Update the Key Revocation List
 - (Optional) Create or Update the `issue` File

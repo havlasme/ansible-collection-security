@@ -1,5 +1,5 @@
 ---
-- name: 'Security | NFTables | Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables Package via APT'
+- name: 'Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables Package via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
     state: '{{ nftables_state }}'

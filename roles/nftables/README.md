@@ -94,7 +94,6 @@ License
 
 [Apache-2.0][license-link]
 
-
 Author Information
 ------------------
 
