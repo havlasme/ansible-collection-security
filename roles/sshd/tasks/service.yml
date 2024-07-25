@@ -1,7 +1,8 @@
 ---
 - name: 'Service | Start and Enable the SSHd Service'
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
+    daemon_reload: true
     enabled: '{{ sshd_enabled }}'
     state: 'started'
 ...

@@ -22,8 +22,9 @@
   tags: [ 'always' ]
 
 - name: 'Security | SSHd | Reload Service'
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
+    daemon_reload: true
     state: 'reloaded'
   when:
   - sshd_ansible_reload | bool
@@ -31,8 +32,9 @@
   tags: [ 'always' ]
 
 - name: 'Security | SSHd | Restart Service'
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
+    daemon_reload: true
     state: 'restarted'
   when:
   - sshd_ansible_restart | bool

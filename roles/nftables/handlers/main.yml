@@ -1,7 +1,8 @@
 ---
 - name: 'Security | NFTables | Reload Service'
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: '{{ nftables_service_name }}'
+    daemon_reload: true
     state: 'reloaded'
   when:
   - nftables_ansible_reload | bool
@@ -10,8 +11,9 @@
   tags: [ 'always' ]
 
 - name: 'Security | NFTables | Restart Service'
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: '{{ nftables_service_name }}'
+    daemon_reload: true
     state: 'restarted'
   when:
   - nftables_ansible_restart | bool
