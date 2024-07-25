@@ -4,4 +4,5 @@
     that:
     - nftables_state in [ 'present', 'latest', 'absent' ]
     msg: 'The nftables_state must be in [ "present", "latest", "absent" ]'
+    quiet: true
 ...

@@ -4,4 +4,5 @@
     that:
     - molly_guard_state in [ 'present', 'latest', 'absent' ]
     msg: 'The molly_guard_state must be in [ "present", "latest", "absent" ]'
+    quiet: true
 ...
