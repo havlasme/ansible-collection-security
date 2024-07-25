@@ -5,7 +5,7 @@ Ansible Collection - havlasme.security
 
 An [Ansible](https://www.ansible.com/) collection of linux security related content that supports [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/).
 
-### Included content
+### Included Content
 
 - [havlasme.security.borgbackup](/roles/borgbackup/README.md)
 - [havlasme.security.molly_guard](/roles/molly_guard/README.md)

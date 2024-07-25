@@ -4,7 +4,7 @@ version: 0.1.0
 readme: README.md
 authors:
 - Tomáš Havlas <tomas@havlas.me>
-description: linux security management
+description: An Ansible collection of linux security related content.
 license:
 - Apache-2.0
 repository: https://gitlab.com/havlas.me/ansible-collection-security
