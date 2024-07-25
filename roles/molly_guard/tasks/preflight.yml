@@ -1,0 +1,7 @@
+---
+- name: 'Assert | Ensure the Molly-Guard State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - molly_guard_state in [ 'present', 'latest', 'absent' ]
+    msg: 'The molly_guard_state must be in [ "present", "latest", "absent" ]'
+...

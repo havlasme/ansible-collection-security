@@ -1,0 +1,7 @@
+---
+- name: 'Assert | Ensure the NFTables State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - nftables_state in [ 'present', 'latest', 'absent' ]
+    msg: 'The nftables_state must be in [ "present", "latest", "absent" ]'
+...

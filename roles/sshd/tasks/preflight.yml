@@ -1,0 +1,7 @@
+---
+- name: 'Assert | Ensure the SSHd State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - sshd_state in [ 'present', 'latest' ]
+    msg: 'The sshd_state must be in [ "present", "latest" ]'
+...
