@@ -1,8 +1,8 @@
+GALAXY = @ansible-galaxy
 NAMESPACE = $(shell yq -r .namespace galaxy.yml)
 ROLENAME = $(shell yq -r .name galaxy.yml)
 ROLEVERSION = $(shell yq -r .version galaxy.yml)
 DIST = ./dist
-GALAXY = @ansible-galaxy
 
 .PHONY: build
 build:

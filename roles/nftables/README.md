@@ -35,9 +35,9 @@ nftables_conf_template: 'etc/nftables.d/[content].conf.j2'
 nftables_conf_d: '/etc/nftables.d'
 ```
 
-### `etc/nftables.d/simple-stateful-firewall.conf.j2`
+### `etc/nftables.d/zerotrust-stateful-firewall.conf.j2`
 
-```yaml title='etc/nftables.d/simple-stateful-firewall.conf.j2'
+```yaml title='etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 # allow icmp ping traffic at the input chain
 nftables_accept_ping: 'yes'
 # allow multicast traffic at the input chain
@@ -53,8 +53,8 @@ nftables_ssh_ipv6_accept: [ '::/0' ]
 
 ```yaml
 nftables_conf:
-- dest: '10_simple-stateful-firewall.conf'
-  src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
+- dest: '10-zerotrust-stateful-firewall.conf'
+  src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 Example Playbook
@@ -70,8 +70,8 @@ Example Playbook
       nftables_conf:
       - dest: '/etc/nftables.conf'
         src: 'etc/nftables.conf.j2'
-      - dest: '10_simple-stateful-firewall.conf'
-        src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
+      - dest: '10-zerotrust-stateful-firewall.conf'
+        src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 ```yaml title='Configure-Only'
@@ -85,8 +85,8 @@ Example Playbook
       nftables_conf:
       - dest: '/etc/nftables.conf'
         src: 'etc/nftables.conf.j2'
-      - dest: '10_simple-stateful-firewall.conf'
-        src: 'etc/nftables.d/simple-stateful-firewall.conf.j2'
+      - dest: '10-zerotrust-stateful-firewall.conf'
+        src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 License

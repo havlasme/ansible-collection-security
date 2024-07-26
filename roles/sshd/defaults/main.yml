@@ -19,23 +19,6 @@ sshd_port: [ '22' ]
 ## - dest: string
 ##   tmpl: string | d(sshd_conf_template)
 ##   state: enum('present', 'absent') | d('present')
-##   * etc/ssh/sshd_config.j2
-##   * etc/ssh/sshd_config.d/accept-env.conf.j2
-##   sshd_accept_env: string | d('no')
-##   * etc/ssh/sshd_config.d/allow-group.conf.j2
-##   sshd_allow_group: string[]
-##   * etc/ssh/sshd_config.d/authentication.conf.j2
-##   sshd_pubkey_authentication: boolean | d('yes')
-##   sshd_password_authentication: boolean | d('yes')
-##   sshd_kbd_interactive_authentication: boolean | d('no')
-##   sshd_use_pam: boolean | d('yes')
-##   sshd_authentication_method: string[] | d(['any'])
-##   * etc/ssh/sshd_config.d/crypto-policy.conf.j2
-##   sshd_crypto_policy: string | d('infosec.mozilla.org')
-##   * etc/ssh/sshd_config.d/keepalive.conf.j2
-##   sshd_tcp_keepalive: boolean | d('yes')
-##   sshd_client_alive_interval: int | d(300)
-##   sshd_client_alive_count_max: int | d(0)
 sshd_conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
