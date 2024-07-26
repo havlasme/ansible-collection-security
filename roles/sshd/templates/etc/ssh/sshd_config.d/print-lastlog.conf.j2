@@ -1,9 +1,0 @@
-#jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- Print LastLog on Login ---
-
- # print `lastlog` on interactive login
- sshd_print_lastlog: boolean | d('yes')
--#}
-{{ ansible_managed | comment }}
-
-PrintLastLog {{ item.sshd_print_lastlog | d(sshd_print_lastlog) | d('yes') }}

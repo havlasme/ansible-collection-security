@@ -1,9 +1,0 @@
-#jinja2: trim_blocks: True, lstrip_blocks: True
-{# --- Log Verbosity Level ---
-
- # the log verbosity level
- sshd_log_level: string | d('VERBOSE')
--#}
-{{ ansible_managed | comment }}
-
-LogLevel {{ item.sshd_log_level | d(sshd_log_level) | d('VERBOSE') }}
