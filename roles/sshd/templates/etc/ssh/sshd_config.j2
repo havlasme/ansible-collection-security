@@ -6,9 +6,9 @@ Include {{ sshd_conf_d | mandatory }}/sshd_config.d/*.conf
 {% for __sshd_port in sshd_port %}
 Port {{ __sshd_port }}
 {% endfor %}
-{% if sshd_listen is defined %}
-{%   for __sshd_listen in sshd_listen %}
-ListenAddress {{ __sshd_listen }}
+{% if sshd_ip is defined %}
+{%   for __sshd_ip in sshd_ip %}
+ListenAddress {{ __sshd_ip }}
 {%   endfor %}
 {% endif %}
 

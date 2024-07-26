@@ -28,7 +28,7 @@ sshd_ansible_restart: true
 # the sshd port
 sshd_port: [ '22' ]
 # the sshd listen ip
-#sshd_listen: [ '0.0.0.0' ]
+#sshd_ip: [ '0.0.0.0' ]
 # the ssh host key type
 #sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
