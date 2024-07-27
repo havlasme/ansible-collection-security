@@ -6,9 +6,9 @@
 - ansible.builtin.import_tasks: 'preflight.yml'
   tags: [ 'always' ]
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::sshd', 'role::sshd:install', 'task::install' ]
+  tags: [ 'role:sshd', 'role:sshd:install', 'task:install' ]
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::sshd', 'role::sshd:configure', 'task::configure' ]
+  tags: [ 'role:sshd', 'role:sshd:configure', 'task:configure' ]
 - ansible.builtin.import_tasks: 'service.yml'
-  tags: [ 'role::sshd', 'role::sshd:service', 'task::service' ]
+  tags: [ 'role:sshd', 'role:sshd:service', 'task:service' ]
 ...

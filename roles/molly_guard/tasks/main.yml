@@ -3,8 +3,17 @@
   ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yml'
   tags: [ 'always' ]
 
-- ansible.builtin.import_tasks: 'preflight.yml'
+- name: 'Assert | Ensure the Molly-Guard State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - molly_guard_state in [ 'present', 'latest', 'absent' ]
+    msg: 'The molly_guard_state must be in [ "present", "latest", "absent" ]'
+    quiet: true
   tags: [ 'always' ]
-- ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::molly_guard', 'role::molly_guard::install', 'task::install' ]
+
+- name: 'Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard Package via APT'
+  ansible.builtin.apt:
+    name: '{{ molly_guard_package_name }}'
+    state: '{{ molly_guard_state }}'
+  tags: [ 'role:molly_guard', 'role:molly_guard:install', 'task:install' ]
 ...
