@@ -4,5 +4,5 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::sshd', 'role::sshd:configure', 'task::configure' ]
+  tags: [ 'role:sshd', 'role:sshd:configure', 'task:configure' ]
 ...

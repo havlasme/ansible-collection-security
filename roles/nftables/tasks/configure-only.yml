@@ -4,5 +4,5 @@
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::nftables', 'role::nftables::configure', 'task::configure' ]
+  tags: [ 'role:nftables', 'role:nftables:configure', 'task:configure' ]
 ...
