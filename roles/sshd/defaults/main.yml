@@ -23,14 +23,14 @@ sshd_conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
 ## allow client to set the locale environment
-- dest: 'sshd_config.d/20-base-daemon.conf'
+- dest: 'sshd_config.d/20-ssh-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
     
     AcceptEnv {{ sshd_accept_env | d('LANG LC_*') }}
 ## basic password or pubkey authentication
-- dest: 'sshd_config.d/40-base-authentication.conf'
+- dest: 'sshd_config.d/40-ssh-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes

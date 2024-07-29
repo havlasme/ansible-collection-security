@@ -9,7 +9,7 @@
   when:
   - sshd_issue_template is defined
 
-- name: 'Configure | Delete a SSHd Conf File'
+- name: 'Configure | Delete a OpenSSH Conf File'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd_confdir) }}'
     state: 'absent'
@@ -19,7 +19,7 @@
   notify:
   - 'Security | SSHd | Validate Conf and Reload Service'
 
-- name: 'Configure | Create or Update a SSHd Conf File'
+- name: 'Configure | Create or Update a OpenSSH Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd_confdir) }}'
     src: '{{ item.tmpl | d(sshd_conf_template) }}'

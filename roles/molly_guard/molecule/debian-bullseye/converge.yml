@@ -1,7 +1,0 @@
----
-- name: 'converge'
-  hosts: 'all'
-
-  tasks:
-  - ansible.builtin.include_role:
-      name: 'molly_guard'

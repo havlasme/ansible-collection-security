@@ -1,5 +1,5 @@
 ---
-- name: 'Service | Start and Enable the SSHd Service'
+- name: 'Service | Start and Enable the OpenSSH Service'
   ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
     daemon_reload: true

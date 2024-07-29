@@ -2,6 +2,7 @@
 - name: 'Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
+    update_cache: true
     state: '{{ nftables_state }}'
   notify:
   - 'Security | NFTables | Restart Service'

@@ -14,7 +14,7 @@
     msg: 'The "{{ ansible_service_mgr }}" init system is not supported'
     quiet: true
 
-- name: 'Assert that the SSHd State Value is Valid'
+- name: 'Assert that the OpenSSH State Value is Valid'
   ansible.builtin.assert:
     that:
     - sshd_state in [ 'present', 'latest' ]

@@ -5,11 +5,11 @@ Ansible Role - havlasme.security.sshd
 
 An [Ansible](https://www.ansible.com/) role to install and configure the [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
 
-- Install or Update the SSHd via APT
+- Install or Update the OpenSSH via APT
 - (Optional) Create or Update the `issue` File
-- Create, Update, or Delete a SSHd Conf File
+- Create, Update, or Delete a OpenSSH Conf File
 - (Optional) Delete the Small Moduli
-- Start and Enable the SSHd Service
+- Start and Enable the OpenSSH Service
 
 Role Variables
 --------------
@@ -65,9 +65,9 @@ sshd_moduli_file: '/etc/ssh/moduli'
 #sshd_moduli_minsize: 3071
 ```
 
-### `etc/ssh/sshd_config.d/default-crypto-policy.yml`
+### `etc/ssh/sshd_config.d/default-cryptography-policy.yml`
 
-```yaml title='etc/ssh/sshd_config.d/default-crypto-policy.yml'
+```yaml title='etc/ssh/sshd_config.d/default-cryptography-policy.yml'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd_crypto_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
