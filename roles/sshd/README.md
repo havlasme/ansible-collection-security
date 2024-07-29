@@ -70,8 +70,8 @@ sshd_cryptography_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('info
 
 ```yaml
 sshd_conf:
-- dest: 'sshd_config.d/20-crypto-policy-ssh-audit.yml'
-  src: 'etc/ssh/sshd_config.d/crypto-policy.yml.j2'
+- dest: 'sshd_config.d/20-default-cryptography-policy.conf'
+  src: 'etc/ssh/sshd_config.d/default-cryptography-policy.conf.j2'
   sshd_cryptography_policy: 'ssh-audit.com'
 ```
 
