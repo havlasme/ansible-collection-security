@@ -19,8 +19,8 @@
     group: '{{ item.1.group | d(item.1.user) | mandatory }}'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.user | mandatory }}'
   when:

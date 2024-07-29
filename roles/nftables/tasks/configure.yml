@@ -1,9 +1,9 @@
 ---
 - name: 'Configure | Delete a NFTables Conf File'
   ansible.builtin.file:
-    name: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_confdir) }}'
+    name: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables_confdir) }}'
     state: 'absent'
-  loop: '{{ nftables_conf | selectattr("state", "havlasme.security.is_absent") | list }}'
+  loop: '{{ nftables_conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
@@ -13,12 +13,12 @@
 
 - name: 'Configure | Create or Update a NFTables Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.security.abspath(nftables_confdir) }}'
+    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables_confdir) }}'
     src: '{{ item.tmpl | d(nftables_conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0644'
-  loop: '{{ nftables_conf | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop: '{{ nftables_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:

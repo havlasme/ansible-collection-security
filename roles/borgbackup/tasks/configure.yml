@@ -39,8 +39,8 @@
     key: '{{ item.1.host_pub_key | mandatory }}'
     hash_host: true
   loop: '{{ borgbackup_job | subelements("repository") 
-    | selectattr("0.state", "havlasme.security.is_present") | list
-    | selectattr("1.state", "havlasme.security.is_present") | list }}'
+    | selectattr("0.state", "havlasme.ansible.is_present") | list
+    | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.host | mandatory }}'
 
@@ -48,7 +48,7 @@
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
     state: 'absent'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_absent") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
     label: '{{ item.name | mandatory }}.yaml'
 
@@ -59,7 +59,7 @@
     owner: '{{ borgbackup_user }}'
     group: '{{ borgbackup_group }}'
     mode: '0600'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.name | mandatory }}.yaml'
 
@@ -84,7 +84,7 @@
     borgmatic init
     --config '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
     --encryption={{ item.encryption | d("repokey") | quote }}
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.name | mandatory }}'
   register: borgbackup_init

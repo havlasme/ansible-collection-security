@@ -5,8 +5,8 @@
   ansible.builtin.group:
     name: '{{ item.1.management.group | d(item.1.management.user) | mandatory }}'
     system: true
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
   when:
@@ -22,8 +22,8 @@
     group: '{{ item.1.management.group | d(item.1.management.user) | mandatory }}'
     shell: '/usr/sbin/nologin'
     system: true
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.management.user | d("root") }}'
   when:
@@ -38,8 +38,8 @@
     group: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.management.user | d("root") }}'
 
@@ -52,8 +52,8 @@
     group: '{{ item.1.management.group | d(item.1.management.user) | d("root") }}'
     mode: '0600'
     type: '{{ borgbackup_ssh_key_type }}'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.management.user | d("root") }}'
 
@@ -64,8 +64,8 @@
     host: '{{ item.1.host | mandatory }}'
     key: '{{ item.1.host_pub_key | mandatory }}'
     hash_host: true
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.host | mandatory }}'
 
@@ -78,8 +78,8 @@
     group: 'root'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.management.host | mandatory }}'
 
@@ -92,7 +92,7 @@
     group: 'root'
     mode: '0700'
     state: '{{ item.1.state | d(item.0.state) | d("present") | regex_replace("^present$", "directory") }}'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list | subelements("repository") }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list | subelements("repository") }}'
   loop_control:
     label: '{{ item.1.management.host | mandatory }}'
 
@@ -105,8 +105,8 @@
     owner: 'root'
     group: 'root'
     mode: '0600'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.security.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.security.is_present") | list }}'
+  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
+    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ borgbackup_management_d + "/" + inventory_hostname + "/" + (borgbackup_management_job.0.name | mandatory) + ".yaml" }}'
     loop_var: borgbackup_management_job
