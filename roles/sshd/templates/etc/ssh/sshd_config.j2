@@ -3,18 +3,18 @@
 
 Include {{ sshd_confdir | mandatory }}/sshd_config.d/*.conf
 
-{% for __sshd_port in sshd_port %}
-Port {{ __sshd_port }}
+{% for _sshd_port in sshd_port %}
+Port {{ _sshd_port }}
 {% endfor %}
 {% if sshd_ip is defined %}
-{%   for __sshd_ip in sshd_ip %}
-ListenAddress {{ __sshd_ip }}
+{%   for _sshd_ip in sshd_ip %}
+ListenAddress {{ _sshd_ip }}
 {%   endfor %}
 {% endif %}
 
 {% if sshd_host_key_type is defined %}
-{%   for __host_key_type in sshd_host_key_type %}
-HostKey {{ sshd_confdir }}/ssh_host_{{ __host_key_type }}_key
+{%   for _sshd_host_key_type in sshd_host_key_type %}
+HostKey {{ sshd_confdir }}/ssh_host_{{ _sshd_host_key_type }}_key
 {%   endfor %}
 {% endif %}
 

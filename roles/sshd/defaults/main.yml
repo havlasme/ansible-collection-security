@@ -22,24 +22,20 @@ sshd_port: [ '22' ]
 sshd_conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
-## allow client to set the locale environment
-- dest: 'sshd_config.d/20-ssh-daemon.conf'
+- dest: 'sshd_config.d/20-default-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
-    
     AcceptEnv {{ sshd_accept_env | d('LANG LC_*') }}
-## basic password or pubkey authentication
-- dest: 'sshd_config.d/40-ssh-authentication.conf'
+- dest: 'sshd_config.d/40-default-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes
     KbdInteractiveAuthentication no
     UsePAM yes
-    
     PermitRootLogin {{ sshd_permit_root_login | d('prohibit-password') }}
 # the sshd conf default template
-sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
+sshd_conf_template: '[content].conf.j2'
 # the sshd conf directory
 sshd_confdir: '/etc/ssh'
 

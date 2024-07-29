@@ -7,7 +7,7 @@
     msg: 'The "{{ ansible_distribution }} {{ ansible_distribution_version }}" is not supported'
     quiet: true
 
-- name: 'Assert | Ensure the Molly-Guard State Value is Valid'
+- name: 'Assert that the Molly-Guard State Value is Valid'
   ansible.builtin.assert:
     that:
     - molly_guard_state in [ 'present', 'latest', 'absent' ]

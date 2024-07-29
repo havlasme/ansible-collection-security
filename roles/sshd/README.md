@@ -38,21 +38,17 @@ sshd_port: [ '22' ]
 sshd_conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
-## allow client to set the locale environment
-- dest: 'sshd_config.d/20-base-daemon.conf'
+- dest: 'sshd_config.d/20-default-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
-
     AcceptEnv {{ sshd_accept_env | d('LANG LC_*') }}
-## basic password or pubkey authentication
-- dest: 'sshd_config.d/40-base-authentication.conf'
+- dest: 'sshd_config.d/40-default-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes
     KbdInteractiveAuthentication no
     UsePAM yes
-
     PermitRootLogin {{ sshd_permit_root_login | d('prohibit-password') }}
 # the sshd conf default template
 sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
@@ -69,14 +65,14 @@ sshd_moduli_file: '/etc/ssh/moduli'
 
 ```yaml title='etc/ssh/sshd_config.d/default-cryptography-policy.yml'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
-sshd_crypto_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
+sshd_cryptography_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
 
 ```yaml
 sshd_conf:
 - dest: 'sshd_config.d/20-crypto-policy-ssh-audit.yml'
   src: 'etc/ssh/sshd_config.d/crypto-policy.yml.j2'
-  sshd_crypto_policy: 'ssh-audit.com'
+  sshd_cryptography_policy: 'ssh-audit.com'
 ```
 
 Example Playbook
