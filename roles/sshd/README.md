@@ -3,10 +3,9 @@ Ansible Role - havlasme.security.sshd
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure the [SSHd](https://www.openssh.com/) service on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
 
-- Install or Update the SSHd Package via APT
-- (Optional) Create or Update the Key Revocation List
+- Install or Update the SSHd via APT
 - (Optional) Create or Update the `issue` File
 - Create, Update, or Delete a SSHd Conf File
 - (Optional) Delete the Small Moduli
@@ -25,7 +24,7 @@ sshd_ansible_reload: true
 # can ansible restart sshd service?
 sshd_ansible_restart: true
 
-# the sshd port
+# the sshd listen port
 sshd_port: [ '22' ]
 # the sshd listen ip
 #sshd_ip: [ '0.0.0.0' ]
@@ -58,7 +57,7 @@ sshd_conf:
 # the sshd conf default template
 sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
 # the sshd conf directory
-sshd_conf_d: '/etc/ssh'
+sshd_confdir: '/etc/ssh'
 
 # the sshd moduli file
 sshd_moduli_file: '/etc/ssh/moduli'
@@ -97,7 +96,7 @@ Example Playbook
   tasks:
   - ansible.builtin.include_role:
       name: 'havlasme.security.sshd'
-      tasks_from: 'configure-only'
+      tasks_from: 'configure'
 ```
 
 License

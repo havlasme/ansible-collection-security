@@ -3,9 +3,9 @@ Ansible Role - havlasme.security.molly_guard
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure Molly-Guard on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure the Molly-Guard on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
 
-- Install, Update, or Uninstall the Molly-Guard Package via APT
+- Install, Update, or Uninstall the Molly-Guard via APT
 
 Role Variables
 --------------
@@ -22,7 +22,7 @@ Example Playbook
 - hosts: 'all'
 
   tasks:
-  - include_role:
+  - ansible.builtin.include_role:
       name: 'havlasme.security.molly_guard'
 ```
 

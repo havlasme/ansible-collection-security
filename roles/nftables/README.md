@@ -3,11 +3,11 @@ Ansible Role - havlasme.security.nftables
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure firewall using [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
+An [Ansible](https://www.ansible.com/) role to install and configure the firewall using [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/).
 
-- Install, Update or Uninstall the NFTables Package via APT
+- Install, Update or Uninstall the NFTables via APT
 - Create, Update, or Delete a NFTables Conf File
-- Start and Enable the NFTables Service
+- Start/Stop and Enable/Disable the NFTables Service
 
 Role Variables
 --------------
@@ -32,16 +32,16 @@ nftables_conf:
 # the nftables conf default template
 nftables_conf_template: 'etc/nftables.d/[content].conf.j2'
 # the nftables conf directory
-nftables_conf_d: '/etc/nftables.d'
+nftables_confdir: '/etc/nftables.d'
 ```
 
 ### `etc/nftables.d/zerotrust-stateful-firewall.conf.j2`
 
 ```yaml title='etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 # allow icmp ping traffic at the input chain
-nftables_accept_ping: 'yes'
+nftables_accept_ping: true
 # allow multicast traffic at the input chain
-nftables_accept_multicast: 'no'
+nftables_accept_multicast: false
 
 # the ssh service port
 nftables_ssh_port: 22
@@ -80,11 +80,9 @@ Example Playbook
   tasks:
   - ansible.builtin.include_role:
       name: 'havlasme.security.nftables'
-      tasks_from: 'configure-only'
+      tasks_from: 'configure'
     vars:
       nftables_conf:
-      - dest: '/etc/nftables.conf'
-        src: 'etc/nftables.conf.j2'
       - dest: '10-zerotrust-stateful-firewall.conf'
         src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```

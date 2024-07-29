@@ -8,8 +8,8 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-- name: security-molly_guard-debian
-  image: docker.io/library/python:3.10
+- name: security-molly_guard-debian-bookworm
+  image: docker.io/library/python:3.10-bookworm
   pre_build_image: true
 provisioner:
   name: ansible

@@ -1,5 +1,5 @@
 ---
-- name: 'Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables Package via APT'
+- name: 'Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
     state: '{{ nftables_state }}'
@@ -8,7 +8,7 @@
 
 - name: 'Security | NFTables | Install | Create the NFTables Conf Directory Structure'
   ansible.builtin.file:
-    name: '{{ nftables_conf_d }}'
+    name: '{{ nftables_confdir }}'
     owner: 'root'
     group: 'root'
     mode: '0755'

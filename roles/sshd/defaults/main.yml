@@ -41,7 +41,7 @@ sshd_conf:
 # the sshd conf default template
 sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
 # the sshd conf directory
-sshd_conf_d: '/etc/ssh'
+sshd_confdir: '/etc/ssh'
 
 # the sshd moduli file
 sshd_moduli_file: '/etc/ssh/moduli'

@@ -1,5 +1,5 @@
 ---
-- name: 'Install | Install or Update the SSHd Package via APT'
+- name: 'Install | Install or Update the SSHd via APT'
   ansible.builtin.apt:
     name: '{{ sshd_package_name }}'
     state: '{{ sshd_state }}'
@@ -8,7 +8,7 @@
 
 - name: 'Install | Create the SSHd Conf Directory Structure'
   ansible.builtin.file:
-    dest: '{{ sshd_conf_d }}'
+    dest: '{{ sshd_confdir }}'
     owner: 'root'
     group: 'root'
     mode: '0755'

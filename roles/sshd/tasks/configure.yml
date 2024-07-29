@@ -11,7 +11,7 @@
 
 - name: 'Configure | Delete a SSHd Conf File'
   ansible.builtin.file:
-    dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
+    dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_confdir) }}'
     state: 'absent'
   loop: '{{ sshd_conf | selectattr("state", "havlasme.security.is_absent") | list }}'
   loop_control:
@@ -21,7 +21,7 @@
 
 - name: 'Configure | Create or Update a SSHd Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_conf_d) }}'
+    dest: '{{ item.dest | mandatory | havlasme.security.abspath(sshd_confdir) }}'
     src: '{{ item.tmpl | d(sshd_conf_template) }}'
     owner: 'root'
     group: 'root'
