@@ -61,9 +61,9 @@ sshd_moduli_file: '/etc/ssh/moduli'
 #sshd_moduli_minsize: 3071
 ```
 
-### `etc/ssh/sshd_config.d/default-cryptography-policy.yml`
+### `etc/ssh/sshd_config.d/default-cryptography-policy.conf`
 
-```yaml title='etc/ssh/sshd_config.d/default-cryptography-policy.yml'
+```yaml title='etc/ssh/sshd_config.d/default-cryptography-policy.conf'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd_cryptography_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
