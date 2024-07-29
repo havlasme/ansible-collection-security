@@ -11,7 +11,7 @@
   ansible.builtin.assert:
     that:
     - ansible_service_mgr == 'systemd'
-    msg: 'The "{{ ansible_service_mgr }}" init system is not supported'
+    msg: 'The "{{ ansible_service_mgr }}" is not supported'
     quiet: true
 
 - name: 'Assert that the NFTables State Value is Valid'

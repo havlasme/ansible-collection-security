@@ -7,7 +7,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | NFTables | Reload Service'
+  - 'NFTables | Reload Service'
   when:
   - nftables_state != 'absent'
 
@@ -22,7 +22,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | NFTables | Reload Service'
+  - 'NFTables | Reload Service'
   when:
   - nftables_state != 'absent'
 ...

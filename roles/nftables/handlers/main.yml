@@ -1,5 +1,5 @@
 ---
-- name: 'Security | NFTables | Reload Service'
+- name: 'NFTables | Reload Service'
   ansible.builtin.systemd:
     name: '{{ nftables_service_name }}'
     daemon_reload: true
@@ -10,7 +10,7 @@
   - not ansible_check_mode
   tags: [ 'always' ]
 
-- name: 'Security | NFTables | Restart Service'
+- name: 'NFTables | Restart Service'
   ansible.builtin.systemd:
     name: '{{ nftables_service_name }}'
     daemon_reload: true

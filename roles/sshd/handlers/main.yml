@@ -1,27 +1,27 @@
 ---
-- name: 'Security | SSHd | Validate Conf and Reload Service'
+- name: 'OpenSSH | Validate Conf and Reload Service'
   ansible.builtin.command: >
     sshd -t -f /etc/ssh/sshd_config
   notify:
-  - 'Security | SSHd | Reload Service'
+  - 'OpenSSH | Reload Service'
   changed_when: true
   when:
   - sshd_ansible_reload | bool
   - not ansible_check_mode
   tags: [ 'always' ]
 
-- name: 'Security | SSHd | Validate Conf and Restart Service'
+- name: 'OpenSSH | Validate Conf and Restart Service'
   ansible.builtin.command: >
     sshd -t -f /etc/ssh/sshd_config
   notify:
-  - 'Security | SSHd | Restart Service'
+  - 'OpenSSH | Restart Service'
   changed_when: true
   when:
   - sshd_ansible_restart | bool
   - not ansible_check_mode
   tags: [ 'always' ]
 
-- name: 'Security | SSHd | Reload Service'
+- name: 'OpenSSH | Reload Service'
   ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
     daemon_reload: true
@@ -31,7 +31,7 @@
   - not ansible_check_mode
   tags: [ 'always' ]
 
-- name: 'Security | SSHd | Restart Service'
+- name: 'OpenSSH | Restart Service'
   ansible.builtin.systemd:
     name: '{{ sshd_service_name }}'
     daemon_reload: true

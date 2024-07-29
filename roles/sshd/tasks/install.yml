@@ -5,7 +5,7 @@
     update_cache: true
     state: '{{ sshd_state }}'
   notify:
-  - 'Security | SSHd | Validate Conf and Restart Service'
+  - 'OpenSSH | Validate Conf and Restart Service'
 
 - name: 'Install | Create the OpenSSH Conf Directory Structure'
   ansible.builtin.file:
@@ -15,5 +15,5 @@
     mode: '0755'
     state: 'directory'
   notify:
-  - 'Security | SSHd | Validate Conf and Reload Service'
+  - 'OpenSSH | Validate Conf and Reload Service'
 ...

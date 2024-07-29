@@ -5,9 +5,9 @@
     update_cache: true
     state: '{{ nftables_state }}'
   notify:
-  - 'Security | NFTables | Restart Service'
+  - 'NFTables | Restart Service'
 
-- name: 'Security | NFTables | Install | Create the NFTables Conf Directory Structure'
+- name: 'Install | Create the NFTables Conf Directory Structure'
   ansible.builtin.file:
     name: '{{ nftables_confdir }}'
     owner: 'root'
@@ -15,7 +15,7 @@
     mode: '0755'
     state: 'directory'
   notify:
-  - 'Security | NFTables | Reload Service'
+  - 'NFTables | Reload Service'
   when:
   - nftables_state != 'absent'
 ...

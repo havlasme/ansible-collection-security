@@ -17,7 +17,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | SSHd | Validate Conf and Reload Service'
+  - 'OpenSSH | Validate Conf and Reload Service'
 
 - name: 'Configure | Create or Update a OpenSSH Conf File'
   ansible.builtin.template:
@@ -32,7 +32,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'Security | SSHd | Validate Conf and Reload Service'
+  - 'OpenSSH | Validate Conf and Reload Service'
 
 - name: 'Configure | Check the Available Moduli Size'
   ansible.builtin.shell: >
@@ -48,7 +48,7 @@
     awk '$5 >= {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
     [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
   notify:
-  - 'Security | SSHd | Validate Conf and Restart Service'
+  - 'OpenSSH | Validate Conf and Restart Service'
   when:
   - sshd_moduli_minsize_check.stdout
   changed_when: true
