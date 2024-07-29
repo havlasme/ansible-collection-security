@@ -3,6 +3,5 @@ exclude_paths:
 - molecule/
 
 skip_list:
-- name[casing]
 - name[missing]
 - yaml[line-length]
