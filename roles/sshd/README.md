@@ -50,7 +50,7 @@ sshd_conf:
     UsePAM yes
     PermitRootLogin {{ sshd_permit_root_login | d('prohibit-password') }}
 # the sshd conf default template
-sshd_conf_template: 'etc/ssh/sshd_config.d/[content].conf.j2'
+sshd_conf_template: '[content].conf.j2'
 # the sshd conf directory
 sshd_confdir: '/etc/ssh'
 

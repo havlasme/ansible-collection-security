@@ -16,7 +16,7 @@ Role Variables
 # the nftables package state ('present', 'latest', 'absent')
 nftables_state: 'present'
 # should start the nftables service at boot
-nftables_enabled: true
+nftables_enabled: '{{ nftables_state != "absent" }}'
 # can ansible reload nftables service?
 nftables_ansible_reload: true
 # can ansible restart nftables service?
@@ -30,7 +30,7 @@ nftables_conf:
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # the nftables conf default template
-nftables_conf_template: 'etc/nftables.d/[content].conf.j2'
+nftables_conf_template: '[content].conf.j2'
 # the nftables conf directory
 nftables_confdir: '/etc/nftables.d'
 ```
