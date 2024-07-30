@@ -2,7 +2,7 @@
 # the nftables package state ('present', 'latest', 'absent')
 nftables_state: 'present'
 # should start the nftables service at boot
-nftables_enabled: true
+nftables_enabled: '{{ nftables_state != "absent" }}'
 # can ansible reload nftables service?
 nftables_ansible_reload: true
 # can ansible restart nftables service?

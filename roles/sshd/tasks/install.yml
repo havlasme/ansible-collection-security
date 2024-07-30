@@ -3,6 +3,7 @@
   ansible.builtin.apt:
     name: '{{ sshd_package_name }}'
     update_cache: true
+    cache_valid_time: 1800
     state: '{{ sshd_state }}'
   notify:
   - 'OpenSSH | Validate Conf and Restart Service'
