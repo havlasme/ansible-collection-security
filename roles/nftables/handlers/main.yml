@@ -1,4 +1,28 @@
 ---
+- name: 'NFTables | Validate Conf and Reload Service'
+  ansible.builtin.command: >
+    nft -c -f /etc/nftables.conf
+  notify:
+  - 'NFTables | Reload Service'
+  changed_when: true
+  when:
+  - nftables_ansible_reload | bool
+  - nftables_state != 'absent'
+  - not ansible_check_mode
+  tags: [ 'always' ]
+
+- name: 'NFTables | Validate Conf and Restart Service'
+  ansible.builtin.command: >
+    nft -c -f /etc/nftables.conf
+  notify:
+  - 'NFTables | Restart Service'
+  changed_when: true
+  when:
+  - nftables_ansible_restart | bool
+  - nftables_state != 'absent'
+  - not ansible_check_mode
+  tags: [ 'always' ]
+
 - name: 'NFTables | Reload Service'
   ansible.builtin.systemd:
     name: '{{ nftables_service_name }}'

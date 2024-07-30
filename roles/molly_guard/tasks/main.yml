@@ -18,7 +18,8 @@
 - name: 'Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard via APT'
   ansible.builtin.apt:
     name: '{{ molly_guard_package_name }}'
-    update_cache: true
+    update_cache: '{{ molly_guard_state != "absent" }}'
+    cache_valid_time: 1800
     state: '{{ molly_guard_state }}'
   tags: [ 'role:molly_guard', 'role:molly_guard:install', 'task:install' ]
 ...

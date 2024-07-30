@@ -1,14 +1,4 @@
 ---
-- name: 'Configure | Create or Update the `issue` File'
-  ansible.builtin.template:
-    dest: '{{ sshd_issue_file | d("/etc/issue.net") }}'
-    src: '{{ sshd_issue_template }}'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  when:
-  - sshd_issue_template is defined
-
 - name: 'Configure | Delete a OpenSSH Conf File'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd_confdir) }}'
@@ -26,7 +16,6 @@
     owner: 'root'
     group: 'root'
     mode: '0644'
-    force: true
     validate: sshd -t -f %s
   loop: '{{ sshd_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:

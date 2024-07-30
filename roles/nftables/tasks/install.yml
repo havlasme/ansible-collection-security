@@ -2,10 +2,11 @@
 - name: 'Install | {{ (nftables_state == "absent") | ternary("Uninstall", "Install or Update") }} the NFTables via APT'
   ansible.builtin.apt:
     name: '{{ nftables_package_name }}'
-    update_cache: true
+    update_cache: '{{ nftables_state != "absent" }}'
+    cache_valid_time: 1800
     state: '{{ nftables_state }}'
   notify:
-  - 'NFTables | Restart Service'
+  - 'NFTables | Validate Conf and Restart Service'
 
 - name: 'Install | Create the NFTables Conf Directory Structure'
   ansible.builtin.file:
@@ -15,7 +16,7 @@
     mode: '0755'
     state: 'directory'
   notify:
-  - 'NFTables | Reload Service'
+  - 'NFTables | Validate Conf and Reload Service'
   when:
   - nftables_state != 'absent'
 ...

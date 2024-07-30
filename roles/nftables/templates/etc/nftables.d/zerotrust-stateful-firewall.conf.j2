@@ -15,7 +15,6 @@
  # the ssh service ipv6 accept list
  nftables_ssh_ipv6_accept: string[] | d(['::/0'])
 -#}
-#!/usr/sbin/nft -f
 {{ ansible_managed | comment }}
 
 add table inet host

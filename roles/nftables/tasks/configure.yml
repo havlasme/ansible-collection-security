@@ -7,7 +7,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'NFTables | Reload Service'
+  - 'NFTables | Validate Conf and Reload Service'
   when:
   - nftables_state != 'absent'
 
@@ -18,11 +18,12 @@
     owner: 'root'
     group: 'root'
     mode: '0644'
+    validate: nft -c -f %s
   loop: '{{ nftables_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'NFTables | Reload Service'
+  - 'NFTables | Validate Conf and Reload Service'
   when:
   - nftables_state != 'absent'
 ...
