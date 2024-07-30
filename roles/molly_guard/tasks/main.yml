@@ -15,6 +15,10 @@
     quiet: true
   tags: [ 'always' ]
 
+#
+# Install
+#
+
 - name: 'Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard via APT'
   ansible.builtin.apt:
     name: '{{ molly_guard_package_name }}'
