@@ -34,7 +34,7 @@ License
 Author Information
 ------------------
 
-Created by [Tomáš Havlas](https://havlas.me/).
+Created in 2024 by [Tomáš Havlas](https://havlas.me/).
 
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
