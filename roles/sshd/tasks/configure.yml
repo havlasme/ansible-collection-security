@@ -15,7 +15,7 @@
     src: '{{ item.tmpl | d(sshd_conf_template) }}'
     owner: 'root'
     group: 'root'
-    mode: '0644'
+    mode: '{{ item.mode | d("0600") }}'
     validate: '{{ "sshd -t -f %s" if (item.validate|d(true)|bool) else omit }}'
   loop: '{{ sshd_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
