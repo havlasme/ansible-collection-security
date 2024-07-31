@@ -16,7 +16,7 @@
     owner: 'root'
     group: 'root'
     mode: '0644'
-    validate: sshd -t -f %s
+    validate: '{{ "sshd -t -f %s" if (item.validate|d(true)|bool) else omit }}'
   loop: '{{ sshd_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
