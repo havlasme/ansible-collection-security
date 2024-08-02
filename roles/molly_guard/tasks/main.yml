@@ -11,7 +11,7 @@
   ansible.builtin.assert:
     that:
     - molly_guard__state in [ 'present', 'latest', 'absent' ]
-    msg: 'The molly_guard__state must be in [ "present", "latest", "absent" ]'
+    msg: 'The molly_guard__state must be one of [ "present", "latest", "absent" ] - "{{ molly_guard__state }}" is not supported'
     quiet: true
   tags: [ 'always' ]
 

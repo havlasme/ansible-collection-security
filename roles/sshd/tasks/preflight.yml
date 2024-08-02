@@ -18,6 +18,6 @@
   ansible.builtin.assert:
     that:
     - sshd__state in [ 'present', 'latest' ]
-    msg: 'The sshd__state must be in [ "present", "latest" ]'
+    msg: 'The sshd__state must be one of [ "present", "latest" ] - "{{ sshd__state }}" is not supported'
     quiet: true
 ...
