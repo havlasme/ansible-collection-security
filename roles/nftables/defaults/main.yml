@@ -1,22 +1,22 @@
 ---
 # the nftables package state ('present', 'latest', 'absent')
-nftables_state: 'present'
+nftables__state: 'present'
 # should start the nftables service at boot
-nftables_enabled: '{{ nftables_state != "absent" }}'
+nftables__enabled: '{{ nftables__state != "absent" }}'
 # can ansible reload nftables service?
-nftables_ansible_reload: true
+nftables__ansible_reload: true
 # can ansible restart nftables service?
-nftables_ansible_restart: true
+nftables__ansible_restart: true
 
 # the nftables conf list
 ## - dest: string
-##   tmpl: string | d(nftables_conf_template)
+##   tmpl: string | d(nftables__conf_template)
 ##   state: enum('present', 'absent') | d('present')
-nftables_conf:
+nftables__conf:
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # the nftables conf default template
-nftables_conf_template: '[content].j2'
+nftables__conf_template: '[content].j2'
 # the nftables conf directory
-nftables_confdir: '/etc/nftables.d'
+nftables__confdir: '/etc/nftables.d'
 ...

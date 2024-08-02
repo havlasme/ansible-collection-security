@@ -1,29 +1,29 @@
 ---
 - name: 'Configure | Delete a NFTables Conf File'
   ansible.builtin.file:
-    name: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables_confdir) }}'
+    name: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables__confdir) }}'
     state: 'absent'
-  loop: '{{ nftables_conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
+  loop: '{{ nftables__conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'NFTables | Validate Conf and Reload Service'
   when:
-  - nftables_state != 'absent'
+  - nftables__state != 'absent'
 
 - name: 'Configure | Create or Update a NFTables Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables_confdir) }}'
-    src: '{{ item.tmpl | d(nftables_conf_template) }}'
+    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables__confdir) }}'
+    src: '{{ item.tmpl | d(nftables__conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '0600'
     validate: nft -c -f %s
-  loop: '{{ nftables_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
+  loop: '{{ nftables__conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
   - 'NFTables | Validate Conf and Reload Service'
   when:
-  - nftables_state != 'absent'
+  - nftables__state != 'absent'
 ...

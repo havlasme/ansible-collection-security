@@ -1,46 +1,46 @@
 ---
 # the sshd package state ('present', 'latest') - 'absent' is not supported
-sshd_state: 'present'
+sshd__state: 'present'
 # should the sshd service start at boot
-sshd_enabled: true
+sshd__enabled: true
 # can ansible reload sshd service?
-sshd_ansible_reload: true
+sshd__ansible_reload: true
 # can ansible restart sshd service?
-sshd_ansible_restart: true
+sshd__ansible_restart: true
 
 # the sshd listen port
-sshd_port: [ '22' ]
+sshd__port: [ '22' ]
 # the sshd listen ip
-#sshd_listen_to: [ '0.0.0.0' ]
+#sshd__listen_to: [ '0.0.0.0' ]
 # the ssh host key type
-#sshd_host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
+#sshd__host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
 # the sshd conf list
 ## - dest: string
-##   tmpl: string | d(sshd_conf_template)
+##   tmpl: string | d(sshd__conf_template)
 ##   state: enum('present', 'absent') | d('present')
-sshd_conf:
-- dest: 'sshd_config'
-  tmpl: 'etc/ssh/sshd_config.j2'
-- dest: 'sshd_config.d/20-default-daemon.conf'
+sshd__conf:
+- dest: 'sshd__config'
+  tmpl: 'etc/ssh/sshd__config.j2'
+- dest: 'sshd__config.d/20-default-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
-    AcceptEnv {{ sshd_accept_env | d('LANG LC_*') }}
-- dest: 'sshd_config.d/40-default-authentication.conf'
+    AcceptEnv {{ sshd__accept_env | d('LANG LC_*') }}
+- dest: 'sshd__config.d/40-default-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes
     KbdInteractiveAuthentication no
     UsePAM yes
-    PermitRootLogin {{ sshd_permit_root_login | d('prohibit-password') }}
+    PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}
 # the sshd conf default template
-sshd_conf_template: '[content].j2'
+sshd__conf_template: '[content].j2'
 # the sshd conf directory
-sshd_confdir: '/etc/ssh'
+sshd__confdir: '/etc/ssh'
 
 # the sshd moduli file
-sshd_moduli_file: '/etc/ssh/moduli'
+sshd__moduli_file: '/etc/ssh/moduli'
 # the sshd moduli minimal size
-#sshd_moduli_minsize: 3071
+#sshd__moduli_minsize: 3071
 ...

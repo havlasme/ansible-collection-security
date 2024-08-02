@@ -1,16 +1,16 @@
 ---
 - name: 'Install | Install or Update the OpenSSH via APT'
   ansible.builtin.apt:
-    name: '{{ sshd_package_name }}'
+    name: '{{ sshd__package_name }}'
     update_cache: true
     cache_valid_time: 1800
-    state: '{{ sshd_state }}'
+    state: '{{ sshd__state }}'
   notify:
   - 'OpenSSH | Validate Conf and Restart Service'
 
 - name: 'Install | Create the OpenSSH Conf Directory Structure'
   ansible.builtin.file:
-    dest: '{{ sshd_confdir }}'
+    dest: '{{ sshd__confdir }}'
     owner: 'root'
     group: 'root'
     mode: '0755'

@@ -12,7 +12,7 @@ Role Variables
 
 ```yaml
 # the molly-guard package state ('present', 'latest, 'absent')
-molly_guard_state: 'present'
+molly_guard__state: 'present'
 ```
 
 Example Playbook

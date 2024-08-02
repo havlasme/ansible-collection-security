@@ -10,8 +10,8 @@
 - name: 'Assert that the Molly-Guard State Value is Valid'
   ansible.builtin.assert:
     that:
-    - molly_guard_state in [ 'present', 'latest', 'absent' ]
-    msg: 'The molly_guard_state must be in [ "present", "latest", "absent" ]'
+    - molly_guard__state in [ 'present', 'latest', 'absent' ]
+    msg: 'The molly_guard__state must be in [ "present", "latest", "absent" ]'
     quiet: true
   tags: [ 'always' ]
 
@@ -19,11 +19,11 @@
 # Install
 #
 
-- name: 'Install | {{ (molly_guard_state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard via APT'
+- name: 'Install | {{ (molly_guard__state == "absent") | ternary("Uninstall", "Install or Update") }} the Molly-Guard via APT'
   ansible.builtin.apt:
-    name: '{{ molly_guard_package_name }}'
-    update_cache: '{{ molly_guard_state != "absent" }}'
+    name: '{{ molly_guard__package_name }}'
+    update_cache: '{{ molly_guard__state != "absent" }}'
     cache_valid_time: 1800
-    state: '{{ molly_guard_state }}'
+    state: '{{ molly_guard__state }}'
   tags: [ 'role:molly_guard', 'role:molly_guard:install', 'task:install' ]
 ...

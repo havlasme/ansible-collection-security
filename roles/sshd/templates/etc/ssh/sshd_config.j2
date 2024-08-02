@@ -1,20 +1,20 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-Include {{ sshd_confdir | mandatory }}/sshd_config.d/*.conf
+Include {{ sshd__confdir | mandatory }}/sshd__config.d/*.conf
 
-{% for _sshd_port in sshd_port %}
-Port {{ _sshd_port }}
+{% for _sshd__port in sshd__port %}
+Port {{ _sshd__port }}
 {% endfor %}
-{% if sshd_listen_to is defined %}
-{%   for _sshd_listen_to in sshd_listen_to %}
-ListenAddress {{ _sshd_listen_to }}
+{% if sshd__listen_to is defined %}
+{%   for _sshd__listen_to in sshd__listen_to %}
+ListenAddress {{ _sshd__listen_to }}
 {%   endfor %}
 {% endif %}
 
-{% if sshd_host_key_type is defined %}
-{%   for _sshd_host_key_type in sshd_host_key_type %}
-HostKey {{ sshd_confdir }}/ssh_host_{{ _sshd_host_key_type }}_key
+{% if sshd__host_key_type is defined %}
+{%   for _sshd__host_key_type in sshd__host_key_type %}
+HostKey {{ sshd__confdir }}/ssh_host_{{ _sshd__host_key_type }}_key
 {%   endfor %}
 {% endif %}
 

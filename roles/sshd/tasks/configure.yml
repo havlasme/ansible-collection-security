@@ -1,9 +1,9 @@
 ---
 - name: 'Configure | Delete a OpenSSH Conf File'
   ansible.builtin.file:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd_confdir) }}'
+    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd__confdir) }}'
     state: 'absent'
-  loop: '{{ sshd_conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
+  loop: '{{ sshd__conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
@@ -11,13 +11,13 @@
 
 - name: 'Configure | Create or Update a OpenSSH Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd_confdir) }}'
-    src: '{{ item.tmpl | d(sshd_conf_template) }}'
+    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd__confdir) }}'
+    src: '{{ item.tmpl | d(sshd__conf_template) }}'
     owner: 'root'
     group: 'root'
     mode: '{{ item.mode | d("0600") }}'
     validate: '{{ "sshd -t -f %s" if (item.validate|d(true)|bool) else omit }}'
-  loop: '{{ sshd_conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
+  loop: '{{ sshd__conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
@@ -25,20 +25,20 @@
 
 - name: 'Configure | Check the Available Moduli Size'
   ansible.builtin.shell: >
-    awk '$5 < {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}'
+    awk '$5 < {{ sshd__moduli_minsize }}' '{{ sshd__moduli_file }}'
   when:
-  - sshd_moduli_minsize is defined
-  register: sshd_moduli_minsize_check
-  changed_when: sshd_moduli_minsize_check.stdout
+  - sshd__moduli_minsize is defined
+  register: sshd__moduli_minsize_check
+  changed_when: sshd__moduli_minsize_check.stdout
   check_mode: false
 
-- name: 'Configure | Delete the Small Moduli (< {{ sshd_moduli_minsize }})'
+- name: 'Configure | Delete the Small Moduli (< {{ sshd__moduli_minsize }})'
   ansible.builtin.shell: >
-    awk '$5 >= {{ sshd_moduli_minsize }}' '{{ sshd_moduli_file }}' > '{{ sshd_moduli_file }}.ansible' ;
-    [ -r '{{ sshd_moduli_file }}.ansible' -a -s '{{ sshd_moduli_file }}.ansible' ] && mv '{{ sshd_moduli_file }}.ansible' '{{ sshd_moduli_file }}' || rm '{{ sshd_moduli_file }}.ansible'
+    awk '$5 >= {{ sshd__moduli_minsize }}' '{{ sshd__moduli_file }}' > '{{ sshd__moduli_file }}.ansible' ;
+    [ -r '{{ sshd__moduli_file }}.ansible' -a -s '{{ sshd__moduli_file }}.ansible' ] && mv '{{ sshd__moduli_file }}.ansible' '{{ sshd__moduli_file }}' || rm '{{ sshd__moduli_file }}.ansible'
   notify:
   - 'OpenSSH | Validate Conf and Restart Service'
   when:
-  - sshd_moduli_minsize_check.stdout
+  - sshd__moduli_minsize_check.stdout
   changed_when: true
 ...

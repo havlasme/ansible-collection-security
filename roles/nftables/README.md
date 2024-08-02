@@ -14,45 +14,45 @@ Role Variables
 
 ```yaml
 # the nftables package state ('present', 'latest', 'absent')
-nftables_state: 'present'
+nftables__state: 'present'
 # should start the nftables service at boot
-nftables_enabled: '{{ nftables_state != "absent" }}'
+nftables__enabled: '{{ nftables__state != "absent" }}'
 # can ansible reload nftables service?
-nftables_ansible_reload: true
+nftables__ansible_reload: true
 # can ansible restart nftables service?
-nftables_ansible_restart: true
+nftables__ansible_restart: true
 
 # the nftables conf list
 ## - dest: string
-##   tmpl: string | d(nftables_conf_template)
+##   tmpl: string | d(nftables__conf_template)
 ##   state: enum('present', 'absent') | d('present')
-nftables_conf:
+nftables__conf:
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # the nftables conf default template
-nftables_conf_template: '[content].conf.j2'
+nftables__conf_template: '[content].conf.j2'
 # the nftables conf directory
-nftables_confdir: '/etc/nftables.d'
+nftables__confdir: '/etc/nftables.d'
 ```
 
 ### `etc/nftables.d/zerotrust-stateful-firewall.conf.j2`
 
 ```yaml title='etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 # allow icmp ping traffic at the input chain
-nftables_accept_ping: true
+nftables__accept_ping: true
 # allow multicast traffic at the input chain
-nftables_accept_multicast: false
+nftables__accept_multicast: false
 
 # the ssh service port
-nftables_ssh_port: 22
+nftables__ssh_port: 22
 # the ssh service ipv4 accept list
-nftables_ssh_ipv4_accept: [ '0.0.0.0/0' ]
+nftables__ssh_ipv4_accept: [ '0.0.0.0/0' ]
 # the ssh service ipv6 accept list
-nftables_ssh_ipv6_accept: [ '::/0' ]
+nftables__ssh_ipv6_accept: [ '::/0' ]
 ```
 
 ```yaml
-nftables_conf:
+nftables__conf:
 - dest: '10-zerotrust-stateful-firewall.conf'
   src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
@@ -67,7 +67,7 @@ Example Playbook
   - ansible.builtin.include_role:
       name: 'havlasme.security.nftables'
     vars:
-      nftables_conf:
+      nftables__conf:
       - dest: '/etc/nftables.conf'
         src: 'etc/nftables.conf.j2'
       - dest: '10-zerotrust-stateful-firewall.conf'
@@ -82,7 +82,7 @@ Example Playbook
       name: 'havlasme.security.nftables'
       tasks_from: 'configure'
     vars:
-      nftables_conf:
+      nftables__conf:
       - dest: '10-zerotrust-stateful-firewall.conf'
         src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```

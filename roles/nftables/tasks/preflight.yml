@@ -17,7 +17,7 @@
 - name: 'Assert that the NFTables State Value is Valid'
   ansible.builtin.assert:
     that:
-    - nftables_state in [ 'present', 'latest', 'absent' ]
-    msg: 'The `nftables_state` must be in [ "present", "latest", "absent" ] - "{{ nftables_state }}" is not supported'
+    - nftables__state in [ 'present', 'latest', 'absent' ]
+    msg: 'The `nftables__state` must be in [ "present", "latest", "absent" ] - "{{ nftables__state }}" is not supported'
     quiet: true
 ...

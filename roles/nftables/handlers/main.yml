@@ -6,8 +6,8 @@
   - 'NFTables | Reload Service'
   changed_when: true
   when:
-  - nftables_ansible_reload | bool
-  - nftables_state != 'absent'
+  - nftables__ansible_reload | bool
+  - nftables__state != 'absent'
   - not ansible_check_mode
   tags: [ 'always' ]
 
@@ -18,30 +18,30 @@
   - 'NFTables | Restart Service'
   changed_when: true
   when:
-  - nftables_ansible_restart | bool
-  - nftables_state != 'absent'
+  - nftables__ansible_restart | bool
+  - nftables__state != 'absent'
   - not ansible_check_mode
   tags: [ 'always' ]
 
 - name: 'NFTables | Reload Service'
   ansible.builtin.systemd:
-    name: '{{ nftables_service_name }}'
+    name: '{{ nftables__service_name }}'
     daemon_reload: true
     state: 'reloaded'
   when:
-  - nftables_ansible_reload | bool
-  - nftables_state != 'absent'
+  - nftables__ansible_reload | bool
+  - nftables__state != 'absent'
   - not ansible_check_mode
   tags: [ 'always' ]
 
 - name: 'NFTables | Restart Service'
   ansible.builtin.systemd:
-    name: '{{ nftables_service_name }}'
+    name: '{{ nftables__service_name }}'
     daemon_reload: true
     state: 'restarted'
   when:
-  - nftables_ansible_restart | bool
-  - nftables_state != 'absent'
+  - nftables__ansible_restart | bool
+  - nftables__state != 'absent'
   - not ansible_check_mode
   tags: [ 'always' ]
 ...
