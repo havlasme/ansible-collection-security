@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  description: An Ansible role to install and configure the Molly-Guard on Debian or Ubuntu.
+  description: An Ansible role to install and configure the Molly-Guard on Debian or Ubuntu running systemd.
   author: havlas.me
   company: havlas.me
   issue_tracker_url: https://gitlab.com/havlas.me/ansible-collection-security/-/issues
