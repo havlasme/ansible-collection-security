@@ -1,7 +1,7 @@
 ---
 - name: 'OpenSSH | Validate Conf and Reload Service'
   ansible.builtin.command: >
-    sshd -t -f /etc/ssh/sshd__config
+    sshd -t -f /etc/ssh/sshd_config
   notify:
   - 'OpenSSH | Reload Service'
   changed_when: true
@@ -12,7 +12,7 @@
 
 - name: 'OpenSSH | Validate Conf and Restart Service'
   ansible.builtin.command: >
-    sshd -t -f /etc/ssh/sshd__config
+    sshd -t -f /etc/ssh/sshd_config
   notify:
   - 'OpenSSH | Restart Service'
   changed_when: true

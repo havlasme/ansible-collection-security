@@ -1,7 +1,7 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 {{ ansible_managed | comment }}
 
-Include {{ sshd__confdir | mandatory }}/sshd__config.d/*.conf
+Include {{ sshd__confdir | mandatory }}/sshd_config.d/*.conf
 
 {% for _sshd__port in sshd__port %}
 Port {{ _sshd__port }}
