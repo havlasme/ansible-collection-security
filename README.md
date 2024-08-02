@@ -3,14 +3,14 @@ Ansible Collection - havlasme.security
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) collection of linux security related content that supports [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/).
+An [Ansible](https://www.ansible.com/) collection of linux security related content that supports [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/) running [systemd](https://systemd.io/).
 
 ### Included Content
 
-- [havlasme.security.borgbackup](/roles/borgbackup/README.md)
-- [havlasme.security.molly_guard](/roles/molly_guard/README.md)
-- [havlasme.security.nftables](/roles/nftables/README.md)
-- [havlasme.security.sshd](/roles/sshd/README.md)
+- `havlasme.security.borgbackup` ([documentation](/roles/borgbackup/README.md))
+- `havlasme.security.molly_guard` ([documentation](/roles/molly_guard/README.md))
+- `havlasme.security.nftables` ([documentation](/roles/nftables/README.md))
+- `havlasme.security.sshd` ([documentation](/roles/sshd/README.md))
 
 Installation
 ------------
