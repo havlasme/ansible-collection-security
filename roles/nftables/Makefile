@@ -7,4 +7,4 @@ lint:
 
 .PHONY: test
 test:
-	$(MOLECULE) test -vvv --all
+	$(MOLECULE) test --all -- -vvv
