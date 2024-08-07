@@ -28,20 +28,10 @@
     name: '{{ nftables__service_name }}'
     daemon_reload: true
     state: 'reloaded'
-  register: reload_result
-  failed_when: reload_result.failed
-  ignore_errors: yes
-  notify:
-  - 'Show reload result'
   when:
   - nftables__ansible_reload | bool
   - nftables__state != 'absent'
   - not ansible_check_mode
-  tags: [ 'always' ]
-
-- name: Show reload result
-  debug:
-    var: reload_result
   tags: [ 'always' ]
 
 - name: 'NFTables | Restart Service'
