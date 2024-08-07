@@ -18,11 +18,11 @@ nftables__conf:
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
-##   state: enum('present', 'absent') | d('present')
+##   state: enum('present', 'absent', 'directory') | d('present')
+- dest: '/etc/nftables.d'
+  state: 'directory'
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # nftables conf default template
 nftables__conf_template: '_content_.j2'
-# nftables conf directory
-nftables__confdir: '/etc/nftables.d'
 ...

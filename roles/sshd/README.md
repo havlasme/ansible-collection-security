@@ -42,15 +42,19 @@ sshd__conf:
 ##   group: string | d('root')
 ##   mode: string | d('0755')
 ##   validate: bool | d(true)
-##   state: enum('present', 'absent') | d('present')
-- dest: 'sshd_config'
+##   state: enum('present', 'absent', 'directory') | d('present')
+- dest: '/etc/ssh'
+  state: 'directory'
+- dest: '/etc/ssh/sshd_config.d'
+  state: 'directory'
+- dest: '/etc/ssh/sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
-- dest: 'sshd_config.d/20-default-daemon.conf'
+- dest: '/etc/ssh/sshd_config.d/20-default-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
     AcceptEnv {{ sshd__accept_env | d('LANG LC_*') }}
-- dest: 'sshd_config.d/40-default-authentication.conf'
+- dest: '/etc/ssh/sshd_config.d/40-default-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes
@@ -59,8 +63,6 @@ sshd__conf:
     PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}
 # sshd conf default template
 sshd__conf_template: '_content_.j2'
-# sshd conf directory
-sshd__confdir: '/etc/ssh'
 
 # sshd moduli file
 sshd__moduli_file: '/etc/ssh/moduli'

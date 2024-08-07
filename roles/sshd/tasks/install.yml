@@ -7,14 +7,4 @@
     state: '{{ sshd__state }}'
   notify:
   - 'OpenSSH | Validate Conf and Restart Service'
-
-- name: 'Install | Create the OpenSSH Conf Directory Structure'
-  ansible.builtin.file:
-    dest: '{{ sshd__confdir }}'
-    owner: 'root'
-    group: 'root'
-    mode: '0755'
-    state: 'directory'
-  notify:
-  - 'OpenSSH | Validate Conf and Reload Service'
 ...

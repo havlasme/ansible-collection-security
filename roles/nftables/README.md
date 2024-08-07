@@ -35,12 +35,12 @@ nftables__conf:
 ##   group: string | d('root')
 ##   mode: string | d('0755')
 ##   state: enum('present', 'absent') | d('present')
+- dest: '/etc/nftables.d'
+  state: 'directory'
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
 # nftables conf default template
 nftables__conf_template: '_content_.j2'
-# nftables conf directory
-nftables__confdir: '/etc/nftables.d'
 ```
 
 ### `etc/nftables.d/zerotrust-stateful-firewall.conf.j2`
@@ -61,7 +61,7 @@ nftables__ssh_ipv6_accept: [ '::/0' ]
 
 ```yaml
 nftables__conf:
-- dest: '10-zerotrust-stateful-firewall.conf'
+- dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
   src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
@@ -78,7 +78,7 @@ Example Playbook
       nftables__conf:
       - dest: '/etc/nftables.conf'
         tmpl: 'etc/nftables.conf.j2'
-      - dest: '10-zerotrust-stateful-firewall.conf'
+      - dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
         tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
@@ -91,7 +91,7 @@ Example Playbook
       tasks_from: 'configure'
     vars:
       nftables__conf:
-      - dest: '10-zerotrust-stateful-firewall.conf'
+      - dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
         tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 

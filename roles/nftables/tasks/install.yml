@@ -7,14 +7,4 @@
     state: '{{ nftables__state }}'
   notify:
   - 'NFTables | Validate Conf and Restart Service'
-
-- name: 'Install | Create the NFTables Conf Directory Structure'
-  ansible.builtin.file:
-    name: '{{ nftables__confdir }}'
-    owner: 'root'
-    group: 'root'
-    mode: '0755'
-    state: '{{ (nftables__state == "absent") | ternary("absent", "directory") }}'
-  notify:
-  - 'NFTables | Validate Conf and Reload Service'
 ...

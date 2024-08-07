@@ -7,7 +7,9 @@
       name: 'nftables'
     vars:
       nftables__conf:
+      - dest: '/etc/nftables.d'
+        state: 'directory'
       - dest: '/etc/nftables.conf'
         tmpl: 'etc/nftables.conf.j2'
-      - dest: '10-zerotrust-stateful-firewall.conf'
+      - dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
         tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'

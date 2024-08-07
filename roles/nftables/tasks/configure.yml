@@ -1,7 +1,7 @@
 ---
 - name: 'Configure | Delete a NFTables Conf File'
   ansible.builtin.file:
-    name: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables__confdir) }}'
+    name: '{{ item.dest | mandatory }}'
     state: 'absent'
   loop: '{{ nftables__conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
@@ -11,9 +11,25 @@
   when:
   - nftables__state != 'absent'
 
+- name: 'Configure | Create the NFTables Conf Directory Structure'
+  ansible.builtin.file:
+    dest: '{{ item.dest | mandatory }}'
+    owner: '{{ item.user | d("root") }}'
+    group: '{{ item.group | d("root") }}'
+    mode: '{{ item.mode | d("0755") }}'
+    state: 'directory'
+  loop: '{{ nftables__conf | selectattr("state", "havlasme.ansible.is_directory") | list }}'
+  loop_control:
+    label: '{{ item.dest | mandatory }}'
+  notify:
+  - 'NFTables | Restart Service'
+  when:
+  - nftables__state != 'absent'
+  tags: [ 'role:nftables', 'role:nftables:configure', 'task:configure' ]
+
 - name: 'Configure | Create or Update a NFTables Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(nftables__confdir) }}'
+    dest: '{{ item.dest | mandatory }}'
     src: '{{ item.tmpl | d(nftables__conf_template) }}'
     owner: '{{ item.user | d("root") }}'
     group: '{{ item.group | d("root") }}'

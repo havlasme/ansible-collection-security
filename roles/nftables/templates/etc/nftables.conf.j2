@@ -3,4 +3,4 @@
 {{ ansible_managed | comment }}
 
 flush ruleset
-include "{{ nftables__confdir }}/*.conf"
+include "/etc/nftables.d/*.conf"
