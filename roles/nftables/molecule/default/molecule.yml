@@ -8,9 +8,41 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-- name: security-nftables-debian
-  image: docker.io/library/python:3.10
+- name: security-nftables-debian-bullseye
+  image: docker.io/havlasme/debian11-systemd-ansible:latest
   pre_build_image: true
+  command: '/lib/systemd/systemd'
+  privileged: true
+  volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+- name: security-nftables-debian-bookworm
+  image: docker.io/havlasme/debian12-systemd-ansible:latest
+  pre_build_image: true
+  command: '/lib/systemd/systemd'
+  privileged: true
+  volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+- name: security-nftables-ubuntu-focal
+  image: docker.io/havlasme/ubuntu20-systemd-ansible:latest
+  pre_build_image: true
+  command: '/lib/systemd/systemd'
+  privileged: true
+  volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+- name: security-nftables-ubuntu-jammy
+  image: docker.io/havlasme/ubuntu22-systemd-ansible:latest
+  pre_build_image: true
+  command: '/lib/systemd/systemd'
+  privileged: true
+  volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+- name: security-nftables-ubuntu-noble
+  image: docker.io/havlasme/ubuntu24-systemd-ansible:latest
+  pre_build_image: true
+  command: '/lib/systemd/systemd'
+  privileged: true
+  volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
 verifier:

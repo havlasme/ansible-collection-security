@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+- '_compat_check'
 
 galaxy_info:
   author: havlas.me

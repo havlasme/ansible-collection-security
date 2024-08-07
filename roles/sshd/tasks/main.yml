@@ -1,5 +1,10 @@
 ---
-- ansible.builtin.import_tasks: 'preflight.yml'
+- name: 'Assert that the OpenSSH State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - sshd__state in [ 'present', 'latest' ]
+    msg: 'The sshd__state must be one of [ "present", "latest" ] - "{{ sshd__state }}" is not supported'
+    quiet: true
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'

@@ -3,5 +3,11 @@
   hosts: 'all'
 
   tasks:
-  - include_role:
+  - ansible.builtin.include_role:
       name: 'nftables'
+    vars:
+      nftables__conf:
+      - dest: '/etc/nftables.conf'
+        tmpl: 'etc/nftables.conf.j2'
+      - dest: '10-zerotrust-stateful-firewall.conf'
+        tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'

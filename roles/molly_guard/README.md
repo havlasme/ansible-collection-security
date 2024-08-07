@@ -10,8 +10,13 @@ An [Ansible](https://www.ansible.com/) role to install and configure the Molly-G
 Role Variables
 --------------
 
+Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
+
 ```yaml
-# the molly-guard package state ('present', 'latest, 'absent')
+# molly-guard package state ('present', 'latest, 'absent')
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
+# * 'absent' ensures that the package is not installed
 molly_guard__state: 'present'
 ```
 

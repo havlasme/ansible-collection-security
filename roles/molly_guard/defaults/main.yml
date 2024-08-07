@@ -1,4 +1,7 @@
 ---
-# the molly-guard package state ('present', 'latest, 'absent')
+# molly-guard package state ('present', 'latest, 'absent')
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
+# * 'absent' ensures that the package is not installed
 molly_guard__state: 'present'
 ...

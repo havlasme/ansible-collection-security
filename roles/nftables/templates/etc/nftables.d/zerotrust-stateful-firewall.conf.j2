@@ -8,11 +8,11 @@
  # allow multicast traffic at the input chain
  nftables__accept_multicast: boolean | d(false)
 
- # the ssh service port
+ # ssh service port
  nftables__ssh_port: int | d(22)
- # the ssh service ipv4 accept list
+ # ssh service ipv4 accept list
  nftables__ssh_ipv4_accept: string[] | d(['0.0.0.0/0'])
- # the ssh service ipv6 accept list
+ # ssh service ipv6 accept list
  nftables__ssh_ipv6_accept: string[] | d(['::/0'])
 -#}
 {{ ansible_managed | comment }}
@@ -29,10 +29,13 @@ add chain inet host UDP
 add chain inet host MULTICAST
 {% endif %}
 
+{% if (ansible_distribution == "Debian" and ansible_distribution_version is version("11", ">=")) or
+      (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("22.04", ">=")) %}
 # EXAMPLE: nft add element inet host INPUT_SSH_IPV4_ACCEPT '{ 0.0.0.0/0 }'
 add set inet host INPUT_SSH_IPV4_ACCEPT { type ipv4_addr; flags interval; comment "Permit SSH on IPv4"; }
 # EXAMPLE: nft add element inet host INPUT_SSH_IPV6_ACCEPT '{ ::/0 }'
 add set inet host INPUT_SSH_IPV6_ACCEPT { type ipv6_addr; flags interval; comment "Permit SSH on IPv6"; }
+{% endif %}
 
 add rule inet host INPUT ct state established,related accept comment "Permit Established/Related Connection"
 add rule inet host INPUT iifname lo accept comment "Permit Loop-Back"
@@ -59,10 +62,16 @@ add rule inet host INPUT meta l4proto udp counter reject
 add rule inet host INPUT meta l4proto tcp counter reject with tcp reset
 add rule inet host INPUT counter reject with icmpx type port-unreachable
 
+{% if (ansible_distribution == "Debian" and ansible_distribution_version is version("11", ">=")) or
+      (ansible_distribution == "Ubuntu" and ansible_distribution_version is version("22.04", ">=")) %}
 add rule inet host TCP ip saddr @INPUT_SSH_IPV4_ACCEPT tcp dport {{ item.nftables__ssh_port | d(nftables__ssh_port) | d(22) }} accept
 add rule inet host TCP ip6 saddr @INPUT_SSH_IPV6_ACCEPT tcp dport {{ item.nftables__ssh_port | d(nftables__ssh_port) | d(22) }} accept
 add element inet host INPUT_SSH_IPV4_ACCEPT { {{ item.nftables__ssh_ipv4_accept | d(nftables__ssh_ipv4_accept) | d(['0.0.0.0/0']) | join(', ') }} }
 add element inet host INPUT_SSH_IPV6_ACCEPT { {{ item.nftables__ssh_ipv6_accept | d(nftables__ssh_ipv6_accept) | d(['::/0']) | join(', ') }} }
+{% else %}
+add rule inet host TCP ip saddr { {{ item.nftables__ssh_ipv4_accept | d(nftables__ssh_ipv4_accept) | d(['0.0.0.0/0']) | join(', ') }} } tcp dport {{ item.nftables__ssh_port | d(nftables__ssh_port) | d(22) }} accept
+add rule inet host TCP ip6 saddr { {{ item.nftables__ssh_ipv6_accept | d(nftables__ssh_ipv6_accept) | d(['::/0']) | join(', ') }} } tcp dport {{ item.nftables__ssh_port | d(nftables__ssh_port) | d(22) }} accept
+{% endif %}
 
 {% if item.nftables__accept_multicast | d(nftables__accept_multicast) | d(false) | bool %}
 add rule inet host MULTICAST counter accept

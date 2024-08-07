@@ -14,9 +14,7 @@
     owner: 'root'
     group: 'root'
     mode: '0755'
-    state: 'directory'
+    state: '{{ (nftables__state == "absent") | ternary("absent", "directory") }}'
   notify:
   - 'NFTables | Validate Conf and Reload Service'
-  when:
-  - nftables__state != 'absent'
 ...

@@ -1,5 +1,10 @@
 ---
-- ansible.builtin.import_tasks: 'preflight.yml'
+- name: 'Assert that the NFTables State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - nftables__state in [ 'present', 'latest', 'absent' ]
+    msg: 'The `nftables__state` must be one of [ "present", "latest", "absent" ] - "{{ nftables__state }}" is not supported'
+    quiet: true
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'

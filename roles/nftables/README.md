@@ -12,26 +12,34 @@ An [Ansible](https://www.ansible.com/) role to install and configure the firewal
 Role Variables
 --------------
 
+Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
+
 ```yaml
-# the nftables package state ('present', 'latest', 'absent')
+# nftables package state ('present', 'latest', 'absent')
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
+# * 'absent' ensures that the package is not installed
 nftables__state: 'present'
-# should start the nftables service at boot
+# should start the nftables service at boot? (using systemd)
 nftables__enabled: '{{ nftables__state != "absent" }}'
-# can ansible reload nftables service?
+# can ansible reload the nftables service? (using systemd)
 nftables__ansible_reload: true
-# can ansible restart nftables service?
+# can ansible restart the nftables service? (using systemd
 nftables__ansible_restart: true
 
-# the nftables conf list
+# nftables conf list
+nftables__conf:
 ## - dest: string
 ##   tmpl: string | d(nftables__conf_template)
+##   user: string | d('root')
+##   group: string | d('root')
+##   mode: string | d('0755')
 ##   state: enum('present', 'absent') | d('present')
-nftables__conf:
 - dest: '/etc/nftables.conf'
   tmpl: 'etc/nftables.conf.j2'
-# the nftables conf default template
-nftables__conf_template: '[content].conf.j2'
-# the nftables conf directory
+# nftables conf default template
+nftables__conf_template: '_content_.j2'
+# nftables conf directory
 nftables__confdir: '/etc/nftables.d'
 ```
 
@@ -43,11 +51,11 @@ nftables__accept_ping: true
 # allow multicast traffic at the input chain
 nftables__accept_multicast: false
 
-# the ssh service port
+# ssh service port
 nftables__ssh_port: 22
-# the ssh service ipv4 accept list
+# ssh service ipv4 accept list
 nftables__ssh_ipv4_accept: [ '0.0.0.0/0' ]
-# the ssh service ipv6 accept list
+# ssh service ipv6 accept list
 nftables__ssh_ipv6_accept: [ '::/0' ]
 ```
 
@@ -69,9 +77,9 @@ Example Playbook
     vars:
       nftables__conf:
       - dest: '/etc/nftables.conf'
-        src: 'etc/nftables.conf.j2'
+        tmpl: 'etc/nftables.conf.j2'
       - dest: '10-zerotrust-stateful-firewall.conf'
-        src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
+        tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 ```yaml title='Configure-Only'
@@ -84,7 +92,7 @@ Example Playbook
     vars:
       nftables__conf:
       - dest: '10-zerotrust-stateful-firewall.conf'
-        src: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
+        tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 License

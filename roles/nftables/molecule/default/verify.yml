@@ -1,0 +1,27 @@
+---
+- name: 'verify'
+  hosts: 'all'
+  gather_facts: false
+
+  tasks:
+  - name: 'assert that the `nftables` package is installed'
+    ansible.builtin.apt:
+      name: 'nftables'
+    register: result
+    failed_when: result.changed
+
+  - name: 'assert that the `nftables` conf file is present'
+    ansible.builtin.file:
+      name: '{{ item }}'
+      state: 'file'
+    loop:
+    - '/etc/nftables.conf'
+    - '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
+
+  - name: 'assert that the `nftables` service is running and enabled'
+    ansible.builtin.systemd:
+      name: 'nftables.service'
+      enabled: yes
+      state: 'started'
+    register: result
+    failed_when: result.changed

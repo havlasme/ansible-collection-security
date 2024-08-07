@@ -13,28 +13,36 @@ An [Ansible](https://www.ansible.com/) role to install and configure the [SSHd](
 Role Variables
 --------------
 
+Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
+
 ```yaml
-# the sshd package state ('present', 'latest') - 'absent' is not supported
+# sshd package state ('present', 'latest') - 'absent' is not supported
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
 sshd__state: 'present'
-# should the sshd service start at boot
+# should the sshd service start at boot? (using systemd)
 sshd__enabled: true
-# can ansible reload sshd service?
+# can ansible reload the sshd service? (using systemd)
 sshd__ansible_reload: true
-# can ansible restart sshd service?
+# can ansible restart the sshd service? (using systemd)
 sshd__ansible_restart: true
 
-# the sshd listen port
+# sshd listen port
 sshd__port: [ '22' ]
-# the sshd listen ip
+# sshd listen ip
 #sshd__listen_to: [ '0.0.0.0' ]
-# the ssh host key type
+# ssh host key type
 #sshd__host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
-# the sshd conf list
+# sshd conf list
+sshd__conf:
 ## - dest: string
 ##   tmpl: string | d(sshd__conf_template)
+##   user: string | d('root')
+##   group: string | d('root')
+##   mode: string | d('0755')
+##   validate: bool | d(true)
 ##   state: enum('present', 'absent') | d('present')
-sshd__conf:
 - dest: 'sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
 - dest: 'sshd_config.d/20-default-daemon.conf'
@@ -49,14 +57,14 @@ sshd__conf:
     KbdInteractiveAuthentication no
     UsePAM yes
     PermitRootLogin {{ sshd__permit_root_login | d('prohibit-password') }}
-# the sshd conf default template
-sshd__conf_template: '[content].conf.j2'
-# the sshd conf directory
+# sshd conf default template
+sshd__conf_template: '_content_.j2'
+# sshd conf directory
 sshd__confdir: '/etc/ssh'
 
-# the sshd moduli file
+# sshd moduli file
 sshd__moduli_file: '/etc/ssh/moduli'
-# the sshd moduli minimal size
+# sshd moduli minimal size
 #sshd__moduli_minsize: 3071
 ```
 

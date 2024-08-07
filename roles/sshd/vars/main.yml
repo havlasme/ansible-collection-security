@@ -1,6 +1,6 @@
 ---
-# the sshd package name
+# sshd package name
 sshd__package_name: 'openssh-server'
-# the sshd service name
+# sshd service name
 sshd__service_name: 'ssh.service'
 ...

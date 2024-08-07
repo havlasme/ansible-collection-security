@@ -4,7 +4,6 @@
   gather_facts: false
 
   tasks:
-  - name: 'assert that the molly-guard package is present'
+  - name: 'assert that the molly-guard package is installed'
     ansible.builtin.package:
       name: 'molly-guard'
-      state: 'present'

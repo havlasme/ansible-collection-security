@@ -1,6 +1,7 @@
 Ansible Collection - havlasme.security
 ====================================== 
 
+[![CI][gitlabci-image]][gitlabci-link]
 [![Apache-2.0 license][license-image]][license-link]
 
 An [Ansible](https://www.ansible.com/) collection of linux security related content that supports [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/) running [systemd](https://systemd.io/).
@@ -15,7 +16,7 @@ An [Ansible](https://www.ansible.com/) collection of linux security related cont
 Installation
 ------------
 
-```shell
+```shell title="ansible-galaxy"
 ansible-galaxy collection install havlasme.security
 ```
 
@@ -54,3 +55,6 @@ Created in 2024 by [Tomáš Havlas](https://havlas.me/).
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square
 [license-link]: LICENSE
+
+[gitlabci-image]: https://img.shields.io/gitlab/pipeline-status/havlas.me/ansible-collection-security?style=flat-square
+[gitlabci-link]: https://gitlab.com/havlas.me/ansible-collection-security/-/pipelines

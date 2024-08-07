@@ -13,8 +13,8 @@
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd__confdir) }}'
     src: '{{ item.tmpl | d(sshd__conf_template) }}'
-    owner: 'root'
-    group: 'root'
+    owner: '{{ item.user | d("root") }}'
+    group: '{{ item.group | d("root") }}'
     mode: '{{ item.mode | d("0600") }}'
     validate: '{{ "sshd -t -f %s" if (item.validate|d(true)|bool) else omit }}'
   loop: '{{ sshd__conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
@@ -39,6 +39,7 @@
   notify:
   - 'OpenSSH | Validate Conf and Restart Service'
   when:
+  - sshd__moduli_minsize is defined
   - sshd__moduli_minsize_check.stdout
   changed_when: true
 ...

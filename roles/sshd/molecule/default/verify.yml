@@ -1,0 +1,28 @@
+---
+- name: 'verify'
+  hosts: 'all'
+  gather_facts: false
+
+  tasks:
+  - name: 'assert that the `sshd` package is installed'
+    ansible.builtin.apt:
+      name: 'openssh-server'
+    register: result
+    failed_when: result.changed
+
+  - name: 'assert that the `sshd` conf file is present'
+    ansible.builtin.file:
+      name: '{{ item }}'
+      state: 'file'
+    loop:
+    - '/etc/ssh/sshd_config'
+    - '/etc/ssh/sshd_config.d/20-default-daemon.conf'
+    - '/etc/ssh/sshd_config.d/40-default-authentication.conf'
+
+  - name: 'assert that the `sshd` service is running and enabled'
+    ansible.builtin.systemd:
+      name: 'ssh.service'
+      enabled: yes
+      state: 'started'
+    register: result
+    failed_when: result.changed

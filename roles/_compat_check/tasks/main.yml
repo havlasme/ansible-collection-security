@@ -6,18 +6,13 @@
       (ansible_distribution|lower == "ubuntu" and ansible_distribution_version|int in [20, 22, 24])
     msg: 'The "{{ ansible_distribution }} {{ ansible_distribution_version }}" is not supported'
     quiet: true
+  tags: [ 'always' ]
 
-- name: 'Assert that the Managed Node is Using systemd'
+- name: 'Assert that the Managed Node is Running systemd'
   ansible.builtin.assert:
     that:
     - ansible_service_mgr == 'systemd'
     msg: 'The "{{ ansible_service_mgr }}" is not supported'
     quiet: true
-
-- name: 'Assert that the NFTables State Value is Valid'
-  ansible.builtin.assert:
-    that:
-    - nftables__state in [ 'present', 'latest', 'absent' ]
-    msg: 'The `nftables__state` must be one of [ "present", "latest", "absent" ] - "{{ nftables__state }}" is not supported'
-    quiet: true
+  tags: [ 'always' ]
 ...
