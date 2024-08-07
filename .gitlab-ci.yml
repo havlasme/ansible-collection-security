@@ -24,7 +24,8 @@ molecule test:
   - python3 -m pip install ansible ansible-lint molecule molecule-plugins[podman] yamllint
   - ansible --version
   - molecule --version
-  - apt install -y git jq yq python3-jmespath
+  - apt install -y git jq
+  - python3 -m pip install jmespath yq
   - git clone https://gitlab.com/havlas.me/ansible-collection-ansible.git
   - cd ansible-collection-ansible
   - make clean build install
