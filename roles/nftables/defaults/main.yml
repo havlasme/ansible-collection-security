@@ -8,7 +8,7 @@ nftables__state: 'present'
 nftables__enabled: '{{ nftables__state != "absent" }}'
 # can ansible reload the nftables service? (using systemd)
 nftables__ansible_reload: true
-# can ansible restart the nftables service? (using systemd
+# can ansible restart the nftables service? (using systemd)
 nftables__ansible_restart: true
 
 # nftables conf list

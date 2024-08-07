@@ -1,17 +1,24 @@
 ---
-# the borgbackup package state ('present', 'latest')
-borgbackup_state: 'present'
-# should start the borgbackup service at boot
-borgbackup_enabled: true
+# borgbackup package state ('present', 'latest', 'absent')
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
+# * 'absent' ensures that the package is not installed
+borgbackup__state: 'present'
+# should start the borgbackup service at boot? (using systemd)
+borgbackup__enabled: true
+# can ansible reload the borgbackup service? (using systemd)
+borgbackup__ansible_reload: true
+# can ansible restart the borgbackup service? (using systemd)
+borgbackup__ansible_restart: true
 
-# the borgbackup dedicated user
-borgbackup_user: 'root'
-# the borgbackup dedicated group
-borgbackup_group: '{{ borgbackup_user }}'
-# the borgbackup dedicated home directory
-borgbackup_home: '/root'
+# borgbackup service dedicated user
+borgbackup__user: 'root'
+# borgbackup service dedicated group
+borgbackup__group: '{{ borgbackup__user }}'
+# borgbackup service working directory
+borgbackup__home: '/root'
 
-# the borgbackup job list
+# borgbackup job list
 ## - name: string
 ##   passphrase: string
 ##   encryption: string | d('repokey')
