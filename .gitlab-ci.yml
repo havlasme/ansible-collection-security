@@ -18,12 +18,17 @@ molecule test:
   - apt update
   - apt install -y fuse-overlayfs podman
   - echo -e '[storage]\ndriver = "overlay"\nrunroot = "/var/obj/podman/storage"\ngraphroot = "/var/obj/podman/storage"\n[storage.options.overlay]\nmount_program = "/usr/bin/fuse-overlayfs"\nmountopt = "nodev,metacopy=on"' > /etc/containers/storage.conf
-  - echo -e '[engine]\ncgroup_manager = "cgroupfs"' > /etc/containers/containers.conf
+  - echo -e '[containers]\nnetns="host"\nuserns="host"\nipcns="host"\nutsns="host"\ncgroupns="host"\ncgroups="disabled"\n[engine]\ncgroup_manager = "cgroupfs"\nevents_logger = "file"' > /etc/containers/containers.conf
   - podman info
   - python3 --version
   - python3 -m pip install ansible ansible-lint molecule molecule-plugins[podman] yamllint
   - ansible --version
   - molecule --version
+  - apt install -y git jq yq python3-jmespath
+  - git clone https://gitlab.com/havlas.me/ansible-collection-ansible.git
+  - cd ansible-collection-ansible
+  - make clean build install
+  - cd ..
   script:
   - make test
   rules:
