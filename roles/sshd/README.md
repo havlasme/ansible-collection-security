@@ -41,6 +41,7 @@ sshd__conf:
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
+##   backup: bool | d(false)
 ##   validate: bool | d(true)
 ##   state: enum('present', 'absent', 'directory') | d('present')
 - dest: '/etc/ssh'

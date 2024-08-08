@@ -34,6 +34,7 @@ nftables__conf:
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
+##   backup: boolean | d(true)
 ##   state: enum('present', 'absent') | d('present')
 - dest: '/etc/nftables.d'
   state: 'directory'

@@ -34,6 +34,7 @@
     owner: '{{ item.user | d("root") }}'
     group: '{{ item.group | d("root") }}'
     mode: '{{ item.mode | d("0600") }}'
+    backup: '{{ item.backup | d(false) }}'
     validate: nft -c -f %s
   loop: '{{ nftables__conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:

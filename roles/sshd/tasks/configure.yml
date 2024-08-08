@@ -1,7 +1,7 @@
 ---
 - name: 'Configure | Delete a OpenSSH Conf File'
   ansible.builtin.file:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd__confdir) }}'
+    dest: '{{ item.dest | mandatory }}'
     state: 'absent'
   loop: '{{ sshd__conf | selectattr("state", "havlasme.ansible.is_absent") | list }}'
   loop_control:
@@ -25,11 +25,12 @@
 
 - name: 'Configure | Create or Update a OpenSSH Conf File'
   ansible.builtin.template:
-    dest: '{{ item.dest | mandatory | havlasme.ansible.abspath(sshd__confdir) }}'
+    dest: '{{ item.dest | mandatory }}'
     src: '{{ item.tmpl | d(sshd__conf_template) }}'
     owner: '{{ item.user | d("root") }}'
     group: '{{ item.group | d("root") }}'
     mode: '{{ item.mode | d("0600") }}'
+    backup: '{{ item.backup | d(false) }}'
     validate: '{{ "sshd -t -f %s" if (item.validate|d(true)|bool) else omit }}'
   loop: '{{ sshd__conf | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
