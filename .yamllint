@@ -25,10 +25,15 @@ rules:
   indentation: disable
   key-duplicates: enable
   line-length:
+    max: 160
+    level: warning
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
   new-line-at-end-of-file: disable
   new-lines:
     type: unix
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
   trailing-spaces: disable
   truthy: disable
