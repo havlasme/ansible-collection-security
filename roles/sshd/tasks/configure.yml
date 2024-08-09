@@ -47,7 +47,7 @@
   changed_when: sshd__moduli_minsize_check.stdout
   check_mode: false
 
-- name: 'Configure | Delete the Small Moduli (< {{ sshd__moduli_minsize }})'
+- name: 'Configure | Delete the Small Moduli (< {{ sshd__moduli_minsize | d(3071) }})'
   ansible.builtin.shell: >
     awk '$5 >= {{ sshd__moduli_minsize }}' '{{ sshd__moduli_file }}' > '{{ sshd__moduli_file }}.ansible' ;
     [ -r '{{ sshd__moduli_file }}.ansible' -a -s '{{ sshd__moduli_file }}.ansible' ] && mv '{{ sshd__moduli_file }}.ansible' '{{ sshd__moduli_file }}' || rm '{{ sshd__moduli_file }}.ansible'
