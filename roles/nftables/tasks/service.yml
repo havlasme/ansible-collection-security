@@ -5,4 +5,42 @@
     daemon_reload: true
     enabled: '{{ (nftables__state == "absent") | ternary("no", nftables__enabled) }}'
     state: '{{ (nftables__state == "absent") | ternary("stopped", "started") }}'
+
+- name: 'NFTables | Validate Conf and Reload Service'
+  ansible.builtin.command: >
+    nft -c -f /etc/nftables.conf
+  notify:
+  - 'NFTables | Reload Service'
+  changed_when: true
+  tags: [ 'always' ]
+
+- name: 'NFTables | Reload Service'
+  ansible.builtin.systemd:
+    name: '{{ nftables__service_name }}'
+    daemon_reload: true
+    state: 'reloaded'
+  failed_when: false
+  tags: [ 'always' ]
+
+- name: Check nftables service status
+  shell: systemctl status nftables.service
+  become: yes
+  register: nftables_status
+  tags: [ 'always' ]
+
+- name: Show service status
+  debug:
+    var: nftables_status.stdout_lines
+  tags: [ 'always' ]
+
+- name: Check recent logs for nftables
+  shell: journalctl -xe | tail -n 100
+  become: yes
+  register: journal_logs
+  tags: [ 'always' ]
+
+- name: Show journal logs
+  debug:
+    var: journal_logs.stdout_lines
+  tags: [ 'always' ]
 ...
