@@ -6,8 +6,6 @@
   - ansible.builtin.include_role:
       name: 'nftables'
     vars:
-      nftables__ansible_reload: false
-      nftables__ansible_restart: false
       nftables__conf:
       - dest: '/etc/nftables.d'
         state: 'directory'
