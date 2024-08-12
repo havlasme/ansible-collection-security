@@ -28,6 +28,7 @@ nftables__ansible_reload: true
 nftables__ansible_restart: true
 
 # nftables conf list
+#! template lookup is done by the `havlasme.ansible.template` plugin
 nftables__conf:
 ## - dest: string
 ##   tmpl: string | d(nftables__conf_template)

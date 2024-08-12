@@ -30,7 +30,7 @@
 - name: 'Configure | Create or Update a NFTables Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory }}'
-    src: '{{ item.tmpl | d(nftables__conf_template) }}'
+    src: '{{ lookup("havlasme.ansible.template", item.tmpl | d(nftables__conf_template)) }}'
     owner: '{{ item.user | d("root") }}'
     group: '{{ item.group | d("root") }}'
     mode: '{{ item.mode | d("0600") }}'

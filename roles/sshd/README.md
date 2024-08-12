@@ -35,6 +35,7 @@ sshd__port: [ '22' ]
 #sshd__host_key_type: [ 'ed25519', 'rsa', 'ecdsa' ]
 
 # sshd conf list
+#! template lookup is done by the `havlasme.ansible.template` plugin
 sshd__conf:
 ## - dest: string
 ##   tmpl: string | d(sshd__conf_template)
