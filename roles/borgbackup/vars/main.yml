@@ -1,0 +1,8 @@
+---
+# borgbackup package name
+borgbackup_package_name:
+- 'borgbackup'
+- 'borgmatic'
+# borgbackup service name
+borgbackup_service_name: 'borgbackup.service'
+...

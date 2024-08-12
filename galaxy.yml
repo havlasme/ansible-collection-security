@@ -6,8 +6,10 @@ readme: README.md
 authors:
 - Tomáš Havlas <tomas@havlas.me>
 description: An Ansible collection of linux security related content.
-license:
-- Apache-2.0
+license_file: LICENSE
+tags:
+- linux
+- security
 repository: https://gitlab.com/havlas.me/ansible-collection-security
 documentation: https://gitlab.com/havlas.me/ansible-collection-security
 homepage: https://gitlab.com/havlas.me/ansible-collection-security

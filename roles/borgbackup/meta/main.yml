@@ -1,22 +1,27 @@
 ---
-dependencies: []
+dependencies:
+- '_compat_check'
 
 galaxy_info:
-  description: 'An Ansible role to install and configure borgbackup on Debian or Ubuntu.'
-  author: 'havlas.me'
-  company: 'havlas.me'
-  issue_tracker_url: 'https://gitlab.com/havlas.me/ansible-collection-security/-/issues'
-  license: 'Apache-2.0'
-  min_ansible_version: '2.9'
+  author: havlas.me
+  description: An Ansible role to install and configure borgbackup using borgmatic on Debian and Ubuntu running systemd.
+  company: havlas.me
+  issue_tracker_url: https://gitlab.com/havlas.me/ansible-collection-security/-/issues
+  license: Apache-2.0
+  min_ansible_version: 2.9
   platforms:
-  - name: 'Debian'
+  - name: Debian
     versions:
-    - 'all'
-  - name: 'Ubuntu'
+    - bullseye
+    - bookworm
+  - name: Ubuntu
     versions:
-    - 'all'
+    - focal
+    - jammy
+    - noble
   galaxy_tags:
-  - 'backup'
-  - 'borg'
-  - 'borgbackup'
-  - 'linux'
+  - linux
+  - backup
+  - borg
+  - borgbackup
+  - borgmatic

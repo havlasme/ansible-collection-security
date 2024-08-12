@@ -1,16 +1,20 @@
 ---
-- name: 'security | borgbackup | include distribution-specific variables'
-  ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yml'
+- name: 'Assert that the BorgBackup State Value is Valid'
+  ansible.builtin.assert:
+    that:
+    - borgbackup__state in [ 'present', 'latest', 'absent' ]
+    msg: 'The borgbackup__state must be one of [ "present", "latest", "absent" ] - "{{ borgbackup__state }}" is not supported'
+    quiet: true
   tags: [ 'always' ]
 
 - ansible.builtin.import_tasks: 'install.yml'
-  tags: [ 'role::borgbackup', 'task::install', 'role::borgbackup:install' ]
+  tags: [ 'role:borgbackup', 'task:install', 'role:borgbackup:install' ]
 - ansible.builtin.import_tasks: 'repository.yml'
-  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure', 'role::borgbackup:repository' ]
+  tags: [ 'role:borgbackup', 'task:configure', 'role:borgbackup:configure', 'role:borgbackup:repository' ]
 - ansible.builtin.import_tasks: 'configure.yml'
-  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure' ]
+  tags: [ 'role:borgbackup', 'task:configure', 'role:borgbackup:configure' ]
 - ansible.builtin.import_tasks: 'management.yml'
-  tags: [ 'role::borgbackup', 'task::configure', 'role::borgbackup:configure', 'role::borgbackup:management' ]
+  tags: [ 'role:borgbackup', 'task:configure', 'role:borgbackup:configure', 'role:borgbackup:management' ]
 - ansible.builtin.import_tasks: 'service.yml'
-  tags: [ 'role::borgbackup', 'task::service', 'role::borgbackup:service' ]
+  tags: [ 'role:borgbackup', 'task:service', 'role:borgbackup:service' ]
 ...

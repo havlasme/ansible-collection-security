@@ -1,14 +1,17 @@
 ---
-- name: 'security | borgbackup | service | start and enable borgbackup service'
-  ansible.builtin.service:
-    name: '{{ borgbackup_service_name }}'
-    enabled: '{{ borgbackup_enabled }}'
-    state: 'started'
+- name: 'Service | {{ (borgbackup__state == "absent") | ternary("Stop and Disable", "Start and Enable") }} the BorgBackup Service'
+  ansible.builtin.systemd:
+    name: '{{ borgbackup__service_name | replace(".service", ".timer") }}'
+    daemon_reload: true
+    enabled: '{{ (borgbackup__state == "absent") | ternary(false, borgbackup__enabled) }}'
+    state: '{{ (borgbackup__state == "absent") | ternary("stopped", "started") }}'
 
-- name: 'security | borgbackup | service | mask implicit service provided by borgbackup package'
+- name: 'Service | Mask the Service Provided by the BorgMatic'
   ansible.builtin.systemd:
     name: 'borgmatic.timer'
-    state: 'stopped'
     enabled: false
     masked: true
+    state: 'stopped'
+  when:
+  - borgbackup__state == 'absent'
 ...

@@ -9,7 +9,7 @@
   notify:
   - 'OpenSSH | Validate Conf and Reload Service'
 
-- name: 'Configure | Create the SSHd Conf Directory Structure'
+- name: 'Configure | Create the OpenSSH Conf Directory Structure'
   ansible.builtin.file:
     dest: '{{ item.dest | mandatory }}'
     owner: '{{ item.user | d("root") }}'
@@ -20,7 +20,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'SSHd | Restart Service'
+  - 'OpenSSH | Validate Conf and Restart Service'
   tags: [ 'role:sshd', 'role:sshd:configure', 'task:configure' ]
 
 - name: 'Configure | Create or Update a OpenSSH Conf File'

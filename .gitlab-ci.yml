@@ -4,23 +4,24 @@ workflow:
 
 stages:
 - test
+- build
 
 molecule test:
   image: havlasme/ansible-molecule-podman:latest
   stage: test
   variables:
     ANSIBLE_FORCE_COLOR: 'true'
-    DOCKER_OPTS: "--detach=false"
   before_script:
   - echo -e '[storage]\ndriver = "overlay"\nrunroot = "/var/obj/podman/storage"\ngraphroot = "/var/obj/podman/storage"\n[storage.options.overlay]\nmount_program = "/usr/bin/fuse-overlayfs"\nmountopt = "nodev,metacopy=on"' > /etc/containers/storage.conf
   - echo -e '[containers]\ncgroupns="host"\ncgroups="disabled"\n[engine]\ncgroup_manager = "cgroupfs"\nevents_logger = "file"' > /etc/containers/containers.conf
+  - echo $PATH
   - podman info
   - python3 --version
   - ansible --version
   - molecule --version
   - apt update
   - apt install -y git jq
-  - python3 -m pip install jmespath yq
+  - python3 -m pip install jmespath
   - git clone https://gitlab.com/havlas.me/ansible-collection-ansible.git
   - cd ansible-collection-ansible
   - make clean build install
@@ -29,3 +30,24 @@ molecule test:
   - make test
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+publish collection:
+  image: havlasme/ansible-molecule-podman:latest
+  stage: build
+  variables:
+    ANSIBLE_FORCE_COLOR: 'true'
+  before_script:
+  - echo $PATH
+  - python3 --version
+  - ansible --version
+  script:
+  - make build publish
+  needs:
+  - molecule test
+  artifacts:
+    paths:
+    - dist/*
+    expire_in: 1 week
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  when: manual

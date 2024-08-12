@@ -22,7 +22,7 @@
   loop_control:
     label: '{{ item.dest | mandatory }}'
   notify:
-  - 'NFTables | Restart Service'
+  - 'NFTables | Validate Conf and Restart Service'
   when:
   - nftables__state != 'absent'
   tags: [ 'role:nftables', 'role:nftables:configure', 'task:configure' ]

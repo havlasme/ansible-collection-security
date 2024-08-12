@@ -33,12 +33,12 @@ sshd__conf:
   state: 'directory'
 - dest: '/etc/ssh/sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
-- dest: '/etc/ssh/sshd_config.d/20-default-daemon.conf'
+- dest: '/etc/ssh/sshd_config.d/20-defaults-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
     AcceptEnv {{ sshd__accept_env | d('LANG LC_*') }}
-- dest: '/etc/ssh/sshd_config.d/40-default-authentication.conf'
+- dest: '/etc/ssh/sshd_config.d/40-defaults-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes

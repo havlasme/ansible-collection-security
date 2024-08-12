@@ -50,12 +50,12 @@ sshd__conf:
   state: 'directory'
 - dest: '/etc/ssh/sshd_config'
   tmpl: 'etc/ssh/sshd_config.j2'
-- dest: '/etc/ssh/sshd_config.d/20-default-daemon.conf'
+- dest: '/etc/ssh/sshd_config.d/20-defaults-daemon.conf'
   content: |-
     PrintMotd no
     PrintLastLog yes
     AcceptEnv {{ sshd__accept_env | d('LANG LC_*') }}
-- dest: '/etc/ssh/sshd_config.d/40-default-authentication.conf'
+- dest: '/etc/ssh/sshd_config.d/40-defaults-authentication.conf'
   content: |-
     PubkeyAuthentication yes
     PasswordAuthentication yes
@@ -71,17 +71,17 @@ sshd__moduli_file: '/etc/ssh/moduli'
 #sshd__moduli_minsize: 3071
 ```
 
-### `etc/ssh/sshd_config.d/default-cryptography-policy.conf`
+### `etc/ssh/sshd_config.d/defaults-cryptography-policy.conf`
 
-```yaml title='etc/ssh/sshd_config.d/default-cryptography-policy.conf'
+```yaml title='etc/ssh/sshd_config.d/defaults-cryptography-policy.conf'
 # the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd__cryptography_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
 
 ```yaml
 sshd__conf:
-- dest: 'sshd_config.d/20-default-cryptography-policy.conf'
-  src: 'etc/ssh/sshd_config.d/default-cryptography-policy.conf.j2'
+- dest: 'sshd_config.d/20-defaults-cryptography-policy.conf'
+  src: 'etc/ssh/sshd_config.d/defaults-cryptography-policy.conf.j2'
   sshd__cryptography_policy: 'ssh-audit.com'
 ```
 

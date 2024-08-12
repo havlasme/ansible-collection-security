@@ -1,27 +1,28 @@
 ---
-- name: 'security | borgbackup | configure | create borgbackup client group'
+- name: 'Configure | Create the BorgBackup Service Group'
   ansible.builtin.group:
-    name: '{{ borgbackup_group }}'
+    name: '{{ borgbackup__group }}'
     system: true
   when:
-  - borgbackup_group != 'root'
+  - borgbackup__group != 'root'
 
-- name: 'security | borgbackup | configure | create borgbackup client user'
+- name: 'Configure | Create the BorgBackup Service User'
   ansible.builtin.user:
-    name: '{{ borgbackup_user }}'
-    home: '{{ borgbackup_home }}'
-    createhome: true
-    group: '{{ borgbackup_group }}'
-    shell: '/usr/sbin/nologin'
+    name: '{{ borgbackup__user }}'
+    shell: '/sbin/nologin'
+    home: '{{ borgbackup__home }}'
+    create_home: true
+    groups: '{{ borgbackup__group }}'
+    append: true
     system: true
   when:
-  - borgbackup_user != 'root'
+  - borgbackup__user != 'root'
 
-- name: 'security | borgbackup | configure | create borgbackup client ssh configuration directory'
+- name: 'Configure | Create the BorgBackup SSH Configuration Directory Structure'
   ansible.builtin.file:
-    dest: '{{ borgbackup_home }}/.ssh'
-    owner: '{{ borgbackup_user }}'
-    group: '{{ borgbackup_group }}'
+    dest: '{{ borgbackup__home }}/.ssh'
+    owner: '{{ borgbackup__user }}'
+    group: '{{ borgbackup__group }}'
     mode: '0700'
     state: 'directory'
 

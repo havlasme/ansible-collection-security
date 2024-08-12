@@ -3,52 +3,35 @@ havlasme.security.borgbackup
 
 [![Apache-2.0 license][license-image]][license-link]
 
-An [Ansible](https://www.ansible.com/) role to install and configure [borgbackup](https://www.borgbackup.org/) on [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/).
-
-* install or update borgbackup package via apt
-* create borgbackup configuration directory structure
-* create borgbackup systemd service unit
-* create, update, or delete borgbackup repository user *(at repository host)*
-* create borgbackup repository ssh directory *(at repository host)*
-* create borgbackup client group
-* create borgbackup client user
-* create borgbackup client ssh configuration directory
-* generate borgbackup client ssh key
-* add repository host key to known host list
-* delete borgbackup job configuration
-* create or update borgbackup job configuration
-* download borgbackup client public ssh key
-* configure borgbackup client ssh key at repository *(at repository host)*
-* initialize borgbackup repository
-* create borgbackup management group *(at management host)*
-* create borgbackup management user *(at management host)*
-* create borgbackup management ssh configuration directory *(at management host)*
-* generate borgbackup management ssh key *(at management host)*
-* add repository host key to known host list *(at management host)*
-* create borgbackup management configuration directory *(at management host)*
-* create or update borgbackup management configuration directory *(at management host)*
-* create or update borgbackup management configuration *(at management host)*
-* download borgbackup management public ssh key *(at management host)*
-* configure borgbackup management ssh key at repository *(at repository host)*
-
+An [Ansible](https://www.ansible.com/) role to install and configure [borgbackup](https://www.borgbackup.org/) using [borgmatic](https://torsion.org/borgmatic/) on [Debian](https://www.debian.org/) and [Ubuntu](https://ubuntu.com/) running [systemd](https://systemd.io/).
 
 Role Variables
 --------------
 
+Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
+
 ```yaml
-# the borgbackup package state ('present', 'latest')
-borgbackup_state: 'present'
-# should start the borgbackup service at boot
-borgbackup_enabled: true
+# borgbackup package state ('present', 'latest', 'absent')
+# * 'present' ensures that the package is installed
+# * 'latest' ensures that the latest version of the package is installed
+# * 'absent' ensures that the package is not installed
+borgbackup__state: 'present'
+# should start the borgbackup service at boot? (using systemd)
+borgbackup__enabled: '{{ borgbackup__state != "absent" }}'
+# can ansible reload the borgbackup service? (using systemd)
+borgbackup__ansible_reload: true
+# can ansible restart the borgbackup service? (using systemd)
+borgbackup__ansible_restart: true
 
-# the borgbackup dedicated user
-borgbackup_user: 'root'
-# the borgbackup dedicated group
-borgbackup_group: '{{ borgbackup_user }}'
-# the borgbackup home directory
-borgbackup_home: '/root'
+# borgbackup service dedicated user
+borgbackup__user: 'root'
+# borgbackup service dedicated group
+borgbackup__group: 'root'
+# borgbackup service working directory
+borgbackup__home: '/root'
 
-# the borgbackup job list
+# borgbackup job list
+borgbackup__job: [ ]
 ## - name: string
 ##   passphrase: string
 ##   encryption: string | d('repokey')
@@ -65,27 +48,22 @@ borgbackup_home: '/root'
 ##       home: string | d(omit)
 ##       group: string | d(item.user)
 ##     state: enum('present', 'absent') | d('present')
-##   template: string | d(borgbackup_job_template)
+##   template: string | d(borgbackup__job_template)
 ##   state: enum('present', 'absent') | d('present')
-borgbackup_job: []
-# the borgbackup job default template
-borgbackup_job_template: 'etc/borgbackup/__default__.yaml.j2'
-# the borgbackup job.d directory
-borgbackup_job_d: '/etc/borgbackup'
-# the borgbackup ssh key type
-borgbackup_ssh_key_type: 'ed25519'
+# borgbackup job default template
+borgbackup__job_template: '_content_.j2'
+# borgbackup ssh key type
+borgbackup__ssh_key_type: 'ed25519'
 
-# the borgbackup management job default template
-borgbackup_management_template: '{{ borgbackup_job_template }}'
-# the borgbackup management.d directory
-borgbackup_management_d: '/etc/borgbackup/management.d'
-# the borgbackup management ssh key type
-borgbackup_management_ssh_key_type: '{{ borgbackup_ssh_key_type }}'
+# borgbackup management job default template
+borgbackup__management_template: '{{ borgbackup__job_template }}'
+# borgbackup management ssh key type
+borgbackup__management_ssh_key_type: '{{ borgbackup__ssh_key_type }}'
 
-# the borgbackup service option
-borgbackup_service_option: '--config {{ borgbackup_job_d | quote }} --verbosity -1 --syslog-verbosity 1'
+# borgbackup service environment template
+# this template will be deployed at `/etc/default/borgbackup` which is referenced by the systemd service
+borgbackup__environment: 'etc/default/borgbackup.j2'
 ```
-
 
 Dependencies
 ------------
@@ -102,31 +80,27 @@ ansible-galaxy collection install ansible.posix
 ansible-galaxy collection install community.crypto
 ```
 
-
 Example Playbook
 ----------------
 
 ```yaml
-- hosts: all
+- hosts: 'all'
+  
   tasks:
-  - import_role:
-      name: havlasme.security.borgbackup
-    vars:
-      borgbackup_repository:
-      - name: "{{ inventory_hostname }}"
+  - ansible.builtin.import_role:
+      name: 'havlasme.security.borgbackup'
 ```
-
 
 License
 -------
 
-Apache-2.0
+[Apache-2.0][license-link]
 
 
 Author Information
 ------------------
 
-Created by [Tomáš Havlas](https://havlas.me/).
+Created in 2024 by [Tomáš Havlas](https://havlas.me/).
 
 
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat-square

@@ -5,7 +5,7 @@
 # * 'absent' ensures that the package is not installed
 borgbackup__state: 'present'
 # should start the borgbackup service at boot? (using systemd)
-borgbackup__enabled: true
+borgbackup__enabled: '{{ borgbackup__state != "absent" }}'
 # can ansible reload the borgbackup service? (using systemd)
 borgbackup__ansible_reload: true
 # can ansible restart the borgbackup service? (using systemd)
@@ -14,11 +14,12 @@ borgbackup__ansible_restart: true
 # borgbackup service dedicated user
 borgbackup__user: 'root'
 # borgbackup service dedicated group
-borgbackup__group: '{{ borgbackup__user }}'
+borgbackup__group: 'root'
 # borgbackup service working directory
 borgbackup__home: '/root'
 
 # borgbackup job list
+borgbackup__job: [ ]
 ## - name: string
 ##   passphrase: string
 ##   encryption: string | d('repokey')
@@ -35,23 +36,19 @@ borgbackup__home: '/root'
 ##       home: string | d(omit)
 ##       group: string | d(item.user)
 ##     state: enum('present', 'absent') | d('present')
-##   template: string | d(borgbackup_job_template)
+##   template: string | d(borgbackup__job_template)
 ##   state: enum('present', 'absent') | d('present')
-borgbackup_job: []
-# the borgbackup job default template
-borgbackup_job_template: 'etc/borgbackup/__default__.yaml.j2'
-# the borgbackup job.d directory
-borgbackup_job_d: '/etc/borgbackup'
-# the borgbackup ssh key type
-borgbackup_ssh_key_type: 'ed25519'
+# borgbackup job default template
+borgbackup__job_template: '_content_.j2'
+# borgbackup ssh key type
+borgbackup__ssh_key_type: 'ed25519'
 
-# the borgbackup management job default template
-borgbackup_management_template: '{{ borgbackup_job_template }}'
-# the borgbackup management.d directory
-borgbackup_management_d: '/etc/borgbackup/management.d'
-# the borgbackup management ssh key type
-borgbackup_management_ssh_key_type: '{{ borgbackup_ssh_key_type }}'
+# borgbackup management job default template
+borgbackup__management_template: '{{ borgbackup__job_template }}'
+# borgbackup management ssh key type
+borgbackup__management_ssh_key_type: '{{ borgbackup__ssh_key_type }}'
 
-# the borgbackup service option
-borgbackup_service_option: '--config {{ borgbackup_job_d | quote }} --verbosity -1 --syslog-verbosity 1'
+# borgbackup service environment template
+# this template will be deployed at `/etc/default/borgbackup` which is referenced by the systemd service
+borgbackup__environment: 'etc/default/borgbackup.j2'
 ...

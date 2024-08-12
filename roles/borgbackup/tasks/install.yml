@@ -1,10 +1,12 @@
 ---
-- name: 'security | borgbackup | install | install or update borgbackup package via apt'
+- name: 'Install | {{ (borgbackup__state == "absent") | ternary("Uninstall", "Install or Update") }} the BorgBackup via APT'
   ansible.builtin.apt:
-    name: '{{ borgbackup_package_name }}'
-    state: '{{ borgbackup_state }}'
+    name: '{{ borgbackup__package_name }}'
+    update_cache: '{{ nftables__state != "absent" }}'
+    cache_valid_time: 1800
+    state: '{{ borgbackup__state }}'
 
-- name: 'security | borgbackup | install | create borgbackup configuration directory structure'
+- name: 'Install | create borgbackup configuration directory structure'
   ansible.builtin.file:
     dest: '{{ borgbackup_job_d }}'
     owner: '{{ borgbackup_user }}'
@@ -12,7 +14,7 @@
     mode: '0700'
     state: 'directory'
 
-- name: 'security | borgbackup | install | create borgbackup systemd service unit'
+- name: 'Install | create borgbackup systemd service unit'
   ansible.builtin.template:
     dest: '{{ item.dest }}'
     src: '{{ item.src }}'
