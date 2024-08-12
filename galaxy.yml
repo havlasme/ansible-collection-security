@@ -7,6 +7,8 @@ authors:
 - Tomáš Havlas <tomas@havlas.me>
 description: An Ansible collection of linux security related content.
 license_file: LICENSE
+dependencies:
+  'havlasme.ansible': '>=0.1.0'
 tags:
 - linux
 - security
