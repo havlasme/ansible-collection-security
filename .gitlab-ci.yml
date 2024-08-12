@@ -19,13 +19,7 @@ molecule test:
   - python3 --version
   - ansible --version
   - molecule --version
-  - apt update
-  - apt install -y git jq
-  - python3 -m pip install jmespath
-  - git clone https://gitlab.com/havlas.me/ansible-collection-ansible.git
-  - cd ansible-collection-ansible
-  - make clean build install
-  - cd ..
+  - ansible-galaxy install -r requirements.yml
   script:
   - make test
   rules:
