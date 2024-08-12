@@ -62,7 +62,7 @@ borgbackup__management_ssh_key_type: '{{ borgbackup__ssh_key_type }}'
 
 # borgbackup service environment template
 # this template will be deployed at `/etc/default/borgbackup` which is referenced by the systemd service
-borgbackup__environment: 'etc/default/borgbackup.j2'
+borgbackup__env_template: 'etc/default/borgbackup.j2'
 ```
 
 Dependencies
