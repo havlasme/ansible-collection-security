@@ -16,11 +16,11 @@ An [Ansible](https://www.ansible.com/) collection of linux security related cont
 Installation
 ------------
 
-```shell title="ansible-galaxy"
+```shell
 ansible-galaxy collection install havlasme.security
 ```
 
-```yaml title="requirements.yml"
+```yaml
 ---
 collections:
 - name: 'havlasme.security'
@@ -34,11 +34,11 @@ Development
 make build
 ```
 
-```shell title="ansible-lint"
+```shell
 make lint
 ```
 
-```shell title="molecule"
+```shell
 make test
 ```
 
