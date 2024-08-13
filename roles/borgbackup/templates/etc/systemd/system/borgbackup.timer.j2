@@ -1,7 +1,8 @@
 {{ ansible_managed | comment }}
 
 [Unit]
-Description=borgbackup
+Description=BorgBackup Service Schedule
+Conflicts=borgmatic.timer
 
 [Timer]
 OnCalendar=daily

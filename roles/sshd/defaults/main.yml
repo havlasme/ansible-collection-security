@@ -21,7 +21,7 @@ sshd__port: [ '22' ]
 #! template lookup is done by the `havlasme.ansible.template` plugin
 sshd__conf:
 ## - dest: string
-##   tmpl: string | d(sshd__conf_template)
+##   template: string | d(sshd__conf_template)
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
@@ -33,7 +33,7 @@ sshd__conf:
 - dest: '/etc/ssh/sshd_config.d'
   state: 'directory'
 - dest: '/etc/ssh/sshd_config'
-  tmpl: 'etc/ssh/sshd_config.j2'
+  template: 'etc/ssh/sshd_config.j2'
 - dest: '/etc/ssh/sshd_config.d/20-defaults-daemon.conf'
   content: |-
     PrintMotd no

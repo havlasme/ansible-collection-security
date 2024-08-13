@@ -1,20 +1,33 @@
 ---
-- name: 'Install | {{ (borgbackup__state == "absent") | ternary("Uninstall", "Install or Update") }} the BorgBackup via APT'
+- name: 'Install | {{ borgbackup__state | replace("present", "Install") | replace("latest", "Update") | replace("absent", "Uninstall") }} the BorgBackup via APT'
   ansible.builtin.apt:
     name: '{{ borgbackup__package_name }}'
     update_cache: '{{ nftables__state != "absent" }}'
     cache_valid_time: 1800
     state: '{{ borgbackup__state }}'
 
-- name: 'Install | create borgbackup configuration directory structure'
-  ansible.builtin.file:
-    dest: '{{ borgbackup_job_d }}'
-    owner: '{{ borgbackup_user }}'
-    group: '{{ borgbackup_group }}'
-    mode: '0700'
-    state: 'directory'
+- name: 'Configure | Create the BorgBackup Service Group'
+  ansible.builtin.group:
+    name: '{{ borgbackup__group }}'
+    system: true
+  when:
+  - borgbackup__group != 'root'
+  - borgbackup__state != 'absent'
 
-- name: 'Install | create borgbackup systemd service unit'
+- name: 'Configure | Create the BorgBackup Service User'
+  ansible.builtin.user:
+    name: '{{ borgbackup__user }}'
+    home: '{{ borgbackup__home }}'
+    create_home: true
+    group: '{{ borgbackup__group }}'
+    system: true
+    shell: '/usr/sbin/nologin'
+    umask: '027'
+  when:
+  - borgbackup__user != 'root'
+  - borgbackup__state != 'absent'
+
+- name: 'Install | Create the BorgBackup Service Unit'
   ansible.builtin.template:
     dest: '{{ item.dest }}'
     src: '{{ item.src }}'
@@ -22,12 +35,12 @@
     group: 'root'
     mode: '0644'
   loop:
-  - dest: '/etc/systemd/system/{{ borgbackup_service_name | regex_replace("\.timer$", ".service") }}'
+  - dest: '/etc/systemd/system/{{ borgbackup__service_name }}'
     src: 'etc/systemd/system/borgbackup.service.j2'
-  - dest: '/etc/systemd/system/{{ borgbackup_service_name }}'
+  - dest: '/etc/systemd/system/{{ borgbackup__service_name | replace(".service", ".timer") }}'
     src: 'etc/systemd/system/borgbackup.timer.j2'
-  - dest: '/etc/default/{{ borgbackup_service_name | regex_replace("\.timer$", "") }}'
-    src: 'etc/default/borgbackup.j2'
   loop_control:
     label: '{{ item.dest }}'
+  when:
+  - borgbackup__state != 'absent'
 ...

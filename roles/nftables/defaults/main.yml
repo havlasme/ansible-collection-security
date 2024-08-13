@@ -15,16 +15,16 @@ nftables__ansible_restart: true
 #! template lookup is done by the `havlasme.ansible.template` plugin
 nftables__conf:
 ## - dest: string
-##   tmpl: string | d(nftables__conf_template)
+##   template: string | d(nftables__conf_template)
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
-##   backup: boolean | d(true)
+##   backup: boolean | d(false)
 ##   state: enum('present', 'absent', 'directory') | d('present')
 - dest: '/etc/nftables.d'
   state: 'directory'
 - dest: '/etc/nftables.conf'
-  tmpl: 'etc/nftables.conf.j2'
+  template: 'etc/nftables.conf.j2'
 # nftables conf default template
 nftables__conf_template: '_content_.j2'
 ...

@@ -1,17 +1,18 @@
 ---
-- name: 'security | borgbackup | repository | create, update, or delete borgbackup repository user'
+- name: 'Repository | Create, Update, or Delete the BorgBackup Repository User'
   delegate_to: '{{ item.1.host | mandatory }}'
   ansible.builtin.user:
     name: '{{ item.1.user | mandatory }}'
     home: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user | mandatory) }}'
-    createhome: true
+    create_home: true
     shell: '/bin/bash'
-    state: '{{ item.1.state | d(item.0.state) | d("present") }}'
-  loop: '{{ borgbackup_job | subelements("repository") }}'
+    umask: '027'
+    state: '{{ (item.0.state|d("present") == "absent") | ternary("absent", item.1.state|d("present")) }}'
+  loop: '{{ borgbackup__job | subelements("repository") }}'
   loop_control:
-    label: '{{ item.1.user }} | {{ item.1.state | d(item.0.state) | d("present") }}'
+    label: '{{ item.1.user }} | {{ (item.0.state|d("present") == "absent") | ternary("absent", item.1.state|d("present")) }}'
 
-- name: 'security | borgbackup | repository | create borgbackup repository ssh directory'
+- name: 'Repository | Create the BorgBackup Repository Directory Structure'
   delegate_to: '{{ item.1.host | mandatory }}'
   ansible.builtin.file:
     dest: '{{ item.1.home | d("/var/lib/borgbackup/" + item.1.user | mandatory) }}/{{ item.0.name | mandatory }}'
@@ -19,10 +20,9 @@
     group: '{{ item.1.group | d(item.1.user) | mandatory }}'
     mode: '0700'
     state: 'directory'
-  loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list
-    | subelements("repository") | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
+  loop: '{{ borgbackup__job | subelements("repository")
+     | selectattr("0.state", "havlasme.ansible.is_present") | list
+     | selectattr("1.state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.1.user | mandatory }}'
-  when:
-  - item.1.state | d(item.0.state) | d('present') == 'present'
 ...

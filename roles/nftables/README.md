@@ -24,23 +24,23 @@ nftables__state: 'present'
 nftables__enabled: '{{ nftables__state != "absent" }}'
 # can ansible reload the nftables service? (using systemd)
 nftables__ansible_reload: true
-# can ansible restart the nftables service? (using systemd
+# can ansible restart the nftables service? (using systemd)
 nftables__ansible_restart: true
 
 # nftables conf list
 #! template lookup is done by the `havlasme.ansible.template` plugin
 nftables__conf:
 ## - dest: string
-##   tmpl: string | d(nftables__conf_template)
+##   template: string | d(nftables__conf_template)
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
-##   backup: boolean | d(true)
-##   state: enum('present', 'absent') | d('present')
+##   backup: boolean | d(false)
+##   state: enum('present', 'absent', 'directory') | d('present')
 - dest: '/etc/nftables.d'
   state: 'directory'
 - dest: '/etc/nftables.conf'
-  tmpl: 'etc/nftables.conf.j2'
+  template: 'etc/nftables.conf.j2'
 # nftables conf default template
 nftables__conf_template: '_content_.j2'
 ```
@@ -79,9 +79,9 @@ Example Playbook
     vars:
       nftables__conf:
       - dest: '/etc/nftables.conf'
-        tmpl: 'etc/nftables.conf.j2'
+        template: 'etc/nftables.conf.j2'
       - dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
-        tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
+        template: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 ```yaml title='Configure-Only'
@@ -94,7 +94,7 @@ Example Playbook
     vars:
       nftables__conf:
       - dest: '/etc/nftables.d/10-zerotrust-stateful-firewall.conf'
-        tmpl: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
+        template: 'etc/nftables.d/zerotrust-stateful-firewall.conf.j2'
 ```
 
 License

@@ -38,7 +38,7 @@ sshd__port: [ '22' ]
 #! template lookup is done by the `havlasme.ansible.template` plugin
 sshd__conf:
 ## - dest: string
-##   tmpl: string | d(sshd__conf_template)
+##   template: string | d(sshd__conf_template)
 ##   user: string | d('root')
 ##   group: string | d('root')
 ##   mode: string | d('0755')
@@ -50,7 +50,7 @@ sshd__conf:
 - dest: '/etc/ssh/sshd_config.d'
   state: 'directory'
 - dest: '/etc/ssh/sshd_config'
-  tmpl: 'etc/ssh/sshd_config.j2'
+  template: 'etc/ssh/sshd_config.j2'
 - dest: '/etc/ssh/sshd_config.d/20-defaults-daemon.conf'
   content: |-
     PrintMotd no
@@ -75,15 +75,15 @@ sshd__moduli_file: '/etc/ssh/moduli'
 ### `etc/ssh/sshd_config.d/defaults-cryptography-policy.conf`
 
 ```yaml title='etc/ssh/sshd_config.d/defaults-cryptography-policy.conf'
-# the sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
+# sshd cryptography policy ('infosec.mozilla.org', 'ssh-audit.com')
 sshd__cryptography_policy: enum('infosec.mozilla.org', 'ssh-audit.com') | d('infosec.mozilla.org')
 ```
 
 ```yaml
 sshd__conf:
-- dest: 'sshd_config.d/20-defaults-cryptography-policy.conf'
-  src: 'etc/ssh/sshd_config.d/defaults-cryptography-policy.conf.j2'
-  sshd__cryptography_policy: 'ssh-audit.com'
+- dest: '/etc/ssh/sshd_config.d/20-defaults-cryptography-policy.conf'
+  template: 'etc/ssh/sshd_config.d/defaults-cryptography-policy.conf.j2'
+  cryptography_policy: 'ssh-audit.com'
 ```
 
 Example Playbook

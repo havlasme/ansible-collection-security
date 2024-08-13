@@ -1,23 +1,20 @@
 {{ ansible_managed | comment }}
 
 [Unit]
-Description=borgbackup
+Description=BorgBackup Service
 Documentation=https://borgbackup.readthedocs.io/en/stable/
-Wants=network-online.target
-After=network-online.target
+After=network.target
 
 [Service]
 Type=oneshot
-User={{ borgbackup_user }}
-Group={{ borgbackup_group }}
-EnvironmentFile=/etc/default/{{ borgbackup_service_name | regex_replace('\.timer$', '') }}
+User={{ borgbackup__user }}
+Group={{ borgbackup__group }}
+EnvironmentFile=/etc/default/{{ borgbackup__service_name | replace('.service', '') }}
 ExecStartPre=sleep 1m
 ExecStart=systemd-inhibit --who="borgbackup" --what="sleep:shutdown" --why="Prevent interrupting scheduled backup" /bin/bash -c '/usr/bin/borgmatic $BORGBACKUP_OPTIONS'
 Restart=no
 LogRateLimitIntervalSec=0
 
-# Security settings for systemd running as root, optional but recommended to improve security.
-# @see https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 LockPersonality=true
 MemoryDenyWriteExecute=no
 NoNewPrivileges=yes
