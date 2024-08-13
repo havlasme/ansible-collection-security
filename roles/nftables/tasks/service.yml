@@ -3,6 +3,6 @@
   ansible.builtin.systemd:
     name: '{{ nftables__service_name }}'
     daemon_reload: true
-    enabled: '{{ (nftables__state == "absent") | ternary("no", nftables__enabled) }}'
+    enabled: '{{ (nftables__state == "absent") | ternary(false, nftables__enabled) }}'
     state: '{{ (nftables__state == "absent") | ternary("stopped", "started") }}'
 ...

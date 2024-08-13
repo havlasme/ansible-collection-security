@@ -23,11 +23,11 @@ borgbackup__ansible_reload: true
 # can ansible restart the borgbackup service? (using systemd)
 borgbackup__ansible_restart: true
 
-# borgbackup service dedicated user
+# borgbackup systemd service user
 borgbackup__user: 'root'
-# borgbackup service dedicated group
+# borgbackup systemd service group
 borgbackup__group: 'root'
-# borgbackup service working directory
+# borgbackup systemd service working directory
 borgbackup__home: '/root'
 
 # borgbackup job list
@@ -47,18 +47,16 @@ borgbackup__job: [ ]
 ##       user: string | d('root')
 ##       home: string | d(omit)
 ##       group: string | d(item.user)
+##       template: string | d(borgbackup__management_template)
 ##     state: enum('present', 'absent') | d('present')
 ##   template: string | d(borgbackup__job_template)
 ##   state: enum('present', 'absent') | d('present')
 # borgbackup job default template
 borgbackup__job_template: '_content_.j2'
-# borgbackup ssh key type
-borgbackup__ssh_key_type: 'ed25519'
-
 # borgbackup management job default template
 borgbackup__management_template: '{{ borgbackup__job_template }}'
-# borgbackup management ssh key type
-borgbackup__management_ssh_key_type: '{{ borgbackup__ssh_key_type }}'
+# borgbackup ssh key type
+borgbackup__ssh_key_type: 'ed25519'
 
 # borgbackup service environment template
 # this template will be deployed at `/etc/default/borgbackup` which is referenced by the systemd service

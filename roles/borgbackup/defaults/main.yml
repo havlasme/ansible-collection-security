@@ -43,6 +43,8 @@ borgbackup__job: [ ]
 borgbackup__job_template: '_content_.j2'
 # borgbackup management job default template
 borgbackup__management_template: '{{ borgbackup__job_template }}'
+# borgbackup ssh key type
+borgbackup__ssh_key_type: 'ed25519'
 
 # borgbackup service environment template
 # this template will be deployed at `/etc/default/borgbackup` which is referenced by the systemd service

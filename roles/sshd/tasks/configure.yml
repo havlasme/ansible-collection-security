@@ -23,7 +23,7 @@
   - 'OpenSSH | Validate Conf and Restart Service'
   tags: [ 'role:sshd', 'role:sshd:configure', 'task:configure' ]
 
-- name: 'Configure | Create or Update a OpenSSH Conf File'
+- name: 'Configure | Create and Update a OpenSSH Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory }}'
     src: '{{ lookup("havlasme.ansible.template", item.template | d(sshd__conf_template)) }}'

@@ -6,7 +6,7 @@ Ansible Role - havlasme.security.nftables
 An [Ansible](https://www.ansible.com/) role to install and configure the firewall using [nftables](https://nftables.org/) on [Debian](https://www.debian.org/) and [Ubuntu](https://www.ubuntu.com/) running [systemd](https://systemd.io/).
 
 - Install, Update or Uninstall the NFTables via APT
-- Create, Update, or Delete a NFTables Conf File
+- Create, Update, and Delete a NFTables Conf File
 - Start/Stop and Enable/Disable the NFTables Service
 
 Role Variables

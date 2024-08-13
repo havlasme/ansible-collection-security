@@ -27,7 +27,7 @@
   - nftables__state != 'absent'
   tags: [ 'role:nftables', 'role:nftables:configure', 'task:configure' ]
 
-- name: 'Configure | Create or Update a NFTables Conf File'
+- name: 'Configure | Create and Update a NFTables Conf File'
   ansible.builtin.template:
     dest: '{{ item.dest | mandatory }}'
     src: '{{ lookup("havlasme.ansible.template", item.template | d(nftables__conf_template)) }}'

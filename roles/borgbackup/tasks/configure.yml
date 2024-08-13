@@ -2,23 +2,23 @@
 - name: 'Configure | Create the BorgBackup Directory Structure'
   ansible.builtin.file:
     dest: '{{ item }}'
-    owner: '{{ borgbackup__user }}'
+    owner: 'root'
     group: '{{ borgbackup__group }}'
-    mode: '0700'
+    mode: '0750'
     state: 'directory'
   loop:
   - '/etc/borgbackup'
-  - '{{ borgbackup__home }}/.ssh'
+  - '/etc/borgbackup/.ssh'
   when:
   - borgbackup__state != 'absent'
 
-- name: 'security | borgbackup | configure | generate borgbackup client ssh key'
+- name: 'Configure | Generate the BorgBackup Client Key'
   community.crypto.openssh_keypair:
-    path: '{{ borgbackup_home }}/.ssh/id_{{ borgbackup_ssh_key_type }}'
-    owner: '{{ borgbackup_user }}'
+    path: '/etc/borgbackup/.ssh/id_{{ borgbackup__ssh_key_type }}'
+    owner: 'root'
     group: '{{ borgbackup_group }}'
-    mode: '0600'
-    type: '{{ borgbackup_ssh_key_type }}'
+    mode: '0640'
+    type: '{{ borgbackup__ssh_key_type }}'
 
 - name: 'Configure | Add the BorgBackup Repository Host Key to the Known Hosts'
   ansible.builtin.known_hosts:
@@ -67,12 +67,22 @@
   when:
   - borgbackup__state != 'absent'
 
+- name: 'Configure | Create and Update the BorgBackup Service Environment File'
+  ansible.builtin.template:
+    dest: '/etc/default/borgbackup'
+    src: '{{ borgbackup__env_template }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  when:
+  - borgbackup__state != 'absent'
+
 - name: 'Configure | Obtain the BorgBackup Client Public Key'
   ansible.builtin.slurp:
     src: '{{ borgbackup__home }}/.ssh/id_{{ borgbackup__ssh_key_type }}.pub'
   register: borgbackup__client_pub_key
 
-- name: 'Configure | Configure the BorgBackup Client Key at the Repository'
+- name: 'Configure | Configure the BorgBackup Client Key at the Remote Repository'
   delegate_to: '{{ item.1.host | mandatory }}'
   ansible.posix.authorized_key:
     user: '{{ item.1.user | mandatory }}'
@@ -83,14 +93,14 @@
   loop_control:
     label: '{{ item.1.user | mandatory }} | {{ item.0.name | mandatory }} | {{ item.1.state | d(item.0.state) | d("present") }}'
 
-- name: 'security | borgbackup | configure | initialize borgbackup repository'
+- name: 'Configure | Initialize the Remote BorgBackup Repository'
   ansible.builtin.command: >
     borgmatic init
-    --config '{{ borgbackup_job_d }}/{{ item.name | mandatory }}.yaml'
-    --encryption={{ item.encryption | d("repokey") | quote }}
+      --config '/etc/borgbackup/{{ item.name | mandatory }}.yaml'
+      --encryption={{ item.encryption | d('repokey') | quote }}
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.name | mandatory }}'
-  register: borgbackup_init
-  changed_when: borgbackup_init.rc == 0 and borgbackup_init.stderr | length > 0
+  register: borgbackup__init
+  changed_when: borgbackup__init.rc == 0 and borgbackup__init.stderr | length > 0
 ...

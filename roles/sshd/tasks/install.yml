@@ -1,5 +1,5 @@
 ---
-- name: 'Install | Install or Update the OpenSSH via APT'
+- name: 'Install | {{ sshd_state | replace("present", "Install") | replace("latest", "Update") }} the OpenSSH via APT'
   ansible.builtin.apt:
     name: '{{ sshd__package_name }}'
     update_cache: true
