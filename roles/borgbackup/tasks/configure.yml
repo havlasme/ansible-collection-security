@@ -97,7 +97,7 @@
   ansible.builtin.command: >
     borgmatic init
       --config '/etc/borgbackup/{{ item.name | mandatory }}.yaml'
-      --encryption={{ item.encryption | d('repokey') | quote }}
+      --encryption '{{ item.encryption | d("repokey") }}'
   loop: '{{ borgbackup_job | selectattr("state", "havlasme.ansible.is_present") | list }}'
   loop_control:
     label: '{{ item.name | mandatory }}'
